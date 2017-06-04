@@ -34,15 +34,16 @@ public class SlusacAplikacije implements ServletContextListener {
                     + context.getInitParameter("konfiguracija");
         
         BP_Konfiguracija bp_konf = new BP_Konfiguracija(datoteka);
-        context.setAttribute("Baza_Konfig", bp_konf);
+        context.setAttribute("BP_Konfig", bp_konf);
         System.out.println("Ucitana konfiguacija");
-          RadnaDretva nova = new RadnaDretva(context);
-          nova.start();
+         
         
         Konfiguracija konf = null;
         try {
             konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
-            context.setAttribute("Mail_Konfig", konf);
+            context.setAttribute("Baza_Konfig", konf);
+             RadnaDretva nova = new RadnaDretva(context);
+          nova.start();
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
             Logger.getLogger(SlusacAplikacije.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -51,7 +52,6 @@ public class SlusacAplikacije implements ServletContextListener {
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void contextDestroyed(ServletContextEvent sce) { 
     }
 }
