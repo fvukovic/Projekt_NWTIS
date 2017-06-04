@@ -1,3 +1,4 @@
+ 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,6 +12,7 @@ import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
 import org.foi.nwtis.fvukovic.konfiguracije.NeispravnaKonfiguracija;
@@ -32,8 +34,10 @@ public class SlusacAplikacije implements ServletContextListener {
                     + context.getInitParameter("konfiguracija");
         
         BP_Konfiguracija bp_konf = new BP_Konfiguracija(datoteka);
-        context.setAttribute("BP_Konfig", bp_konf);
+        context.setAttribute("Baza_Konfig", bp_konf);
         System.out.println("Ucitana konfiguacija");
+          RadnaDretva nova = new RadnaDretva(context);
+          nova.start();
         
         Konfiguracija konf = null;
         try {

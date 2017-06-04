@@ -1,10 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ 
 package org.foi.nwtis.fvukovic.dretve;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 
@@ -23,9 +21,17 @@ public class RadnaDretva extends Thread {
 
     @Override
     public void run() {
+        int brojCiklusa = 1;
         while (1 == 1) {
             Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig"); 
             int trajanjeCiklusa = Integer.parseInt(konf.dajPostavku("mail.timeSecThread"));
+            System.out.println("Ciklus dretve: "+brojCiklusa);
+            brojCiklusa++;
+            try {
+                sleep(trajanjeCiklusa*1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

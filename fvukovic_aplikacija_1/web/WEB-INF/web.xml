@@ -8,10 +8,6 @@
         <description>ServletContextListener</description>
         <listener-class>org.foi.nwtis.fvukovic.slusaci.SlusacAplikacije</listener-class>
     </listener>
-     <context-param>
-        <param-name>konfiguracija</param-name>
-        <param-value>NWTiS.db.config_1.xml</param-value>
-    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
