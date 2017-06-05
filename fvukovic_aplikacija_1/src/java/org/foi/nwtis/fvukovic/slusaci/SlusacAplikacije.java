@@ -45,7 +45,7 @@ public class SlusacAplikacije implements ServletContextListener {
             context.setAttribute("Baza_Konfig", konf);
             GeoMeteoWS.sc=context;
              RadnaDretva nova = new RadnaDretva(context);
-          nova.start();
+         // nova.start();
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
             Logger.getLogger(SlusacAplikacije.class.getName()).log(Level.SEVERE, null, ex);
         }
