@@ -4,6 +4,38 @@
     <service name="GeoMeteoWS">
       <implementation-class>org.foi.nwtis.fvukovic.ws.GeoMeteoWS</implementation-class>
     </service>
+    <service name="IoTMaster">
+      <implementation-class>org.foi.nwtis.fvukovic.master.IoTMaster</implementation-class>
+      <wsdl-url>http://nwtis.foi.hr:8080/DZ3_Master/IoT_Master?wsdl</wsdl-url>
+      <local-wsdl-file>nwtis.foi.hr_8080/DZ3_Master/IoT_Master.wsdl</local-wsdl-file>
+      <service-name>IoT_Master</service-name>
+      <port-name>IoT_MasterPort</port-name>
+      <package-name>org.foi.nwtis.dkermek.ws.serveri</package-name>
+      <catalog-file>catalog.xml</catalog-file>
+      <use-provider>false</use-provider>
+      <wsimport-options>
+        <wsimport-option>
+          <wsimport-option-name>extension</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>verbose</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>fork</wsimport-option-name>
+          <wsimport-option-value>false</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xnocompile</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xendorsed</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+      </wsimport-options>
+    </service>
   </services>
   <clients/>
   <jsr109>false</jsr109>

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
   <endpoint implementation="org.foi.nwtis.fvukovic.ws.GeoMeteoWS" name="GeoMeteoWS" url-pattern="/GeoMeteoWS"/>
+  <endpoint implementation="org.foi.nwtis.fvukovic.master.IoTMaster" name="IoT_Master" url-pattern="/IoT_Master"/>
+  <endpoint implementation="org.foi.nwtis.fvukovic.master.IoTMaster" name="IoT_Master" url-pattern="/IoT_Master"/>
 </endpoints>
