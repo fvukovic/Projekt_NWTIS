@@ -11,6 +11,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -28,6 +32,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
+import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
 import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
 
 /**
@@ -58,6 +63,7 @@ public class UsersServersResource {
      @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson() {
+        long pocetak = System.currentTimeMillis(); 
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
 
@@ -77,7 +83,11 @@ public class UsersServersResource {
                 jab.add(job);
             }
         } catch (SQLException ex) {
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"/uss");
         }
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak),1,"/uss");
         return jab.build().toString();
     }
 
@@ -91,6 +101,8 @@ public class UsersServersResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String dodajKorisnika(String content) {
+        
+            long pocetak = System.currentTimeMillis(); 
         JsonReader reader = Json.createReader(new StringReader(content));
         JsonObject jo = reader.readObject();
         String email = jo.getString("email");
@@ -103,13 +115,22 @@ public class UsersServersResource {
             ResultSet rs = s.executeQuery(query);
             int id = 1;
             while (rs.next()) {
+                
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"/uss/dodaj");
                 return "0";
             }
             query = "insert into korisnici values(default,'" + naziv + "','" + password + "','" + email + "')";
             s = c.createStatement();
             s.executeUpdate(query);
+            
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 1,"/uss/dodaj");
             return "1";
         } catch (SQLException ex) {
+            
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"/uss/dodaj");
             return "0";
         }
         //TODO upiši uređaj u bazu 
@@ -119,6 +140,8 @@ public class UsersServersResource {
     @Produces(MediaType.APPLICATION_JSON)
       @Path("/azuiraj")
     public String azurirajKorisnika(String content) {
+        
+            long pocetak = System.currentTimeMillis(); 
         JsonReader reader = Json.createReader(new StringReader(content));
         JsonObject jo = reader.readObject();
         String id = jo.getString("id");
@@ -133,9 +156,14 @@ public class UsersServersResource {
             while (rs.next()) {
                 query = "update korisnici set username='" + naziv + "',email='" + email + "',password='" + password + "' where id=" + id;
                 s.executeUpdate(query);
+                
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 1,"/uss/azuriraj");
                 return "1";
             }
-
+            
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"/uss/azuriraj");
             return "0";
         } catch (SQLException ex) {
             return "0";
@@ -151,6 +179,8 @@ public class UsersServersResource {
      @Produces(MediaType.APPLICATION_JSON)
     @Path("{korisnickoIme}")
     public String getUsersServerResource(@PathParam("korisnickoIme") String korisnickoIme) {
+        
+            long pocetak= System.currentTimeMillis(); 
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
 
@@ -172,8 +202,14 @@ public class UsersServersResource {
 
             }
         } catch (SQLException ex) {
+            
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"/uss/{korisnicko_ime}");
             return "[]";
         }
+        
+            long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 1,"/uss/{korisnicko_ime}");
         return jab.build().toString();
     }
     
@@ -193,6 +229,20 @@ public class UsersServersResource {
                     bp_konf.getUserPassword());
         } catch (SQLException ex) {
             System.out.println(ex);
+        }
+    }
+      
+              public void zapisiUDnevnik(int trajanje, int status,String url) {
+        try {
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            String strDate = sdfDate.format(now);
+            spojiNaBazu();
+            String query="insert into dnevnik values(default,'fvukovic','"+url+"','localhost','"+strDate+"', "+trajanje+", "+status+")";
+            Statement s = c.createStatement();
+            s.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(MeteoRESTResourceContainer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

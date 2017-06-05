@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -68,6 +70,7 @@ public class MeteoRESTResourceContainer {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson() {
+         long pocetak = System.currentTimeMillis();
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
 
@@ -87,7 +90,13 @@ public class MeteoRESTResourceContainer {
                 jab.add(job);
             }
         } catch (SQLException ex) {
+            
+        long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"/meteoServis");
         }
+        
+        long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 1,"/meteoServis");
         return jab.build().toString();
     }
 
@@ -106,6 +115,8 @@ public class MeteoRESTResourceContainer {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getMeteoRESTResource(@PathParam("id") String id) {
+        
+        long pocetak = System.currentTimeMillis(); 
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
 
@@ -113,8 +124,7 @@ public class MeteoRESTResourceContainer {
 
             String query = "Select * from uredaji where id=" + id;
             Statement s = c.createStatement();
-            ResultSet rs = s.executeQuery(query);
-            System.out.println("padne na upitu");
+            ResultSet rs = s.executeQuery(query); 
             int brojac = 0;
             while (rs.next()) {
 
@@ -127,8 +137,14 @@ public class MeteoRESTResourceContainer {
 
             }
         } catch (SQLException ex) {
+             long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"meteoServis/id");
             return "[33]";
+            
+       
         }
+         long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 1,"meteoServis/id");
         return jab.build().toString();
     }
 
@@ -137,6 +153,7 @@ public class MeteoRESTResourceContainer {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String dodajUredaj(String content) {
+         long pocetak = System.currentTimeMillis(); 
         JsonReader reader = Json.createReader(new StringReader(content));
         JsonObject jo = reader.readObject(); 
         String naziv = jo.getString("naziv");
@@ -160,6 +177,8 @@ public class MeteoRESTResourceContainer {
              s = c.createStatement();
              rs = s.executeQuery(query); 
             while (rs.next()) {
+                 long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"meteoServis/dodaj");
                 return "0";
             }
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -169,8 +188,12 @@ public class MeteoRESTResourceContainer {
             query = "insert into uredaji values("+id+",'" + naziv + "','" + lat + "','" + lon + "',"+status+", vrijeme_promjene='"+strDate+"',vrijeme_kreiranja='"+strDate+"')";
             s = c.createStatement();
             s.executeUpdate(query);
+             long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 1,"meteoServis/dodaj");
             return "1";
         } catch (SQLException ex) {
+             long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"meteoServis/dodaj");
             System.out.println(ex);
             return "0";
         }
@@ -182,6 +205,8 @@ public class MeteoRESTResourceContainer {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/azuiraj")
     public String azurirajUredaj(String content) {
+         long pocetak = System.currentTimeMillis(); 
+        
         JsonReader reader = Json.createReader(new StringReader(content));
         JsonObject jo = reader.readObject();
         String id = jo.getString("id");
@@ -199,11 +224,16 @@ public class MeteoRESTResourceContainer {
                 String strDate = sdfDate.format(now);
                 query = "update uredaji set naziv='" + naziv + "',latitude='" + lat + "',longitude='" + lon + "' where id=" + id;
                 s.executeUpdate(query);
+                 long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 1,"meteoServis/azurira");
                 return "1";
             }
-
+             long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"meteoServis/azurira");
             return "0";
         } catch (SQLException ex) {
+             long kraj = System.currentTimeMillis();
+        zapisiUDnevnik((int) (kraj - pocetak), 0,"meteoServis/azuriraj");
             return "0";
         }
         //TODO upiši uređaj u bazu 
@@ -216,6 +246,7 @@ public class MeteoRESTResourceContainer {
         } catch (ClassNotFoundException ex) {
             System.out.println(ex);
         }
+        
         /**
          * Spajamo se na bazu kako bi upisivali potrebne podatke
          */
@@ -227,4 +258,19 @@ public class MeteoRESTResourceContainer {
             System.out.println(ex);
         }
     }
+        public void zapisiUDnevnik(int trajanje, int status,String url) {
+        try {
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            String strDate = sdfDate.format(now);
+            spojiNaBazu();
+            String query="insert into dnevnik values(default,'fvukovic','"+url+"','localhost','"+strDate+"', "+trajanje+", "+status+")";
+            Statement s = c.createStatement();
+            s.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(MeteoRESTResourceContainer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 }
