@@ -18,6 +18,7 @@ import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
 import org.foi.nwtis.fvukovic.konfiguracije.NeispravnaKonfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.NemaKonfiguracije;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
+import org.foi.nwtis.fvukovic.ws.GeoMeteoWS;
 /**
  * Web application lifecycle listener.
  *
@@ -42,6 +43,7 @@ public class SlusacAplikacije implements ServletContextListener {
         try {
             konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
             context.setAttribute("Baza_Konfig", konf);
+            GeoMeteoWS.sc=context;
              RadnaDretva nova = new RadnaDretva(context);
           nova.start();
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
