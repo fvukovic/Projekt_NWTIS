@@ -29,45 +29,30 @@ text-shadow:   none;
                 
                  
                 <div style="height: auto;border:solid black 1px">
-                    <h:dataTable value="#{pregledDnevnika.listaSvihKorisnika}" var="p">
+                    <h:dataTable value="#{pregledKorisnika.listaSvihKorisnika}" var="p">
                         <h:column >
                             <f:facet   name="header"> ID   </f:facet>
                             <h:outputText value="#{p.id}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">Username</f:facet>
-                            <h:outputText value="#{p.ipadresa}" />
+                            <h:outputText value="#{p.username}" />
                         </h:column>
                         <h:column>
                             <f:facet name="header">Password</f:facet>
-                            <h:outputText value="#{p.korisnik}" />
+                            <h:outputText value="#{p.password}" />
                             
                         </h:column>
                         <h:column>
                             <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.status}" />
-
-                        </h:column> 
-                              <h:column>
-                            <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.trajanje}" />
-
-                        </h:column> 
-                              <h:column>
-                            <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.url}" />
-
-                        </h:column> 
-                              <h:column>
-                            <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.vrijeme}" />
+                            <h:outputText value="#{p.email}" />
 
                         </h:column> 
                     </h:dataTable>
                 </div>
                 <br/>  
-                <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Sljedeci" action="#{pregledDnevnika.prethodniKorisnici()}"/>
-                <h:commandButton  class="button-sivi" value="Prethodni" action="#{pregledDnevnika.sljedeciKorisnici}"/>                
+                <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Sljedeci" action="#{pregledKorisnika.prethodniKorisnici()}"/>
+                <h:commandButton  class="button-sivi" value="Prethodni" action="#{pregledKorisnika.sljedeciKorisnici}"/>                
             </h:form>
         </h:body>
     </f:view>

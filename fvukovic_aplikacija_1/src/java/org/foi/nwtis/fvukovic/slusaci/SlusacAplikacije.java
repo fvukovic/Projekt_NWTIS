@@ -21,7 +21,9 @@ import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import org.foi.nwtis.fvukovic.rest.korisnici.UsersServersResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
-import org.foi.nwtis.fvukovic.ws.GeoMeteoWS;
+import org.foi.nwtis.fvukovic.ws.GeoMeteoWS; 
+import org.foi.nwtis.fvukovic.zrna.PregledKorisnika;
+import org.foi.nwtis.fvukovic.zrna.pregledDnevnika;
 /**
  * Web application lifecycle listener.
  *
@@ -49,7 +51,15 @@ public class SlusacAplikacije implements ServletContextListener {
             GeoMeteoWS.sc=context;
             MeteoRESTResourceContainer.sc=context;
           MeteoRESTResource.sc=context;
-            UsersServersResource.sc=context;
+            UsersServersResource.sc=context;  
+            PregledKorisnika.sc=context;
+            pregledDnevnika.sc=context;
+            
+            
+            
+            
+            
+            
              RadnaDretva nova = new RadnaDretva(context);
          // nova.start();
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {

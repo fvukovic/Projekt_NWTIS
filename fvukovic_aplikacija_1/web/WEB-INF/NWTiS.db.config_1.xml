@@ -15,4 +15,5 @@
 <entry key="driver.database.derby">org.apache.derby.jdbc.ClientDriver</entry>
 <entry key="driver.database.postgresql">org.postgresql.Driver</entry>
 <entry key="api.key">061030475c805a9ed4a058660297a936</entry>
+<entry key="broj.prikaza">5</entry>
 </properties>
