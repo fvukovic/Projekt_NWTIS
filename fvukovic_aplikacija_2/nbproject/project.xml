@@ -8,11 +8,11 @@
             <web-module-libraries/>
             <web-module-additional-libraries>
                 <library>
-                    <file>${reference.fvukovic_aplikacija_2-war.dist-ear}</file>
+                    <file>${reference.fvukovic_aplikacija_2-ejb.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
                 <library>
-                    <file>${reference.fvukovic_aplikacija_2-ejb.dist-ear}</file>
+                    <file>${reference.fvukovic_aplikacija_2-web.dist-ear}</file>
                     <path-in-war>/</path-in-war>
                 </library>
             </web-module-additional-libraries>
@@ -27,7 +27,7 @@
                 <id>dist-ear</id>
             </reference>
             <reference>
-                <foreign-project>fvukovic_aplikacija_2-war</foreign-project>
+                <foreign-project>fvukovic_aplikacija_2-web</foreign-project>
                 <artifact-type>j2ee_ear_archive</artifact-type>
                 <script>build.xml</script>
                 <target>dist-ear</target>

@@ -32,7 +32,7 @@ public class PokretanjeDretveBean {
     public PokretanjeDretveBean() {
         System.err.println("tucam ");
         RadnaDretva rd = new RadnaDretva();
-        rd.start();
+        
     }
 
     

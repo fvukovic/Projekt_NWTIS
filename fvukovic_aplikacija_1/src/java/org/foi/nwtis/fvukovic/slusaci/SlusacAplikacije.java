@@ -1,4 +1,3 @@
- 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,6 +9,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
@@ -21,9 +25,10 @@ import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import org.foi.nwtis.fvukovic.rest.korisnici.UsersServersResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
-import org.foi.nwtis.fvukovic.ws.GeoMeteoWS; 
+import org.foi.nwtis.fvukovic.ws.GeoMeteoWS;
 import org.foi.nwtis.fvukovic.zrna.PregledKorisnika;
 import org.foi.nwtis.fvukovic.zrna.pregledDnevnika;
+
 /**
  * Web application lifecycle listener.
  *
@@ -31,45 +36,39 @@ import org.foi.nwtis.fvukovic.zrna.pregledDnevnika;
  */
 public class SlusacAplikacije implements ServletContextListener {
 
-      @Override
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
-          System.out.println("RADI KOD POKRETANJA");
-         ServletContext context = sce.getServletContext();
-        String datoteka = context.getRealPath("/WEB-INF") 
-                    + File.separator 
-                    + context.getInitParameter("konfiguracija");
-        
+        System.out.println("RADI KOD POKRETANJA");
+        ServletContext context = sce.getServletContext();
+        String datoteka = context.getRealPath("/WEB-INF")
+                + File.separator
+                + context.getInitParameter("konfiguracija");
+
         BP_Konfiguracija bp_konf = new BP_Konfiguracija(datoteka);
         context.setAttribute("BP_Konfig", bp_konf);
         System.out.println("Ucitana konfiguacija");
-         
-        
+
         Konfiguracija konf = null;
         try {
             konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
             context.setAttribute("Baza_Konfig", konf);
-            GeoMeteoWS.sc=context;
-            MeteoRESTResourceContainer.sc=context;
-          MeteoRESTResource.sc=context;
-            UsersServersResource.sc=context;  
-            PregledKorisnika.sc=context;
-            pregledDnevnika.sc=context;
-            
-            
-            
-            
-            
-            
-             RadnaDretva nova = new RadnaDretva(context);
-         // nova.start();
+            GeoMeteoWS.sc = context;
+            MeteoRESTResourceContainer.sc = context;
+            MeteoRESTResource.sc = context;
+            UsersServersResource.sc = context;
+            PregledKorisnika.sc = context;
+            pregledDnevnika.sc = context;
+
+            RadnaDretva nova = new RadnaDretva(context);
+            // nova.start();
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
             Logger.getLogger(SlusacAplikacije.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-      
+
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) { 
+    public void contextDestroyed(ServletContextEvent sce) {
     }
+
 }

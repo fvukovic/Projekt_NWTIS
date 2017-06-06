@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.jms.ObjectMessage;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -26,6 +27,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext; 
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
+import org.foi.nwtis.fvukovic.web.podaci.Korisnik;
 
 /**
  *
@@ -118,125 +120,13 @@ public class RadnaDretva extends Thread {
                         brojPogreska++;
                         System.err.println("Ovo nije text!");
                     }
-
-                    if (konf.dajPostavku("mail.subject").equals(sub)) {
-                        Pattern pattern = Pattern.compile(sintaksaADD);
-                        Matcher m = pattern.matcher(body);
-                        boolean status = m.find();
-                        if (status) {
-                            int poc = 0;
-                            int kraj = m.groupCount();
-                            String query = "select * from uredaji";
-                            Statement s = c.createStatement();
-                            ResultSet rs = s.executeQuery(query);
-
-                            boolean postojiUredaj = false;
-                            while (rs.next()) {
-                                if (rs.getString("id").equals(m.group(1))) {
-                                    brojPogreska++;
-                                    System.err.println("Greska, Uredaj vec postoji");
-                                    postojiUredaj = true;
-
-                                }
-                            }
-                            if (!postojiUredaj) {
+                        
+                    if ("NWTIS_poruke".equals(sub)) { 
                                 folderNwtis.appendMessages(new Message[]{messages[i]});
 
-                                DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                                Date date1 = new Date();
-                                System.err.println("Upisan uredjaj");
-                                query = "insert into uredaji values (" + m.group(1) + ",'" + m.group(2).substring(1, m.group(2).length() - 1) + "'," + m.group(3) + "," + m.group(4) + ",1,'" + dateFormat.format(date) + "','" + dateFormat.format(date) + "')";
-                                s = c.createStatement();
-                                s.executeUpdate(query);
-                                brojDodaniIot++;
-
-                            }
+                       
                         } //Ulaz u drugu Sintaksu TEMP
-                        else {
-                            pattern = Pattern.compile(sintaksaTEMP);
-                            m = pattern.matcher(body);
-                            status = m.lookingAt();
-                            if (status) {
-                                int poc = 0;
-                                int kraj = m.groupCount();
-                                String query = "select * from uredaji";
-                                Statement s = c.createStatement();
-                                ResultSet rs = s.executeQuery(query);
-
-                                boolean postojiUredaj = false;
-                                while (rs.next()) {
-                                    if (rs.getString("id").equals(m.group(1))) {
-                                        String my_new_str = m.group(2).toString().replace(".", "/");
-                                        folderNwtis.appendMessages(new Message[]{messages[i]});
-                                        DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                                        Date date1 = new Date();
-                                        query = "insert into temperature values (" + m.group(1) + ",34,'" + my_new_str + " " + m.group(3) + "','" + dateFormat.format(date) + "' )";
-                                        s = c.createStatement();
-                                        s.executeUpdate(query);
-                                        brojMjerenihTemp++;
-                                        System.out.println("Upisana temparature");
-                                        postojiUredaj = true;
-
-                                    }
-                                }
-                                if (!postojiUredaj) {
-                                    brojPogreska++;
-                                    System.err.println("Ne postoji uredaj");
-                                    folderOther.appendMessages(new Message[]{messages[i]});
-                                }
-                            } //Ulaz u trecu sintaksu EVENT
-                            else {
-
-                                pattern = Pattern.compile(sintaksaEVENT);
-                                m = pattern.matcher(body);
-                                status = m.find();
-                                if (status) {
-                                    int poc = 0;
-                                    int kraj = m.groupCount();
-                                    for (int j = poc; j <= kraj; j++) {
-                                        System.out.println(i + ". " + m.group(i));
-                                    }
-                                    String query = "select * from uredaji";
-                                    Statement s = c.createStatement();
-                                    ResultSet rs = s.executeQuery(query);
-
-                                    boolean postojiUredaj = false;
-                                    while (rs.next()) {
-                                        if (rs.getString("id").equals(m.group(1))) {
-                                            String my_new_str = m.group(2).toString().replace(".", "/");
-                                            folderNwtis.appendMessages(new Message[]{messages[i]});
-                                            DateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                                            Date date2 = new Date();
-                                            query = "insert into dogadaji values (" + m.group(1) + "," + m.group(4) + ",'" + my_new_str + " " + m.group(3) + "','" + dateFormat.format(date) + "' )";
-                                            s = c.createStatement();
-                                            s.executeUpdate(query);
-                                            brojEventa++;
-                                            postojiUredaj = true;
-                                            System.err.println("Dogadaj upisan");
-
-                                        }
-                                    }
-                                    if (!postojiUredaj) {
-                                        brojPogreska++;
-                                        System.err.println("Ne postoji uredaj");
-                                        folderOther.appendMessages(new Message[]{messages[i]});
-                                    }
-                                } else {
-                                    //Ako je upisana kriva naredba
-                                    System.err.println("Kriva naredba");
-                                    brojPogreska++;
-                                    folderOther.appendMessages(new Message[]{messages[i]});
-
-                                }
-                            }
-
-                        }
-
-                    } else {
-                        System.err.println("Subject nije pravilan");
-                        folderOther.appendMessages(new Message[]{messages[i]});
-                        brojPogreska++;
-                    }
+                         
 
                     /**
                      * Resetiranje foldera INBOX
@@ -250,7 +140,7 @@ public class RadnaDretva extends Thread {
                 String zavrsnoVrijeme = dateFormatt.format(datet);
                 sleep(trajanjeCiklusa * 1000 - trajanjeObrade);
 
-                try {
+             
 
                     /**
                      * slanje maila za statistiku
@@ -285,37 +175,14 @@ public class RadnaDretva extends Thread {
 
                         }
                     }
-
-                    MimeMessage message = new MimeMessage(session);
-                    message.setFrom("SERVER");
-                    message.setRecipients(Message.RecipientType.TO, konf.dajPostavku("mail.usernameStatistics"));
-                    message.setSubject(konf.dajPostavku("mail.subjectStatistics"));
-                    message.setText("Redni broj poruke statistike: " + redniBrojPoruke +"\n Broj poruka: " + messages.length + "\n Broj pogresaka: " + brojPogreska + "\n Broj dodanih IoT:" + brojDodaniIot + "\n broj mjerenih "
-                            + "\n temperatura: " + brojMjerenihTemp + "\n Broj izvršenih EVENT: " + brojEventa);
-                    System.out.println("Redni broj poruke statistike: " + redniBrojPoruke + "\n Broj poruka: " + messages.length + "\n Broj pogresaka: " + brojPogreska + "\n Broj dodanih IoT:" + brojDodaniIot + "\n broj mjerenih "
-                            + "temperatura: " + brojMjerenihTemp + "\n Broj izvršenih EVENT: " + brojEventa + "\n Obrada započela u: " + pocetnoVrijeme + "\n Obrada završila u: " + zavrsnoVrijeme);
-                    Transport.send(message);
-                } catch (AddressException ex) {
-                    Logger.getLogger(SlanjePoruke.class.getName()).log(Level.SEVERE, null, ex);
-                }
+               
+         
 
             } catch (InterruptedException ex) {
  
             } catch (MessagingException ex) { 
             } catch (IOException ex) { 
-            } catch (SQLException ex) { 
-                Flags deletede = new Flags(Flags.Flag.DELETED);
-
-                try {
-                    Message[] messages = null;
-                    messages = folder.getMessages();
-                    folder.setFlags(messages, deletede, true);
-                    folder.close(true);
-                } catch (MessagingException ex1) {
-                    Logger.getLogger(ObradaPoruka.class.getName()).log(Level.SEVERE, null, ex1);
-                }
-
-            }
+            }  
         }
     }
     @Override
