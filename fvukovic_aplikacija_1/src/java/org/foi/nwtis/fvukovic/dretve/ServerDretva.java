@@ -23,7 +23,7 @@ public class ServerDretva extends Thread{
       private ServerSocket serverSocket;
     public static Socket s;
     public static ServletContext context;
-
+ public static boolean preuzimaj=true;
     @Override
     public void interrupt() {
        try{

@@ -118,7 +118,7 @@ public class pregledDnevnika {
     public pregledDnevnika() {
         Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
         this.brojPrikaza = Integer.parseInt(konf.dajPostavku("broj.prikaza"));
-        preuzmiKorisnike();
+        preuzmiKorisnike(); 
     }
     
     public void preuzmiKorisnike()
@@ -149,17 +149,26 @@ public class pregledDnevnika {
             try {
                 socket = new Socket("localhost", 8000);
                  byte[] bytes = new byte[14 * 1024];
-                String myString = "Ovo je komanda";
-                InputStream in = new ByteArrayInputStream(myString.getBytes());
+                String myString = "USER pero; PASSWD 123456; START;";
+                InputStream is = new ByteArrayInputStream(myString.getBytes());
                 OutputStream out = socket.getOutputStream();
 
                 int count;
-                while ((count = in.read(bytes)) > 0) {
+                while ((count = is.read(bytes)) > 0) {
                     out.write(bytes, 0, count);
                 }
+                
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
 
                 out.close();
-                in.close();
+                is.close();
                 socket.close();
 
                 System.out.println("Naredba poslana");
@@ -186,6 +195,7 @@ public class pregledDnevnika {
     
     
        public void spojiNaBazu() {
+           
         BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
         try {
             Class.forName(bp_konf.getDriverDatabase());

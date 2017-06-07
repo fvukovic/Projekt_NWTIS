@@ -40,9 +40,13 @@ public class RadnaDretva extends Thread {
     public List<Uredjaj> listaUredjajaZaPrognozu = new ArrayList<>();
     public List<MeteoPodaci> prognoze = new ArrayList<>();
     public static boolean dretva=true; 
+    public static boolean prekid=false; 
     public static Socket socket; 
     InputStream is=null;
     OutputStream os=null;
+     
+
+    
 
     @Override
     public void interrupt() {
@@ -94,6 +98,13 @@ public class RadnaDretva extends Thread {
 
         //radna petlja  
         while (dretva) {
+            
+            
+            if(RadnaDretva.prekid){
+                break;
+            }
+            
+            
 //          Socket socket = null;
 //
 //            try {

@@ -88,7 +88,7 @@ public class PregledKorisnika implements Serializable {
         System.err.println("MOLIMTE:   "+json);
     }
    public void dohvatiKorisnike(){ 
-    String json =   MeteoWSKlijent.getUsersREST(); 
+    String json =   MeteoWSKlijent.upodateUserREST(); 
         System.out.println(json);
         JsonReader jsonReader = Json.createReader(new StringReader(json));
         JsonArray array = jsonReader.readArray();
