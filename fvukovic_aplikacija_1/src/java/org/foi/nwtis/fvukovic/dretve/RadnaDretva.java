@@ -1,5 +1,11 @@
 package org.foi.nwtis.fvukovic.dretve;
 
+import static com.google.common.base.CharMatcher.is;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,7 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletContext;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.servlet.ServletContext; 
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import org.foi.nwtis.fvukovic.rest.klijenti.OWMKlijent;
@@ -31,6 +39,10 @@ public class RadnaDretva extends Thread {
     public List<Uredjaj> listaUredjaja = new ArrayList<>();
     public List<Uredjaj> listaUredjajaZaPrognozu = new ArrayList<>();
     public List<MeteoPodaci> prognoze = new ArrayList<>();
+    public static boolean dretva=true; 
+    public static Socket socket; 
+    InputStream is=null;
+    OutputStream os=null;
 
     @Override
     public void interrupt() {
@@ -39,6 +51,11 @@ public class RadnaDretva extends Thread {
 
     @Override
     public void run() {
+        
+       
+        
+        
+        
         int brojCiklusa = 1;
         BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
         try {
@@ -73,9 +90,36 @@ public class RadnaDretva extends Thread {
         } catch (SQLException ex) {
             Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
 
         //radna petlja  
-        while (1 == 1) {
+        while (dretva) {
+//          Socket socket = null;
+//
+//            try {
+//                socket = new Socket("localhost", 8000);
+//                 byte[] bytes = new byte[14 * 1024];
+//                String myString = "Ovo je komanda";
+//                InputStream in = new ByteArrayInputStream(myString.getBytes());
+//                OutputStream out = socket.getOutputStream();
+//
+//                int count;
+//                while ((count = in.read(bytes)) > 0) {
+//                    out.write(bytes, 0, count);
+//                }
+//
+//                out.close();
+//                in.close();
+//                socket.close();
+//
+//                System.out.println("Naredba poslana");
+//            } catch (IOException ex) {
+//                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+
+               
+             
+       
 
             System.out.println("LISTA SIZE" + listaUredjaja.size() + " LIstaz za prognozu: " + listaUredjajaZaPrognozu.size());
             Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
@@ -168,3 +212,42 @@ public class RadnaDretva extends Thread {
     }
 
 }
+
+
+/**
+
+
+
+    String sintaksa_adminPause = "^USER ([^\\s]+); PASSWD ([^\\s]+); PAUSE;$";
+        String sintaksa_adminStop = "^USER ([^\\s]+); PASSWD ([^\\s]+); STOP;$";
+        String sintaksa_adminStart = "^USER ([^\\s]+); PASSWD ([^\\s]+); START;$";
+        String sintaksa_adminStat = "^USER ([^\\s]+); PASSWD ([^\\s]+); STATUS;$";
+            
+               
+            Pattern p = Pattern.compile(sintaksa_adminPause);
+            Matcher m = p.matcher(sb);
+            boolean status = m.matches();
+             System.out.println("ADMIN pause : " +status);
+            if (status) {
+               
+                if(RadnaDretva.dretva==false){
+                    os.write("ERR 10;".getBytes());
+                            os.flush();
+                }else{
+                os.write("OK;".getBytes());
+                     os.flush();
+                }
+            }else{
+            p = Pattern.compile(sintaksa_adminStart);
+            m = p.matcher(sb);
+            status = m.matches();
+              if (status) {
+                    System.out.println("ADMIN start : " );
+                if(RadnaDretva.dretva==true){
+                    os.write("ERR 10;".getBytes());
+                            os.flush();
+                }else{
+                os.write("OK;".getBytes());
+                     os.flush();
+                }
+            }*/

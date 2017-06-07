@@ -5,6 +5,11 @@
  */
 package org.foi.nwtis.fvukovic.zrna;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
+import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
@@ -136,6 +142,9 @@ public class PregledKorisnika {
         }
     }
     public void prethodniKorisnici(){
+       
+ 
+
         if(this.pocetakKorisnika-this.brojPrikaza<0){
             return;
         }

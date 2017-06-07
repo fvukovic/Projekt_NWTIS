@@ -5,6 +5,11 @@
  */
 package org.foi.nwtis.fvukovic.zrna;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
+import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
@@ -137,6 +143,30 @@ public class pregledDnevnika {
         }
     }
     public void prethodniKorisnici(){
+         System.out.println("usao sam nazalost");
+         Socket socket = null;
+
+            try {
+                socket = new Socket("localhost", 8000);
+                 byte[] bytes = new byte[14 * 1024];
+                String myString = "Ovo je komanda";
+                InputStream in = new ByteArrayInputStream(myString.getBytes());
+                OutputStream out = socket.getOutputStream();
+
+                int count;
+                while ((count = in.read(bytes)) > 0) {
+                    out.write(bytes, 0, count);
+                }
+
+                out.close();
+                in.close();
+                socket.close();
+
+                System.out.println("Naredba poslana");
+            } catch (IOException ex) {
+                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         if(this.pocetakKorisnika-this.brojPrikaza<0){
             return;
         }

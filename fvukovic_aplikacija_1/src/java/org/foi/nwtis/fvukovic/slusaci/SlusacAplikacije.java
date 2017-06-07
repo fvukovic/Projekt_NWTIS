@@ -16,7 +16,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.foi.nwtis.fvukovic.dretve.DretvaZahtjeva;
 import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
+import org.foi.nwtis.fvukovic.dretve.ServerDretva;
+import static org.foi.nwtis.fvukovic.dretve.ServerDretva.context;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
 import org.foi.nwtis.fvukovic.konfiguracije.NeispravnaKonfiguracija;
@@ -52,17 +55,23 @@ public class SlusacAplikacije implements ServletContextListener {
         try {
             konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
             context.setAttribute("Baza_Konfig", konf);
+            ServerDretva SD = new ServerDretva();
+            SD.start();
+
+            RadnaDretva nova1 = new RadnaDretva(context);
+            nova1.start();
+
+            System.err.println("DOSAO SAAAAAAAAAAAAM");
             GeoMeteoWS.sc = context;
             MeteoRESTResourceContainer.sc = context;
             MeteoRESTResource.sc = context;
             UsersServersResource.sc = context;
             PregledKorisnika.sc = context;
             pregledDnevnika.sc = context;
+            ServerDretva.context = context;
 
-            RadnaDretva nova = new RadnaDretva(context);
-            // nova.start();
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
-            Logger.getLogger(SlusacAplikacije.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
         }
 
     }

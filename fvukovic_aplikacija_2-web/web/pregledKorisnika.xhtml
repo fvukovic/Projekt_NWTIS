@@ -38,29 +38,47 @@
           
                  
            
-                        <h:outputLabel value="Username: " for="noviId" />
+            <h:outputLabel value="Username: " for="noviId" />
                         <h:inputText value="#{pregledKorisnika.username}" id="noviId" />
                         <h:outputText value="" />
                         <h:outputLabel value="password " for="noviNaziv" />
                         <h:inputText value="#{pregledKorisnika.password}" id="noviNaziv" /> 
                         <h:outputLabel value="email " for="noviEmail" /> 
                         <h:inputText value="#{pregledKorisnika.email}" id="noviEmail" /> 
-                        <h:commandButton value="REGISTRIJ" action="#{pregledKorisnika.azuriraj()}" >
-                            <f:ajax execute="noviId noviNaziv noviAdresa" render="sviKorisnici" />
-                        </h:commandButton>
-                        
-                          <h:outputLabel value="Username: " for="noviId2" />
-                        <h:inputText value="#{pregledKorisnika.username}" id="noviId2" />
-                        <h:outputText value="" />
-                        <h:outputLabel value="password " for="noviNaziv2" />
-                        <h:inputText value="#{pregledKorisnika.password}" id="noviNaziv2" /> 
-                        <h:outputLabel value="email " for="noviEmail2" /> 
-                        <h:inputText value="#{pregledKorisnika.email}" id="noviEmail2" /> 
-                        <h:commandButton value="Prijava" action="#{pregledKorisnika.azuriraj()}" >
+                        <h:commandButton value="Azuriraj" action="#{pregledKorisnika.azuriraj()}" >
                             <f:ajax execute="noviId noviNaziv noviAdresa" render="sviKorisnici" />
                         </h:commandButton>
 
-    		 
+    		<h:dataTable id="sviKorisnici" value="#{pregledKorisnika.korisnici}" var="o"
+    			styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row"
+    		>
+
+    			<h:column>
+    				<!-- column header -->
+    				<f:facet name="header">Id</f:facet>
+    				<!-- row record -->
+    				#{o.id}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">Username</f:facet>
+    				#{o.username}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">Password</f:facet>
+    				#{o.password}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">Email</f:facet>
+    				#{o.email}
+    			</h:column>
+
+    		</h:dataTable>
+
             
         </h:form>
     </h:body>
