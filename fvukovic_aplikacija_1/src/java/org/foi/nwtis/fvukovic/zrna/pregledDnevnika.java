@@ -145,19 +145,50 @@ public class pregledDnevnika {
     public void prethodniKorisnici(){
          System.out.println("usao sam nazalost");
          Socket socket = null;
+//
+//            try {
+//                socket = new Socket("localhost", 8000);
+//                 byte[] bytes = new byte[14 * 1024];
+//                String myString = "USER pero; PASSWD 123456; START;";
+//                InputStream is = new ByteArrayInputStream(myString.getBytes());
+//                OutputStream out = socket.getOutputStream();
+//
+//                int count;
+//                while ((count = is.read(bytes)) > 0) {
+//                    out.write(bytes, 0, count);
+//                }
+//                
+//            StringBuffer sb = new StringBuffer();
+//            while (true) {
+//                int znak = is.read();
+//                if (znak == -1) {
+//                    break;
+//                }
+//                sb.append((char) znak);
+//            }
+//
+//                out.close();
+//                is.close();
+//                socket.close();
+//
+//                System.out.println("Naredba poslana");
+//            } catch (IOException ex) {
+//                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 
-            try {
-                socket = new Socket("localhost", 8000);
-                 byte[] bytes = new byte[14 * 1024];
-                String myString = "USER pero; PASSWD 123456; START;";
-                InputStream is = new ByteArrayInputStream(myString.getBytes());
-                OutputStream out = socket.getOutputStream();
+             
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+             String zahtjev = "USER pero; PASSWD 123456; START;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
 
-                int count;
-                while ((count = is.read(bytes)) > 0) {
-                    out.write(bytes, 0, count);
-                }
-                
             StringBuffer sb = new StringBuffer();
             while (true) {
                 int znak = is.read();
@@ -166,16 +197,11 @@ public class pregledDnevnika {
                 }
                 sb.append((char) znak);
             }
-
-                out.close();
-                is.close();
-                socket.close();
-
-                System.out.println("Naredba poslana");
-            } catch (IOException ex) {
-                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+        } catch (IOException ex) {
+            Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+        }  
         if(this.pocetakKorisnika-this.brojPrikaza<0){
             return;
         }

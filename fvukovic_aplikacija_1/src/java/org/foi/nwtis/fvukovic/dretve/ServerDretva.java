@@ -13,6 +13,8 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
+import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
+import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
 
 /**
  *
@@ -41,7 +43,8 @@ public class ServerDretva extends Thread{
          try {
 
             Short redniBrojDretve = 1;
-            int port = 8000;
+                Konfiguracija konf = (Konfiguracija) context.getAttribute("Baza_Konfig");
+            int port = Integer.parseInt(konf.dajPostavku("server.port"));
 
               serverSocket = new ServerSocket(port);
 //            
@@ -52,7 +55,7 @@ public class ServerDretva extends Thread{
             while (true) {    
                 Socket so = serverSocket.accept();
                 System.out.println("NOVI ZAHTJEV DOSAO ");
-                DretvaZahtjeva nova = new DretvaZahtjeva(so);
+                DretvaZahtjeva nova = new DretvaZahtjeva(so,context);
                 nova.start();
             }
             } catch (IOException ex) {

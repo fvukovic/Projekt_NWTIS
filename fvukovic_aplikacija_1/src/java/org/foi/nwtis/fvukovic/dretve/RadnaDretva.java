@@ -99,7 +99,6 @@ public class RadnaDretva extends Thread {
         //radna petlja  
         while (dretva) {
             
-            
             if(RadnaDretva.prekid){
                 break;
             }

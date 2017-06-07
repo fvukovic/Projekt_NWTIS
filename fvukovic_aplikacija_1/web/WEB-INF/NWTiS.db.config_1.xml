@@ -4,6 +4,7 @@
 <comment>NWTIS konfiguracija</comment>
 <entry key="server.database">jdbc:mysql://127.0.0.1/</entry>
 <entry key="admin.username">nwtis_admin</entry>
+<entry key="server.port">8000</entry>
 <entry key="admin.password">nwtis_foi</entry>
 <entry key="admin.database">mysql</entry>
 <entry key="user.username">nwtis_g3</entry>
