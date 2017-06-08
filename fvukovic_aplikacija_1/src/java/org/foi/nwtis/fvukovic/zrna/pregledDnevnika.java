@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
+import org.foi.nwtis.fvukovic.dretve.DretvaZahtjeva;
 import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
@@ -144,8 +145,9 @@ public class pregledDnevnika {
     }
     public void prethodniKorisnici(){
          System.out.println("usao sam nazalost");
+    //    System.out.println(  DretvaZahtjeva.aktivirajGrupuIoT("fvukovic", "1234123"));
          Socket socket = null;
-//
+//  
 //            try {
 //                socket = new Socket("localhost", 8000);
 //                 byte[] bytes = new byte[14 * 1024];

@@ -10,7 +10,7 @@
 <entry key="user.username">nwtis_g3</entry>
 <entry key="user.password">g3_nwtis</entry>
 <entry key="user.database">nwtis_fvukovic_bp_1</entry>
-<entry key="timeSecThread">5</entry>
+<entry key="timeSecThread">500</entry>
 <entry key="driver.database.odbc">sun.jdbc.odbc.JdbcOdbcDriver</entry>
 <entry key="driver.database.mysql">com.mysql.jdbc.Driver</entry>
 <entry key="driver.database.derby">org.apache.derby.jdbc.ClientDriver</entry>

@@ -78,7 +78,11 @@ public class RadnaDretva extends Thread {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-        try {
+       
+
+        //radna petlja  
+        while (dretva) {
+             try {
             String query = "Select * from uredaji";
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(query);
@@ -95,9 +99,6 @@ public class RadnaDretva extends Thread {
             Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-
-        //radna petlja  
-        while (dretva) {
             
             if(RadnaDretva.prekid){
                 break;
@@ -134,6 +135,7 @@ public class RadnaDretva extends Thread {
             System.out.println("LISTA SIZE" + listaUredjaja.size() + " LIstaz za prognozu: " + listaUredjajaZaPrognozu.size());
             Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
             int trajanjeCiklusa = Integer.parseInt(konf.dajPostavku("timeSecThread"));
+            System.out.println("OVOLIKO TREBA CEKATI"+  trajanjeCiklusa);
             System.out.println("Ciklus dretve: " + brojCiklusa);
             brojCiklusa++;
             OWMKlijent noviPoziv = new OWMKlijent(konf.dajPostavku("api.key"));
@@ -206,6 +208,14 @@ public class RadnaDretva extends Thread {
 
             }
               this.prognoze.clear();
+              
+              
+              
+            try {
+                sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
       
         

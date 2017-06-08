@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -22,9 +23,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import static javax.ws.rs.core.Response.status;
+import static org.foi.nwtis.fvukovic.dretve.ServerDretva.context;
+import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
+import org.foi.nwtis.fvukovic.rest.klijenti.GMKlijent;
+import org.foi.nwtis.fvukovic.rest.klijenti.OWMKlijent;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
 import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
+import org.foi.nwtis.fvukovic.web.podaci.Lokacija;
 
 /**
  *
@@ -51,19 +57,21 @@ public class DretvaZahtjeva extends Thread {
         try {
             s.close();
         } catch (IOException ex) {
+            System.out.println("ispis greske: " + ex);
         }
     }
 
     @Override
     public void run() {
 
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         spojiNaBazu();
-        this.zahtjev="USER pero; PASSWD 123456; START;";
-                  zapisiUDnevnik(true);
+
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        this.zahtjev = "USER pero; PASSWD 123456; START;";
+        zapisiUDnevnik(true);
         try {
             is = s.getInputStream();
-            os = s.getOutputStream();
+            os = s.getOutputStream(); 
             StringBuffer sb = new StringBuffer();
             while (true) {
                 int znak = is.read();
@@ -80,24 +88,32 @@ public class DretvaZahtjeva extends Thread {
             String sintaksa_adminStat = "^USER ([^\\s]+); PASSWD ([^\\s]+); STATUS;$";
             String sintaksa_adminWORK = "^USER ([^\\s]+); PASSWD ([^\\s]+); WORK;$";
             String sintaksaIOT_WORK = "^IoT ([^\\s]+); WORK;$";
+            
+            if(!loginBaza("majstor", "12")){
+                  os.write("Uspjesna prijava".getBytes());
+                os.flush();
+            return;
+            }
+            
             this.zahtjev = sb.toString();
             Pattern p = Pattern.compile(sintaksa_adminPause);
             Matcher m = p.matcher(sb);
-            this.korisnik = m.group(1);
+            this.korisnik = "fvukovic";
             boolean status = m.matches();
             System.out.println("koja opcija: " + status);
             if (status) {
                 System.out.println("koja opcija:sintaksa_adminPause " + status);
-                boolean state=ServerPause();
+                boolean state = ServerPause();
                 zapisiUDnevnik(state);
             }
             p = Pattern.compile(sintaksa_adminStart);
             m = p.matcher(sb);
             status = m.matches();
             if (status) {
+                brisanjeUredaja("3"); 
                 //  System.out.println("ISPIIIIS::: "+ aktivirajGrupuIoT("fvukovic","oWbMz"));
                 System.out.println("koja opcija: sintaksa_adminStart" + status);
-                
+
                 adminStart();
                 zapisiUDnevnik(true);
             }
@@ -107,14 +123,14 @@ public class DretvaZahtjeva extends Thread {
             if (status) {
                 System.out.println("koja opcija: sintaksa_adminStop" + status);
                 adminStop();
-                 zapisiUDnevnik(true);
+                zapisiUDnevnik(true);
             }
             p = Pattern.compile(sintaksa_adminStat);
             m = p.matcher(sb);
             status = m.matches();
             if (status) {
                 adminStatus();
-                 zapisiUDnevnik(true);
+                zapisiUDnevnik(true);
             }
             // IOT
 
@@ -133,7 +149,7 @@ public class DretvaZahtjeva extends Thread {
             try {
                 is.close();
             } catch (IOException ex) {
-                  System.out.println(ex);
+                System.out.println(ex);
             }
         }
 
@@ -223,7 +239,8 @@ public class DretvaZahtjeva extends Thread {
             return true;
         } catch (IOException ex) {
             Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
-        }return true;
+        }
+        return true;
     }
 
     public static Boolean aktivirajGrupuIoT(java.lang.String korisnickoIme, java.lang.String korisnickaLozinka) {
@@ -234,7 +251,9 @@ public class DretvaZahtjeva extends Thread {
 
     public void spojiNaBazu() {
         BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
+        System.out.println("PRINTAJ ME OVE NOCIIII");
         try {
+            System.out.println("DRIVER: " + bp_konf.getDriverDatabase());
             Class.forName(bp_konf.getDriverDatabase());
         } catch (ClassNotFoundException ex) {
             System.out.println(ex);
@@ -258,13 +277,190 @@ public class DretvaZahtjeva extends Thread {
             Date now = new Date();
             System.out.println("Dosel sam u dnevnik");
             String strDate = sdfDate.format(now);
-            spojiNaBazu();
-            String query = "insert into zahtjevi values(default,'fvukovic','" + this.zahtjev + "','" + strDate + "',"+state+")";
+            String query = "insert into zahtjevi values(default,'fvukovic','" + this.zahtjev + "','" + strDate + "'," + state + ")";
             Statement s = c.createStatement();
             s.executeUpdate(query);
         } catch (SQLException ex) {
             System.out.println(ex);
         }
+    }
+
+    public void uspisiUredaj(String naziv, String adresa) {
+        Konfiguracija konf = (Konfiguracija) context.getAttribute("Baza_Konfig");
+        GMKlijent novi = new GMKlijent();
+        Lokacija loc = novi.getGeoLocation(adresa);
+        spojiNaBazu();
+        int id = 0;
+
+        try {
+
+            String query = "SELECT id, MAX(id) FROM uredaji GROUP BY id desc limit 1";
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            while (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+            query = "Select * from uredaji where naziv='" + naziv + "'";
+
+            s = c.createStatement();
+            rs = s.executeQuery(query);
+            while (rs.next()) {
+                os.write("Error 30".getBytes());
+                os.flush();
+                return;
+            }
+            SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            String strDate = sdfDate.format(now);
+            id++;
+            query = "insert into uredaji values(" + id + ",'" + naziv + "','" + loc.getLatitude() + "','" + loc.getLongitude() + "',1, vrijeme_promjene='" + strDate + "',vrijeme_kreiranja='" + strDate + "')";
+            s = c.createStatement();
+            s.executeUpdate(query);
+            os.write("OK".getBytes());
+            os.flush();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void aktivacijaUredaja(String id) {
+
+        try {
+
+            String query = "Select * from uredaji where id=" + id + "";
+
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            while (rs.next()) {
+                if (rs.getInt("status") == 1) {
+                    os.write("Error 31".getBytes());
+                    os.flush();
+                } else {
+                    query = "update uredaji set status=1 where id=" + id;
+                    s = c.createStatement();
+                    s.executeUpdate(query);
+                    os.write("OK".getBytes());
+                    os.flush();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public boolean loginBaza(String username, String pass){
+          try {
+
+            String query = "Select * from uredaji where username='" + username+"' and password ='"+pass+"';";
+
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            while (rs.next()) { 
+                   return true;
+                 
+                }
+                return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+
+         return false;
+    }
+    
+
+    public void deaktivacijaUredaja(String id) {
+
+        try {
+
+            String query = "Select * from uredaji where id=" + id;
+
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            while (rs.next()) {
+                if (rs.getInt("status") == 0) {
+                    os.write("Error 32".getBytes());
+                    os.flush();
+                } else {
+                    query = "update uredaji set status=0 where id=" + id;
+                    s = c.createStatement();
+                    s.executeUpdate(query);
+                    os.write("OK".getBytes());
+                    os.flush();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+       public void statusUredaja(String id) {
+
+        try {
+
+            String query = "Select * from uredaji where id=" + id;
+
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            while (rs.next()) {
+                if (rs.getInt("status") == 0) {
+                    os.write("OK 34".getBytes());
+                    os.flush();
+                } else {
+                    query = "update uredaji set status=0 where id=" + id;
+                    s = c.createStatement();
+                    s.executeUpdate(query);
+                    os.write("OK 35".getBytes());
+                    os.flush();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void brisanjeUredaja(String id) {
+
+        try {
+
+            String query = "Select * from uredaji where id=" + id;
+
+            Statement s = c.createStatement();
+            ResultSet rs = s.executeQuery(query);
+
+            while (rs.next()) {
+
+                query = "delete from meteo  where id=" + id;
+                s = c.createStatement();
+                s.executeUpdate(query);
+                query = "delete from uredaji  where id=" + id;
+                s = c.createStatement();
+                s.executeUpdate(query);
+                os.write("OK 10".getBytes());
+                os.flush();
+                return;
+
+            }
+            os.write("Error 33".getBytes());
+            os.flush();
+            return;
+        } catch (SQLException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }
