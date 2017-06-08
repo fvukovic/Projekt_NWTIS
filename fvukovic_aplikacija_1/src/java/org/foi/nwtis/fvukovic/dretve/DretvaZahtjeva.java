@@ -15,12 +15,21 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 import static javax.ws.rs.core.Response.status;
 import static org.foi.nwtis.fvukovic.dretve.ServerDretva.context;
@@ -31,6 +40,8 @@ import org.foi.nwtis.fvukovic.rest.klijenti.OWMKlijent;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
 import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
 import org.foi.nwtis.fvukovic.web.podaci.Lokacija;
+import org.foi.nwtis.fvukovic.master.Iot_Master;
+import org.foi.nwtis.dkermek.ws.serveri.StatusKorisnika;
 
 /**
  *
@@ -46,6 +57,8 @@ public class DretvaZahtjeva extends Thread {
     public ServletContext sc;
     public String zahtjev;
     public String korisnik;
+    public String lozinka;
+    public boolean uspjesnaNaredba = false;
 
     public DretvaZahtjeva(Socket s, ServletContext sc) {
         this.s = s;
@@ -71,7 +84,7 @@ public class DretvaZahtjeva extends Thread {
         zapisiUDnevnik(true);
         try {
             is = s.getInputStream();
-            os = s.getOutputStream(); 
+            os = s.getOutputStream();
             StringBuffer sb = new StringBuffer();
             while (true) {
                 int znak = is.read();
@@ -86,15 +99,24 @@ public class DretvaZahtjeva extends Thread {
             String sintaksa_adminStop = "^USER ([^\\s]+); PASSWD ([^\\s]+); STOP;$";
             String sintaksa_adminStart = "^USER ([^\\s]+); PASSWD ([^\\s]+); START;$";
             String sintaksa_adminStat = "^USER ([^\\s]+); PASSWD ([^\\s]+); STATUS;$";
-            String sintaksa_adminWORK = "^USER ([^\\s]+); PASSWD ([^\\s]+); WORK;$";
-            String sintaksaIOT_WORK = "^IoT ([^\\s]+); WORK;$";
-            
-            if(!loginBaza("majstor", "12")){
-                  os.write("Uspjesna prijava".getBytes());
+            String sintaksa_adminWORK = "^USER ([^\\s]+); PASSWD ([^\\s]+); WORK;$"; 
+              String sintaksa_IoT_Master_Start = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master WORK;$";
+
+            if (!loginBaza("majstor", "12")) {
+                os.write("Neuspjesna prijava".getBytes());
                 os.flush();
-            return;
+                return;
             }
-            
+            {
+                os.write("Uspjesna prijava".getBytes());
+                os.flush();
+            }
+
+            if (ServerDretva.preuzimaj == false) {
+                os.write("ERR 12".getBytes());
+                os.flush();
+                return;
+            }
             this.zahtjev = sb.toString();
             Pattern p = Pattern.compile(sintaksa_adminPause);
             Matcher m = p.matcher(sb);
@@ -102,6 +124,7 @@ public class DretvaZahtjeva extends Thread {
             boolean status = m.matches();
             System.out.println("koja opcija: " + status);
             if (status) {
+                uspjesnaNaredba = true;
                 System.out.println("koja opcija:sintaksa_adminPause " + status);
                 boolean state = ServerPause();
                 zapisiUDnevnik(state);
@@ -110,7 +133,7 @@ public class DretvaZahtjeva extends Thread {
             m = p.matcher(sb);
             status = m.matches();
             if (status) {
-                brisanjeUredaja("3"); 
+                uspjesnaNaredba = true;
                 //  System.out.println("ISPIIIIS::: "+ aktivirajGrupuIoT("fvukovic","oWbMz"));
                 System.out.println("koja opcija: sintaksa_adminStart" + status);
 
@@ -121,6 +144,7 @@ public class DretvaZahtjeva extends Thread {
             m = p.matcher(sb);
             status = m.matches();
             if (status) {
+                uspjesnaNaredba = true;
                 System.out.println("koja opcija: sintaksa_adminStop" + status);
                 adminStop();
                 zapisiUDnevnik(true);
@@ -129,6 +153,7 @@ public class DretvaZahtjeva extends Thread {
             m = p.matcher(sb);
             status = m.matches();
             if (status) {
+                uspjesnaNaredba = true;
                 adminStatus();
                 zapisiUDnevnik(true);
             }
@@ -138,11 +163,11 @@ public class DretvaZahtjeva extends Thread {
             m = p.matcher(sb);
             status = m.matches();
             if (status) {
+                uspjesnaNaredba = true;
                 System.out.println("koja opcija: sintaksa_IOT WORK" + status);
 
             }
-
-            //TODO treba provjeriti ima li "mjesta" za novu radnu dretvu 
+ 
         } catch (IOException ex) {
             System.out.println(ex);
         } finally {
@@ -151,6 +176,30 @@ public class DretvaZahtjeva extends Thread {
             } catch (IOException ex) {
                 System.out.println(ex);
             }
+        }
+        if (uspjesnaNaredba) {
+            java.util.Properties properties = System.getProperties();
+            properties.put("mail.smtp.host", "127.0.0.1");
+            Session session = Session.getInstance(properties, null);
+
+            try {
+                MimeMessage message = new MimeMessage(session);
+                Address[] toAddresses = InternetAddress.parse("servis@nwtis.nastava.foi.hr");
+                message.setRecipients(Message.RecipientType.TO, toAddresses);
+                Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
+                message.setSubject(konf.dajPostavku("mail.subject"));
+                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date now = new Date();
+                String strDate = sdfDate.format(now);
+                message.setText(this.zahtjev + "/n" + now);
+                DateFormat dateFormatt = new SimpleDateFormat("yyyy/MM/dd");
+                Date datet = new Date();
+                message.setSentDate(datet);
+                Transport.send(message);
+            } catch (MessagingException ex) {
+                Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
     }
@@ -202,17 +251,12 @@ public class DretvaZahtjeva extends Thread {
 
     private boolean adminStop() {
         try {
-            if (ServerDretva.preuzimaj == false) {
-                os.write("Error 12;".getBytes());
-                os.flush();
-                return false;
 
-            } else {
-                ServerDretva.preuzimaj = false;
-                os.write("OK".getBytes());
-                os.flush();
-                return false;
-            }
+            ServerDretva.preuzimaj = false;
+            os.write("OK".getBytes());
+            os.flush();
+            return false;
+
         } catch (IOException ex) {
             Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -221,21 +265,15 @@ public class DretvaZahtjeva extends Thread {
 
     private boolean adminStatus() {
         try {
-            if (ServerDretva.preuzimaj == false) {
+            if (RadnaDretva.dretva == false) {
                 os.write("OK 15;".getBytes());
                 os.flush();
 
-            }
-
-            String response = "OK";
-            if (RadnaDretva.dretva == false) {
-
             } else {
-                response = response + " 14;";
+                os.write("OK 14;".getBytes());
+                os.flush();
             }
 
-            os.write(response.getBytes());
-            os.flush();
             return true;
         } catch (IOException ex) {
             Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
@@ -243,11 +281,6 @@ public class DretvaZahtjeva extends Thread {
         return true;
     }
 
-    public static Boolean aktivirajGrupuIoT(java.lang.String korisnickoIme, java.lang.String korisnickaLozinka) {
-        org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service service = new org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service();
-        org.foi.nwtis.dkermek.ws.serveri.IoTMaster port = service.getIoTMasterPort();
-        return port.aktivirajGrupuIoT(korisnickoIme, korisnickaLozinka);
-    }
 
     public void spojiNaBazu() {
         BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
@@ -286,7 +319,7 @@ public class DretvaZahtjeva extends Thread {
     }
 
     public void uspisiUredaj(String naziv, String adresa) {
-        Konfiguracija konf = (Konfiguracija) context.getAttribute("Baza_Konfig");
+
         GMKlijent novi = new GMKlijent();
         Lokacija loc = novi.getGeoLocation(adresa);
         spojiNaBazu();
@@ -354,26 +387,25 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-    
-    public boolean loginBaza(String username, String pass){
-          try {
 
-            String query = "Select * from uredaji where username='" + username+"' and password ='"+pass+"';";
+    public boolean loginBaza(String username, String pass) {
+        try {
+
+            String query = "Select * from korisnici where username='" + username + "' and password ='" + pass + "';";
 
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(query);
-            while (rs.next()) { 
-                   return true;
-                 
-                }
-                return false;
+            while (rs.next()) {
+                return true;
+
+            }
+            return false;
         } catch (SQLException ex) {
             Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
 
-         return false;
+        return false;
     }
-    
 
     public void deaktivacijaUredaja(String id) {
 
@@ -402,7 +434,8 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-       public void statusUredaja(String id) {
+
+    public void statusUredaja(String id) {
 
         try {
 
@@ -462,5 +495,104 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-
+    
+    
+    
+    
+    /**
+     * Pozivanje metode servisa IoT_master
+     * */
+    
+    public void IoT_master_start (){
+            if(Iot_Master.registrirajGrupuIoT(korisnik, lozinka)){
+                try {
+                    os.write("OK 10".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+            try {
+                    os.write("Error 20".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+    }
+        public void IoT_master_stop (){
+            if(Iot_Master.deregistrirajGrupuIoT(korisnik, lozinka)){
+                try {
+                    os.write("OK 10".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+            try {
+                    os.write("Error 21".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+    }
+       public void IoT_master_WORK (){
+            if(Iot_Master.aktivirajGrupuIoT(korisnik, lozinka)){
+                try {
+                    os.write("OK 10".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+            try {
+                    os.write("Error 22".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+    }
+             public void IoT_master_WAIT (){
+            if(Iot_Master.blokirajGrupuIoT(korisnik, lozinka)){
+                try {
+                    os.write("OK 10".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+            try {
+                    os.write("Error 23".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+    }
+           public void IoT_master_CLEAR (){
+            if(Iot_Master.obrisiSveUredjajeGrupe(korisnik, lozinka)){
+                try {
+                    os.write("OK 10".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+            try {
+                    os.write("Error 24".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            }
+             public void IoT_master_CLEARa (){
+             }
+      
+       
+    
 }

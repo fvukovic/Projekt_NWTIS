@@ -25,6 +25,7 @@ import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
 import org.foi.nwtis.fvukovic.konfiguracije.NeispravnaKonfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.NemaKonfiguracije;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
+import org.foi.nwtis.fvukovic.master.Iot_Master;
 import org.foi.nwtis.fvukovic.rest.korisnici.UsersServersResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
@@ -48,8 +49,7 @@ public class SlusacAplikacije implements ServletContextListener {
                 + context.getInitParameter("konfiguracija");
 
         BP_Konfiguracija bp_konf = new BP_Konfiguracija(datoteka);
-        context.setAttribute("BP_Konfig", bp_konf);
-        System.out.println("Ucitana konfiguacija");
+        context.setAttribute("BP_Konfig", bp_konf); 
 
         Konfiguracija konf = null;
         try {

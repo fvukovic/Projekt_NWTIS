@@ -144,41 +144,118 @@ public class pregledDnevnika {
         }
     }
     public void prethodniKorisnici(){
-         System.out.println("usao sam nazalost");
+         System.out.println("START NAREDBA");
     //    System.out.println(  DretvaZahtjeva.aktivirajGrupuIoT("fvukovic", "1234123"));
-         Socket socket = null;
-//  
-//            try {
-//                socket = new Socket("localhost", 8000);
-//                 byte[] bytes = new byte[14 * 1024];
-//                String myString = "USER pero; PASSWD 123456; START;";
-//                InputStream is = new ByteArrayInputStream(myString.getBytes());
-//                OutputStream out = socket.getOutputStream();
-//
-//                int count;
-//                while ((count = is.read(bytes)) > 0) {
-//                    out.write(bytes, 0, count);
-//                }
-//                
-//            StringBuffer sb = new StringBuffer();
-//            while (true) {
-//                int znak = is.read();
-//                if (znak == -1) {
-//                    break;
-//                }
-//                sb.append((char) znak);
-//            }
-//
-//                out.close();
-//                is.close();
-//                socket.close();
-//
-//                System.out.println("Naredba poslana");
-//            } catch (IOException ex) {
-//                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+         Socket socket = null; 
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+             String zahtjev = "USER pero; PASSWD 123456; PAUSE;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
 
-             
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+        } catch (IOException ex) {
+            Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        if(this.pocetakKorisnika-this.brojPrikaza<0){
+            return;
+        }
+            this.pocetakKorisnika=this.pocetakKorisnika-this.brojPrikaza;
+            preuzmiKorisnike();
+            System.err.println("Ja sam devojka sa sela");
+    }
+    public void prethodniKorisnici2(){
+           System.out.println("STOP NAREDBA");
+    //    System.out.println(  DretvaZahtjeva.aktivirajGrupuIoT("fvukovic", "1234123"));
+         Socket socket = null; 
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+             String zahtjev = "USER pero; PASSWD 123456; STOP;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
+
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+        } catch (IOException ex) {
+            Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        if(this.pocetakKorisnika-this.brojPrikaza<0){
+            return;
+        }
+            this.pocetakKorisnika=this.pocetakKorisnika-this.brojPrikaza;
+            preuzmiKorisnike();
+            System.err.println("Ja sam devojka sa sela");
+    }
+    
+    public void prethodniKorisnici3(){
+          System.out.println("STATUS NAREDBA");
+    //    System.out.println(  DretvaZahtjeva.aktivirajGrupuIoT("fvukovic", "1234123"));
+         Socket socket = null; 
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+             String zahtjev = "USER pero; PASSWD 123456; STATUS;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
+
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+        } catch (IOException ex) {
+            Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        if(this.pocetakKorisnika-this.brojPrikaza<0){
+            return;
+        }
+            this.pocetakKorisnika=this.pocetakKorisnika-this.brojPrikaza;
+            preuzmiKorisnike();
+            System.err.println("Ja sam devojka sa sela");
+    }
+    public void prethodniKorisnici4(){
+         System.out.println("START NAREDBA");
+    //    System.out.println(  DretvaZahtjeva.aktivirajGrupuIoT("fvukovic", "1234123"));
+         Socket socket = null; 
              try {
                  
             Socket s = new Socket("localhost", 8000);
@@ -211,6 +288,7 @@ public class pregledDnevnika {
             preuzmiKorisnike();
             System.err.println("Ja sam devojka sa sela");
     }
+    
         public void sljedeciKorisnici(){
             
              if(this.pocetakKorisnika+this.brojPrikaza>listaSvihKorisnika.size()){

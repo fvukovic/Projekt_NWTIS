@@ -10,11 +10,22 @@
 <entry key="user.username">nwtis_g3</entry>
 <entry key="user.password">g3_nwtis</entry>
 <entry key="user.database">nwtis_fvukovic_bp_1</entry>
-<entry key="timeSecThread">500</entry>
+<entry key="timeSecThread">2</entry>
 <entry key="driver.database.odbc">sun.jdbc.odbc.JdbcOdbcDriver</entry>
 <entry key="driver.database.mysql">com.mysql.jdbc.Driver</entry>
 <entry key="driver.database.derby">org.apache.derby.jdbc.ClientDriver</entry>
 <entry key="driver.database.postgresql">org.postgresql.Driver</entry>
 <entry key="api.key">061030475c805a9ed4a058660297a936</entry>
 <entry key="broj.prikaza">5</entry>
+<entry key="mail.server">127.0.0.1</entry>
+<entry key="mail.port">143</entry>
+<entry key="mail.usernameThread">fvukovic1@nwtis.nastava.foi.hr</entry>
+<entry key="mail.passwordThread">123456</entry>
+<entry key="mail.timeSecThread">5</entry>
+<entry key="mail.numMessages">7</entry>
+<entry key="mail.subject">NWTiS poruka</entry>
+<entry key="mail.folderNWTiS">NWTiS_Poruke</entry>
+<entry key="mail.folderOther">NWTiS_OstalePoruke</entry>
+<entry key="mail.usernameStatistics">admin@nwtis.nastava.foi.hr</entry>
+<entry key="mail.subjectStatistics">Statistika poruka</entry>
 </properties>

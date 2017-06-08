@@ -12,9 +12,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletContext;
+import javax.servlet.ServletContext; 
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
+import org.foi.nwtis.fvukovic.master.Iot_Master;
 
 /**
  *
@@ -39,7 +40,8 @@ public class ServerDretva extends Thread{
     public void run() {
         
         System.out.println("Dosao sam u server");
-      
+          
+        System.out.println("DAAAAAAJ:"+Iot_Master.registrirajGrupuIoT("fvukovic", "oWbMz"));
          try {
 
             Short redniBrojDretve = 1;

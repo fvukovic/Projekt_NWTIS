@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import static java.lang.Thread.yield;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -81,7 +82,15 @@ public class RadnaDretva extends Thread {
        
 
         //radna petlja  
-        while (dretva) {
+        while (true) {
+            
+            System.out.println("DRETVA");
+            if(ServerDretva.preuzimaj==false){
+                break;
+            }
+            
+           while (!dretva)
+                yield();
              try {
             String query = "Select * from uredaji";
             Statement s = c.createStatement();
@@ -131,8 +140,7 @@ public class RadnaDretva extends Thread {
                
              
        
-
-            System.out.println("LISTA SIZE" + listaUredjaja.size() + " LIstaz za prognozu: " + listaUredjajaZaPrognozu.size());
+ 
             Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
             int trajanjeCiklusa = Integer.parseInt(konf.dajPostavku("timeSecThread"));
             System.out.println("OVOLIKO TREBA CEKATI"+  trajanjeCiklusa);
@@ -171,11 +179,9 @@ public class RadnaDretva extends Thread {
                 mp.setLatitude(uredajZaPrognozu.getGeoloc().getLatitude());
                 mp.setLongitude(uredajZaPrognozu.getGeoloc().getLongitude());
                 this.prognoze.add(mp);
-            }
-            System.out.println("mater: "+this.prognoze.size());
+            } 
             for (Uredjaj uredaj : listaUredjaja) {
-                for (MeteoPodaci mp : this.prognoze) {
-                    System.out.println("ovo: "+uredaj.getGeoloc().getLatitude()+" "+ (mp.getLatitude()) );
+                for (MeteoPodaci mp : this.prognoze) { 
                     if (uredaj.getGeoloc().getLatitude().equals(mp.getLatitude())) {
                         if (uredaj.getGeoloc().getLongitude().equals(mp.getLongitude())) {
                             String temp = mp.getTemperatureValue().toString();
@@ -186,8 +192,7 @@ public class RadnaDretva extends Thread {
                             float tempMax = mp.getTemperatureMax();
                             float vjetar = mp.getWindSpeedValue();
                             float vjetarSmjer = mp.getWindSpeedValue();
-                            String vrijemeOpisa = mp.getWeatherValue();
-                            System.err.println("OVO JE OPIS: " + vrijemeOpisa + "OVO JE ICON: " + mp.getWeatherIcon());
+                            String vrijemeOpisa = mp.getWeatherValue(); 
                             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             Date now = new Date();
                             String strDate = sdfDate.format(now);
@@ -210,12 +215,7 @@ public class RadnaDretva extends Thread {
               this.prognoze.clear();
               
               
-              
-            try {
-                sleep(2000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        
         }
       
         
