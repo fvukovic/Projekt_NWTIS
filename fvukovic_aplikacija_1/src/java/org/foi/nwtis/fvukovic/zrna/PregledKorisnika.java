@@ -129,12 +129,14 @@ public class PregledKorisnika {
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(query);
             int brojac=0;
-            System.err.println("BROJ PRIKAZA: "+this.brojPrikaza+"pocetak: "+this.pocetakKorisnika+" max: "+this.brojPrikaza+this.pocetakKorisnika);
+            listaTrenutnihKorisnika.clear();
             while(rs.next()){
+                  Korisnik novi = new Korisnik(rs.getString("id"),rs.getString("username"),rs.getString("password"),rs.getString("email"));
                 if(brojac>=this.pocetakKorisnika && this.brojPrikaza+this.pocetakKorisnika>brojac){
-                 Korisnik novi = new Korisnik(rs.getString("id"),rs.getString("username"),rs.getString("password"),rs.getString("email"));
+               
                 listaSvihKorisnika.add(novi);
                 }
+                listaTrenutnihKorisnika.add(novi);
                brojac++;
             }
                     } catch (SQLException ex) {
@@ -154,7 +156,7 @@ public class PregledKorisnika {
     }
         public void sljedeciKorisnici(){
             
-             if(this.pocetakKorisnika+this.brojPrikaza>listaSvihKorisnika.size()){
+             if(this.pocetakKorisnika+this.brojPrikaza>listaTrenutnihKorisnika.size()){
             return;
         }
             this.pocetakKorisnika=this.pocetakKorisnika+this.brojPrikaza;

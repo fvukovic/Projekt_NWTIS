@@ -31,6 +31,7 @@ import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
 import org.foi.nwtis.fvukovic.ws.GeoMeteoWS;
 import org.foi.nwtis.fvukovic.zrna.PregledKorisnika;
+import org.foi.nwtis.fvukovic.zrna.PregledZahtjeva;
 import org.foi.nwtis.fvukovic.zrna.pregledDnevnika;
 
 /**
@@ -69,6 +70,7 @@ public class SlusacAplikacije implements ServletContextListener {
             PregledKorisnika.sc = context;
             pregledDnevnika.sc = context;
             ServerDretva.context = context;
+            PregledZahtjeva.sc=context;
 
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
             System.err.println(ex);

@@ -25,55 +25,21 @@ text-shadow:   none;
 
         </h:head>
        <h:body style="margin: 30px;">
-            <h:form>
-                
-                 
-                <div style="height: auto;border:solid black 1px">
-                    <h:dataTable value="#{pregledDnevnika.listaSvihKorisnika}" var="p">
-                        <h:column >
-                            <f:facet   name="header"> ID   </f:facet>
-                            <h:outputText value="#{p.id}" />
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Username</f:facet>
-                            <h:outputText value="#{p.ipadresa}" />
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Password</f:facet>
-                            <h:outputText value="#{p.korisnik}" />
-                            
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.status}" />
-
-                        </h:column> 
-                              <h:column>
-                            <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.trajanje}" />
-
-                        </h:column> 
-                              <h:column>
-                            <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.url}" />
-
-                        </h:column> 
-                              <h:column>
-                            <f:facet name="header">Email</f:facet>
-                            <h:outputText value="#{p.vrijeme}" />
-
-                        </h:column> 
-                    </h:dataTable>
-                </div>
-                <br/>  
-                  <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Sljedeci" action="#{pregledDnevnika.prethodniKorisnici2()}"/>
-                    <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Sljedeci" action="#{pregledDnevnika.prethodniKorisnici3()}"/>
-                      <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Sljedeci" action="#{pregledDnevnika.prethodniKorisnici4()}"/>
-                        <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Sljedeci" action="#{pregledDnevnika.prethodniKorisnici5()}"/> 
-                          
-                <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Sljedeci" action="#{pregledDnevnika.prethodniKorisnici()}"/>
-                <h:commandButton  class="button-sivi" value="Prethodni" action="#{pregledDnevnika.sljedeciKorisnici}"/>                
-            </h:form>
+           <h:form>
+		<h3>JSF Login Logout</h3>
+		<h:outputText value="Username" />
+                <h:inputText id="username" value="#{prijavaKorisnika.user}"></h:inputText>
+		<h:message for="username"></h:message>
+		<br></br><br></br>
+		
+		<h:outputText value="Password" />
+		<h:inputSecret id="password" value="#{prijavaKorisnika.pwd}"></h:inputSecret>
+		<h:message for="password"></h:message>
+		<br></br><br></br>
+		
+                <h:commandButton action="#{prijavaKorisnika.prijava()}"
+			value="Login"></h:commandButton>
+	</h:form>
         </h:body>
     </f:view>
 </html>

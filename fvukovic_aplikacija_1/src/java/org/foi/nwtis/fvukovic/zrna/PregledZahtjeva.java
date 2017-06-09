@@ -123,16 +123,20 @@ public class PregledZahtjeva {
         try {
             listaSvihKorisnika.clear();
             spojiNaBazu();
-            String query = "Select * from korisnici";
+            String query = "Select * from zahtjevi";
             Statement s = c.createStatement();
             ResultSet rs = s.executeQuery(query);
             int brojac=0;
+            listaTrenutnihKorisnika.clear();
             System.err.println("BROJ PRIKAZA: "+this.brojPrikaza+"pocetak: "+this.pocetakKorisnika+" max: "+this.brojPrikaza+this.pocetakKorisnika);
             while(rs.next()){
+                 Korisnik novi = new Korisnik(rs.getString("id"),rs.getString("zahtjev"),rs.getString("korisnik"),rs.getString("vrijeme"));
                 if(brojac>=this.pocetakKorisnika && this.brojPrikaza+this.pocetakKorisnika>brojac){
-                 Korisnik novi = new Korisnik(rs.getString("id"),rs.getString("username"),rs.getString("password"),rs.getString("email"));
+                
                 listaSvihKorisnika.add(novi);
+               
                 }
+                 listaTrenutnihKorisnika.add(novi);
                brojac++;
             }
                     } catch (SQLException ex) {
@@ -152,7 +156,7 @@ public class PregledZahtjeva {
     }
         public void sljedeciKorisnici(){
             
-             if(this.pocetakKorisnika+this.brojPrikaza>listaSvihKorisnika.size()){
+             if(this.pocetakKorisnika+this.brojPrikaza>listaTrenutnihKorisnika.size()){
             return;
         }
             this.pocetakKorisnika=this.pocetakKorisnika+this.brojPrikaza;

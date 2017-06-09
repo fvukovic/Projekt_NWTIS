@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view   >
+        <h:head>
+            <title>Pregled poruka</title>
+            <style>
+                .button-sivi{
+                  background:    #666666;
+background:    -webkit-linear-gradient(#666666, #666666);
+background:    linear-gradient(#666666, #666666);
+border:        3px solid #444444;
+border-radius: 15px;
+padding:       5px 20px;
+color:         #000000;
+display:       inline-block;
+font:          normal 100 11px/1 "Open Sans", sans-serif;
+text-align:    center;
+text-shadow:   none;
+                }
+
+            </style>
+
+        </h:head>
+        
+        
+       <h:body style="margin: 30px;">
+            <h:form>
+                <h3>Dnevnik </h3><br/>
+                  <h:commandButton  style="margin-left:40px;margin-right:40px;" value="Korisnici" action="PregledKorisnika"/> 
+                  <h:commandButton  style="margin-left:40px;margin-right:40px;" value="Zahtjevi" action="pregledZahtjeva"/> <br/><br/>
+                <div style="height: auto;border:solid black 1px">
+                    <h:dataTable value="#{pregledDnevnika.listaSvihKorisnika}" var="p">
+                        <h:column >
+                            <f:facet   name="header"> ID   </f:facet>
+                            <h:outputText value="#{p.id}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Ip adresa</f:facet>
+                            <h:outputText value="#{p.ipadresa}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Korisnik</f:facet>
+                            <h:outputText value="#{p.korisnik}" />
+                            
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                            <h:outputText value="#{p.status}" />
+
+                        </h:column> 
+                              <h:column>
+                            <f:facet name="header">Trajanje</f:facet>
+                            <h:outputText value="#{p.trajanje}" />
+
+                        </h:column> 
+                              <h:column>
+                            <f:facet name="header">URL</f:facet>
+                            <h:outputText value="#{p.url}" />
+
+                        </h:column> 
+                              <h:column>
+                            <f:facet name="header">Datum</f:facet>
+                            <h:outputText value="#{p.vrijeme}" />
+
+                        </h:column> 
+                    </h:dataTable>
+                </div>
+                <br/>   
+                          
+                <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Prethodni" action="#{pregledDnevnika.prethodniKorisnici()}"/>
+                <h:commandButton  class="button-sivi" value="Sljedeci" action="#{pregledDnevnika.sljedeciKorisnici}"/>                
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
+

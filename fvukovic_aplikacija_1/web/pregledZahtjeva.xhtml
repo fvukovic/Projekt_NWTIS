@@ -22,46 +22,41 @@ text-shadow:   none;
                 }
 
             </style>
- 
-        </h:head> 
-          <h:body style="margin: 30px;">
+
+        </h:head>
+       <h:body style="margin: 30px;">
+           <h3>Zahtjevi </h3><br/>
             <h:form>
-                <h3>Korisnici </h3><br/>
-                <h:commandButton value="Dnevnik" style="margin-left:40px;margin-right:40px;"   action="pregledDnevnika"/> 
-                   <h:commandButton  value="Zahtjevi" style="margin-left:40px;margin-right:40px;"     action="pregledZahtjeva"/>  <br/><br/> 
+                <h:commandButton   style="margin-left:40px;margin-right:40px;" value="Dnevnik" action="pregledDnevnika" /> 
+                <h:commandButton   style="margin-left:40px;margin-right:40px;" value="Korisnici" action="PregledKorisnika" />  
                 <div style="height: auto;border:solid black 1px">
-                    <h:dataTable value="#{pregledKorisnika.listaSvihKorisnika}" var="p">
+                    <h:dataTable value="#{pregledZahtjeva.listaSvihKorisnika}" var="p">
                         <h:column >
                             <f:facet   name="header"> ID   </f:facet>
                             <h:outputText value="#{p.id}" />
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Korisnik</f:facet>
+                            <f:facet name="header">Username</f:facet>
                             <h:outputText value="#{p.username}" />
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Email</f:facet>
+                            <f:facet name="header">Datum</f:facet>
                             <h:outputText value="#{p.email}" />
                             
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Password</f:facet>
+                            <f:facet name="header">Zahtjev</f:facet>
                             <h:outputText value="#{p.password}" />
 
                         </h:column> 
-                              
+                             
                     </h:dataTable>
                 </div>
                 <br/>   
                           
-                <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Prethodni" action="#{pregledKorisnika.prethodniKorisnici()}"/>
-                <h:commandButton  class="button-sivi" value="Sljedeci" action="#{pregledKorisnika.sljedeciKorisnici}"/>                
+                <h:commandButton class="button-sivi" style="margin-left:40px;margin-right:40px;" value="Prethodni" action="#{pregledZahtjeva.prethodniKorisnici()}"/>
+                <h:commandButton  class="button-sivi" value="Sljedeci" action="#{pregledZahtjeva.sljedeciKorisnici}"/>                
             </h:form>
-           
-           
-           
-           
-           
         </h:body>
     </f:view>
 </html>

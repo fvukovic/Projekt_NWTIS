@@ -100,7 +100,14 @@ public class DretvaZahtjeva extends Thread {
             String sintaksa_adminStart = "^USER ([^\\s]+); PASSWD ([^\\s]+); START;$";
             String sintaksa_adminStat = "^USER ([^\\s]+); PASSWD ([^\\s]+); STATUS;$";
             String sintaksa_adminWORK = "^USER ([^\\s]+); PASSWD ([^\\s]+); WORK;$"; 
-              String sintaksa_IoT_Master_Start = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master WORK;$";
+            String sintaksa_IoT_Master_WORK = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master WORK;$";
+            String sintaksa_IoT_Master_WAIT = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master WAIT;$";
+            String sintaksa_IoT_Master_Start = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master START;$";
+            String sintaksa_IoT_Master_STOP = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master STOP;$";
+            String sintaksa_IoT_Master_LOAD = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master LOAD;$";
+            String sintaksa_IoT_Master_CLEAR = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master CLEAR;$";
+             String sintaksa_IoT_Master_PAUSE = "^USER ([^\\s]+); PASSWD ([^\\s]+); IoT_Master CLEAR;$";
+            
 
             if (!loginBaza("majstor", "12")) {
                 os.write("Neuspjesna prijava".getBytes());
@@ -149,6 +156,16 @@ public class DretvaZahtjeva extends Thread {
                 adminStop();
                 zapisiUDnevnik(true);
             }
+            p = Pattern.compile(sintaksa_IoT_Master_Start);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija: IOT_MASTEEEEER" + status); 
+                zapisiUDnevnik(true);
+            }
+            
+            
             p = Pattern.compile(sintaksa_adminStat);
             m = p.matcher(sb);
             status = m.matches();
@@ -157,8 +174,10 @@ public class DretvaZahtjeva extends Thread {
                 adminStatus();
                 zapisiUDnevnik(true);
             }
-            // IOT
-
+            
+            /**
+             * IOT_MASTER sintakse za regex
+             */
             p = Pattern.compile(sintaksa_adminWORK);
             m = p.matcher(sb);
             status = m.matches();
@@ -167,6 +186,65 @@ public class DretvaZahtjeva extends Thread {
                 System.out.println("koja opcija: sintaksa_IOT WORK" + status);
 
             }
+             p = Pattern.compile(sintaksa_IoT_Master_WAIT);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija: sintaksa_IOT WAIT" + status);
+
+            }
+             p = Pattern.compile(sintaksa_IoT_Master_Start);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija: sintaksa_IOT START" + status);
+
+            }
+             p = Pattern.compile(sintaksa_IoT_Master_STOP);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija: sintaksa_IOT STOP" + status);
+
+            }
+             p = Pattern.compile(sintaksa_IoT_Master_LOAD);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija:   sintaksa_IoT_Master_LOAD" + status);
+
+            }
+             p = Pattern.compile(sintaksa_IoT_Master_CLEAR);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija: sintaksa_IoT_Master_CLEAR " + status);
+
+            }
+             p = Pattern.compile(sintaksa_IoT_Master_CLEAR);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija: sintaksa_IoT_Master_CLEAR " + status);
+
+            }
+            
+               p = Pattern.compile(sintaksa_IoT_Master_PAUSE);
+            m = p.matcher(sb);
+            status = m.matches();
+            if (status) {
+                uspjesnaNaredba = true;
+                System.out.println("koja opcija: sintaksa pause " + status);
+
+            }
+            
+            
  
         } catch (IOException ex) {
             System.out.println(ex);
@@ -229,7 +307,7 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-
+    
     private boolean adminStart() {
         try {
             if (RadnaDretva.dretva == true) {
