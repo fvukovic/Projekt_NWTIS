@@ -16,6 +16,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.servlet.ServletContext;
+import org.foi.nwtis.fvukovic.slusaci.SlusacAplikacije;
 import org.foi.nwtis.fvukovic.web.podaci.Korisnik;
 import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
 
@@ -23,25 +25,35 @@ import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
  *
  * @author filip
  */
-@Named(value = "pregledKorisnika")
+@Named(value = "sviKorisniciIAzuriranje")
 @SessionScoped
-public class PregledKorisnika implements Serializable {
+public class SviKorisniciIAzuriranje implements Serializable {
+    
+     private List<Korisnik> korisnici = new ArrayList<>();
+    private String ispis="adasd";
+    private String username="";
+    private String password="";
+    private String email=""; 
+    public static ServletContext sc;
 
     /**
      * Creates a new instance of PregledKorisnika
      */
-    private List<Korisnik> korisnici = new ArrayList<>();
-    private String ispis="adasd";
-    private String username="";
-    private String password="";
-    private String email="";
+   
     
     
+    public SviKorisniciIAzuriranje() {
+        System.out.println("USERNAME nakon logina"+registracijaPrijava.usernameSesija);
+           
+    }
+
     public String getIspis() {
         return ispis;
     }
 
     public String getUsername() {
+        
+        username =registracijaPrijava.usernameSesija;
         return username;
     }
 
@@ -50,6 +62,7 @@ public class PregledKorisnika implements Serializable {
     }
 
     public String getPassword() {
+        password =SlusacAplikacije.passwordSesija;
         return password;
     }
 
@@ -58,6 +71,7 @@ public class PregledKorisnika implements Serializable {
     }
 
     public String getEmail() {
+        email =SlusacAplikacije.emailSesija;
         return email;
     }
 
@@ -69,12 +83,9 @@ public class PregledKorisnika implements Serializable {
         this.ispis = ispis;
     }
     
-    public PregledKorisnika() {
-        System.err.println();
-    }
+  
 
-    public List<Korisnik> getKorisnici() {
-        azurirajKorisnika();
+    public List<Korisnik> getKorisnici() { 
         dohvatiKorisnike();
         return korisnici;
     }
@@ -84,11 +95,11 @@ public class PregledKorisnika implements Serializable {
     }
     
     private void azurirajKorisnika(){
-        String json =   MeteoWSKlijent.upodateUserREST(); 
+        String json =   MeteoWSKlijent.upodateUserREST();
         System.err.println("MOLIMTE:   "+json);
     }
    public void dohvatiKorisnike(){ 
-    String json =   MeteoWSKlijent.upodateUserREST(); 
+    String json =   MeteoWSKlijent.dohvatiSveUsereREST(); 
         System.out.println(json);
         JsonReader jsonReader = Json.createReader(new StringReader(json));
         JsonArray array = jsonReader.readArray();
@@ -107,5 +118,5 @@ public class PregledKorisnika implements Serializable {
             korisnici.add(novi);
         }
    }
-      
+    
 }

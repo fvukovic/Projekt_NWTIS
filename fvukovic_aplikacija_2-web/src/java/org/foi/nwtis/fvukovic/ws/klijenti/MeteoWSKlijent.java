@@ -41,14 +41,21 @@ public class MeteoWSKlijent {
 //    }
         
       public static  String upodateUserREST() {
-        MeteoRESTResourceContainer_JerseyClient mrsc = new MeteoRESTResourceContainer_JerseyClient();
-         JsonObjectBuilder job = Json.createObjectBuilder();  
+         UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();
+         JsonObjectBuilder job = Json.createObjectBuilder(); 
+         job.add("5", "PROMJENA");
         job.add("username", "placljivko");
               job.add("password", "placljivko");
               job.add("email", "placljivko");
-       String a= mrsc.dodajUredaj(job.build());
+       String a= novi.azurirajKorisnika(job.build());
        return a;
     }
+      public static String dohvatiSveUsereREST(){
+           UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();
+          String a = novi.getJson();
+          System.out.println("OVO JE JSON :"+a);
+          return a;
+      }
       
          public static  String registracijaREST(String username) {
         UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();

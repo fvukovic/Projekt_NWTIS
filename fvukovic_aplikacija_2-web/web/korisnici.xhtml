@@ -38,18 +38,25 @@
           
                  
            
-            <h:outputLabel value="Username: " for="noviId" />
-                        <h:inputText value="#{pregledKorisnika.username}" id="noviId" />
-                        <h:outputText value="" />
-                        <h:outputLabel value="password " for="noviNaziv" />
-                        <h:inputText value="#{pregledKorisnika.password}" id="noviNaziv" /> 
-                        <h:outputLabel value="email " for="noviEmail" /> 
-                        <h:inputText value="#{pregledKorisnika.email}" id="noviEmail" /> 
-                        <h:commandButton value="Azuriraj" action="#{pregledKorisnika.azuriraj()}" >
+            <h:outputLabel value="#{m.pregledPoruka_slanjeEmailPoruke}" for="noviId" />  
+            <h:outputLabel value="#{sviKorisniciIAzuriranje.username}" /><br/> 
+             <h:outputLabel value="#{m.pregledPoruka_odaberiMapu}" for="noviId" />  
+            <h:outputLabel value="#{sviKorisniciIAzuriranje.email}" /><br/>  
+            <h:outputLabel value="#{m.pregledPoruka_gumbPromjeniMapu}" /><br/> 
+               <h:outputLabel value="#{sviKorisniciIAzuriranje.password}" /><br/> 
+                        <h:outputText value="" /><br/>
+            
+                        <h:inputText value="#{sviKorisniciIAzuriranje.username}" id="noviId" /><br/>
+                        <h:outputText value="" /><br/>
+                        <h:outputLabel value="password " for="noviNaziv" /><br/>
+                        <h:inputText value="#{sviKorisniciIAzuriranje.password}" id="noviNaziv" /> 
+                        <h:outputLabel value="email " for="noviEmail" /> <br/>
+                        <h:inputText value="#{sviKorisniciIAzuriranje.email}" id="noviEmail" /> 
+                        <h:commandButton value="Azuriraj" action="#{sviKorisniciIAzuriranje.azurirajKorisnika()}" >
                             <f:ajax execute="noviId noviNaziv noviAdresa" render="sviKorisnici" />
                         </h:commandButton>
 
-    		<h:dataTable id="sviKorisnici" value="#{pregledKorisnika.korisnici}" var="o"
+    		<h:dataTable id="sviKorisnici" value="#{sviKorisniciIAzuriranje.korisnici}" var="o"
     			styleClass="order-table"
     			headerClass="order-table-header"
     			rowClasses="order-table-odd-row,order-table-even-row"

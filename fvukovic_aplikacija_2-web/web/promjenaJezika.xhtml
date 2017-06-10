@@ -1,12 +1,39 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view locale="#{lokalizator.odabraniJezik}">
+        <h:head>
+            <title>#{m.index_naslov}</title>
+                      <style>
+                .button-sivi{
+                  background:    #666666;
+background:    -webkit-linear-gradient(#666666, #666666);
+background:    linear-gradient(#666666, #666666);
+border:        3px solid #444444;
+border-radius: 15px;
+padding:       5px 20px;
+color:         #000000;
+display:       inline-block;
+font:          normal 100 11px/1 "Open Sans", sans-serif;
+text-align:    center;
+text-shadow:   none;
+                }
 
+            </style>
+        </h:head>
+        <h:body  style="margin: 30px;">
+            <h:form>
+                <h:selectOneRadio value="#{lokalizator.odabraniJezik}">
+                    <f:selectItems value="#{lokalizator.izbornikJezika}" var="jezik"
+                                   itemLabel="#{jezik.labela}" itemValue="#{jezik.vrijednost}"/>
+                </h:selectOneRadio><br/>
+                <h:commandButton class="button-sivi" style="margin-left:90px" value="#{m.index_promjena}" action="#{lokalizator.odaberiJezik}" />
+                <br/><br/>
+             <h:commandLink style="display: inline; width: 150px;margin-right: 70px;color:black" value="#{m.index_saljiPoruku}" action="index" />  
+                <h:commandLink style="display: inline; width: 150px; color:black" value="#{m.index_pregledPoruka}" action="#{slanjePoruke.pregledPoruka}" />
+            </h:form>
+        </h:body>
+    </f:view>
+</html> 

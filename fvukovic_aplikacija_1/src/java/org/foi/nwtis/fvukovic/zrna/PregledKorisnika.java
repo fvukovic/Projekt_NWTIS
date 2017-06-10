@@ -46,7 +46,9 @@ public class PregledKorisnika {
    
     public PregledKorisnika() {
         Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
+        System.out.println("KOLKO BROJA: "+Integer.parseInt(konf.dajPostavku("broj.prikaza")));
         this.brojPrikaza = Integer.parseInt(konf.dajPostavku("broj.prikaza"));
+       
         preuzmiKorisnike();
     }
     

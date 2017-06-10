@@ -16,6 +16,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.servlet.http.HttpSession;
 import org.foi.nwtis.fvukovic.web.podaci.Korisnik;
 import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
 
@@ -34,12 +35,27 @@ public class registracijaPrijava implements Serializable {
     private String username = "";
     private String password = "";
     private String email = "";
-        private String usernameReg = "";
+    private String usernameReg = "";
     private String passwordReg = "";
     private String emailReg = "";
+    private String regGreska = "";
+    public static String usernameSesija = "";
+    public static int idSesija ;
+    public static String emailSesija ;
+    public static String passwordSesija ;
 
+    public String getRegGreska() {
+        return regGreska;
+    }
+
+    public void setRegGreska(String regGreska) {
+        this.regGreska = regGreska;
+    }
 
     public registracijaPrijava() {
+        
+        System.out.println("JSONaaaaaaaa"+ MeteoWSKlijent.dohvatiSveUsereREST());
+        
     }
 
     public String getUsernameReg() {
@@ -66,8 +82,6 @@ public class registracijaPrijava implements Serializable {
         this.emailReg = emailReg;
     }
 
-    
-    
     public String getIspis() {
         return ispis;
     }
@@ -100,52 +114,62 @@ public class registracijaPrijava implements Serializable {
         this.email = email;
     }
 
-    public void prijaviSe() {
-        if(this.username.isEmpty()   || this.password.isEmpty()){
-           System.out.println("NIJE SVE POPUNJENO"+this.username);
-            System.out.println("NIJE SVE POPUNJENO"+this.email);
-             System.out.println("NIJE SVE POPUNJENO"+this.password);
-       }
-       String json =  MeteoWSKlijent.registracijaREST(this.username); 
-       if(json.equals("[]")){ 
+    public String prijaviSe() {
+        if (this.username.isEmpty() || this.password.isEmpty()) {
+            System.out.println("NIJE SVE POPUNJENO" + this.username);
+            System.out.println("NIJE SVE POPUNJENO" + this.email);
+            System.out.println("NIJE SVE POPUNJENO" + this.password);
+        }
+        String json = MeteoWSKlijent.registracijaREST(this.username);
+        if (json.equals("[]")) {
             System.out.println("Ne postoji username");
-       }
-          JsonReader jsonReader = Json.createReader(new StringReader(json));
+        }
+        JsonReader jsonReader = Json.createReader(new StringReader(json));
         JsonArray array = jsonReader.readArray();
         jsonReader.close();
-       System.out.println("OVOLIKO_"+array.size()); 
+        System.out.println("OVOLIKO_" + array.size());
         for (JsonValue aa : array) {
             JsonReader reader = Json.createReader(new StringReader(aa.toString()));
-            JsonObject jo = reader.readObject();            
+            JsonObject jo = reader.readObject();
+            int id = jo.getInt("uid");
             String username = jo.getString("username");
             String pass = jo.getString("password");
-            String email = jo.getString("email");  
+            String email = jo.getString("email");
             System.out.println(username);
-            if(pass.equals(this.password)){
+            if (pass.equals(this.password)) {
                 System.out.println("Ulogirani ste");
+              usernameSesija=username;
+              idSesija=id; 
+              passwordSesija=pass;
+              emailSesija=email;
+              
+              return"korisnici";
             }
-        } 
+        }
+    
+    return"";
     }
 
     public void registrirajSe() {
-         if(this.usernameReg.isEmpty()   || this.passwordReg.isEmpty() || this.emailReg.isEmpty()){
-           System.out.println("NIJE SVE POPUNJENO"+this.usernameReg);
-            System.out.println("NIJE SVE POPUNJENO"+this.emailReg);
-             System.out.println("NIJE SVE POPUNJENO"+this.passwordReg);
-       }
-       String json =  MeteoWSKlijent.registracijaREST(this.usernameReg);
-       System.out.println( MeteoWSKlijent.registracijaREST(this.username));
-       if(json.equals("[]")){ 
-           JsonObjectBuilder job = Json.createObjectBuilder();  
-        job.add("username", this.usernameReg);
-              job.add("password", this.passwordReg);
-              job.add("email", this.emailReg); 
-           System.out.println("USPJESNOS: "+MeteoWSKlijent.registrirajREST(job.build()));
-       }else{
-           System.out.println("Korisnicko ime vec postoji");
-       }
-       
-       
+        if (this.usernameReg.isEmpty() || this.passwordReg.isEmpty() || this.emailReg.isEmpty()) {
+            System.out.println("NIJE SVE POPUNJENO" + this.usernameReg);
+            System.out.println("NIJE SVE POPUNJENO" + this.emailReg);
+            System.out.println("NIJE SVE POPUNJENO" + this.passwordReg);
+
+        }
+        String json = MeteoWSKlijent.registracijaREST(this.usernameReg);
+        System.out.println(MeteoWSKlijent.registracijaREST(this.username));
+        if (json.equals("[]")) {
+            JsonObjectBuilder job = Json.createObjectBuilder();
+            job.add("username", this.usernameReg);
+            job.add("password", this.passwordReg);
+            job.add("email", this.emailReg);
+            System.out.println("USPJESNOS: " + MeteoWSKlijent.registrirajREST(job.build()));
+            this.regGreska = "";
+        } else {
+            this.regGreska = "A";
+            System.out.println("Korisnicko ime vec postoji");
+        }
 
     }
 }
