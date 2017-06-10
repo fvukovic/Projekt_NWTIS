@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+  <h:body>
+         
+        <h:form id="formica">
+          <h1>Uredaji</h1>
+          <h:commandButton value="index" action="index" />  <h:commandButton value="#{m.jezik}" action="promjenaJezika" /> <h:commandButton value="#{m.korisnici}" action="korisnici" />
+          <br/><br/>
+          <div style="border:solid 1px;padding:20px;width:400px;display: inline-block;display: table-cell;">
+          <h:outputLabel value="ID: " /><br/>
+          <h:inputText id="id" value="#{pregledIoTIMeteo.id}"/><br/>
+           <h:outputLabel  value="#{m.uredaji_naziv}" /><br/>
+          <h:inputText id="naziv" value="#{pregledIoTIMeteo.naziv}"/><br/>
+           <h:outputLabel value="Latitude " /><br/>
+          <h:inputText  id="lat" value="#{pregledIoTIMeteo.lat}"/> <br/>
+          <h:outputLabel  value="Longitude}"/> <br/>
+           <h:inputText id="lon" value="#{pregledIoTIMeteo.lon}"/> 
+           
+           
+           
+            <h:commandButton value="#{m.azuriraj}" action="#{pregledIoTIMeteo.azurirajUredaj()}" >
+                            <f:ajax execute="id naziv lat lon" render="formica" />
+                        </h:commandButton>
+            <h:commandButton value="#{m.dodaj}" action="#{pregledIoTIMeteo.dodajUredaj()}" >
+                            <f:ajax execute="id naziv lat lon" render="formica" />
+                        </h:commandButton>
+           
+        
+          <h:dataTable id="sviKorisnici" value="#{pregledIoTIMeteo.uredaji}" var="o"
+    			styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row"
+    		>
+
+    			<h:column>
+    				<!-- column header -->
+    				<f:facet name="header">Id</f:facet>
+    				<!-- row record -->
+    				#{o.id}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">Latitude</f:facet>
+    				#{o.geoloc.latitude}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">Password</f:facet>
+    				#{o.geoloc.longitude}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header"  >#{m.uredaji_naziv}</f:facet>
+    				#{o.naziv}
+    			</h:column>
+
+    		</h:dataTable></div> 
+                <div style="margin-left:50px;border:solid 1px;padding:20px;width:400px;display: inline-block; display: table-cell; vertical-align: top;">
+                    <h:outputLabel value="ID:"/><br/>
+             <h:inputText id="id2" value="#{pregledIoTIMeteo.idGeo}"/><br/>
+           <h:commandButton value="#{m.gekodiraj}" action="#{pregledIoTIMeteo.geokoder()}" >
+                            <f:ajax execute="id2" render="formica" />
+                        </h:commandButton><br/><br/><br/>
+                        <h:outputText style="color:green" value="#{pregledIoTIMeteo.geoAdresa}"  /><br/><br/>
+             
+               <h:inputText id="id3" value="#{pregledIoTIMeteo.idN}"/>
+                <h:inputText id="n" value="#{pregledIoTIMeteo.n}"/>
+                 <h:commandButton value="#{m.dohvati}" action="#{pregledIoTIMeteo.dohvatiNmeteoPodataka()}" >
+                            <f:ajax execute="n id3" render="formica" />
+                        </h:commandButton>
+                
+                <h:dataTable id="sviMEteo" value="#{pregledIoTIMeteo.meteo}" var="o"
+    			styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row"
+    		>
+
+    			<h:column>
+    				<!-- column header -->
+    				<f:facet name="header">Id</f:facet>
+    				<!-- row record -->
+    				#{o.temperatureValue}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">#{m.vlaga}</f:facet>
+    				#{o.humidityValue}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">#{m.tlak}</f:facet>
+    				#{o.pressureValue}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">#{m.vrijeme}</f:facet>
+    				#{o.weatherIcon}
+    			</h:column>
+
+    		</h:dataTable>
+                <br/>
+                <h:inputText id="id4" value="#{pregledIoTIMeteo.idVazeci}"/> 
+                <h:commandButton value="Geokodiraj" action="#{pregledIoTIMeteo.dohvatiVazece()}" >
+                            <f:ajax execute="id4" render="formica" />
+                        </h:commandButton>
+                 <br/> <br/>
+                <h:dataTable id="sviVazeci" value="#{pregledIoTIMeteo.vazeci}" var="o"
+    			styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row"
+    		>
+
+    			
+    			<h:column>
+    				<!-- column header -->
+    				<f:facet name="header">Id</f:facet>
+    				<!-- row record -->
+    				#{o.temperatureValue}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">#{m.vlaga}</f:facet>
+    				#{o.humidityValue}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">#{m.tlak}</f:facet>
+    				#{o.pressureValue}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">#{m.vrijeme}</f:facet>
+    				#{o.weatherIcon}
+    			</h:column>
+
+    		</h:dataTable>
+                </div>
+            
+        </h:form>
+      </h:body>
+</html>
+

@@ -24,16 +24,17 @@ text-shadow:   none;
             </style>
         </h:head>
         <h:body  style="margin: 30px;">
+            
             <h:form>
+                <h:commandButton value="index" action="index" />  <h:commandButton value="#{m.uredaji}" action="pregledIoTIMateo" /> <h:commandButton value="#{m.korisnici}" action="korisnici" />
+                 <br/><br/>
                 <h:selectOneRadio value="#{lokalizator.odabraniJezik}">
                     <f:selectItems value="#{lokalizator.izbornikJezika}" var="jezik"
                                    itemLabel="#{jezik.labela}" itemValue="#{jezik.vrijednost}"/>
                 </h:selectOneRadio><br/>
-                <h:commandButton class="button-sivi" style="margin-left:90px" value="#{m.index_promjena}" action="#{lokalizator.odaberiJezik}" />
+                <h:commandButton class="button-sivi" style="margin-left:90px" value="#{m.odaberiJezik}" action="#{lokalizator.odaberiJezik}" />
                 <br/><br/>
-             <h:commandLink style="display: inline; width: 150px;margin-right: 70px;color:black" value="#{m.index_saljiPoruku}" action="index" />  
-                <h:commandLink style="display: inline; width: 150px; color:black" value="#{m.index_pregledPoruka}" action="#{slanjePoruke.pregledPoruka}" />
-            </h:form>
+               </h:form>
         </h:body>
     </f:view>
 </html> 

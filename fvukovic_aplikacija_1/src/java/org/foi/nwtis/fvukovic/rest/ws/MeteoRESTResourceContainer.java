@@ -86,7 +86,7 @@ public class MeteoRESTResourceContainer {
                 job.add("naziv", rs.getString("naziv"));
                 job.add("lat", rs.getString("latitude"));
                 job.add("lon", rs.getString("longitude"));
-
+                job.add("status", rs.getString("longitude"));
                 jab.add(job);
             }
         } catch (SQLException ex) {

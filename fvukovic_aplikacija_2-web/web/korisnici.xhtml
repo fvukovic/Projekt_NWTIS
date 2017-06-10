@@ -38,11 +38,11 @@
           
                  
            
-            <h:outputLabel value="#{m.pregledPoruka_slanjeEmailPoruke}" for="noviId" />  
+            <h:outputLabel value="#{m.username}" for="noviId" />  
             <h:outputLabel value="#{sviKorisniciIAzuriranje.username}" /><br/> 
-             <h:outputLabel value="#{m.pregledPoruka_odaberiMapu}" for="noviId" />  
+             <h:outputLabel value="#{m.password}" for="noviId" />  
             <h:outputLabel value="#{sviKorisniciIAzuriranje.email}" /><br/>  
-            <h:outputLabel value="#{m.pregledPoruka_gumbPromjeniMapu}" /><br/> 
+            <h:outputLabel value="#{m.email}" /><br/> 
                <h:outputLabel value="#{sviKorisniciIAzuriranje.password}" /><br/> 
                         <h:outputText value="" /><br/>
             
@@ -53,9 +53,10 @@
                         <h:outputLabel value="email " for="noviEmail" /> <br/>
                         <h:inputText value="#{sviKorisniciIAzuriranje.email}" id="noviEmail" /> 
                         <h:commandButton value="Azuriraj" action="#{sviKorisniciIAzuriranje.azurirajKorisnika()}" >
-                            <f:ajax execute="noviId noviNaziv noviAdresa" render="sviKorisnici" />
+                            <f:ajax execute="noviId noviNaziv noviEmail" render="sviKorisnici" />
                         </h:commandButton>
-
+                        <h:commandButton value="Uredaji"  action="pregledIoTIMateo" /> 
+                        <h:commandButton value="index"  action="index" /> 
     		<h:dataTable id="sviKorisnici" value="#{sviKorisniciIAzuriranje.korisnici}" var="o"
     			styleClass="order-table"
     			headerClass="order-table-header"
@@ -70,17 +71,17 @@
     			</h:column>
 
     			<h:column>
-    				<f:facet name="header">Username</f:facet>
+    				<f:facet name="header">#{m.username}</f:facet>
     				#{o.username}
     			</h:column>
 
     			<h:column>
-    				<f:facet name="header">Password</f:facet>
+    				<f:facet name="header">#{m.password}</f:facet>
     				#{o.password}
     			</h:column>
 
     			<h:column>
-    				<f:facet name="header">Email</f:facet>
+    				<f:facet name="header">#{m.email}</f:facet>
     				#{o.email}
     			</h:column>
 

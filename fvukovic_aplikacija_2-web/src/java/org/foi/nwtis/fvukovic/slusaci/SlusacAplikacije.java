@@ -25,7 +25,7 @@ public class SlusacAplikacije implements ServletContextListener {
     
     public static String usernameSesija = "";
     public static int idSesija ;
-    public static String emailSesija ;
+    public static String emailSesija="" ;
     public static String passwordSesija ;
 
     @Override

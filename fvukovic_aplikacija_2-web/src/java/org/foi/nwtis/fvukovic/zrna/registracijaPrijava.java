@@ -17,9 +17,11 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Cookie;
+import org.foi.nwtis.fvukovic.sesije.SessionUtils;
+import org.foi.nwtis.fvukovic.slusaci.SlusacAplikacije;
 import org.foi.nwtis.fvukovic.web.podaci.Korisnik;
 import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
-
 /**
  *
  * @author filip
@@ -115,6 +117,9 @@ public class registracijaPrijava implements Serializable {
     }
 
     public String prijaviSe() {
+        
+      HttpSession session = SessionUtils.getSession();
+			session.setAttribute("username", "Ja sam filip");
         if (this.username.isEmpty() || this.password.isEmpty()) {
             System.out.println("NIJE SVE POPUNJENO" + this.username);
             System.out.println("NIJE SVE POPUNJENO" + this.email);
@@ -123,7 +128,7 @@ public class registracijaPrijava implements Serializable {
         String json = MeteoWSKlijent.registracijaREST(this.username);
         if (json.equals("[]")) {
             System.out.println("Ne postoji username");
-        }
+        } 
         JsonReader jsonReader = Json.createReader(new StringReader(json));
         JsonArray array = jsonReader.readArray();
         jsonReader.close();
@@ -137,17 +142,17 @@ public class registracijaPrijava implements Serializable {
             String email = jo.getString("email");
             System.out.println(username);
             if (pass.equals(this.password)) {
-                System.out.println("Ulogirani ste");
-              usernameSesija=username;
-              idSesija=id; 
-              passwordSesija=pass;
-              emailSesija=email;
+                System.out.println("Ulogirani ste");  
               
               return"korisnici";
+            }else{
+                System.out.println("Kriva lozinka");  
+              
+            return "index";
             }
         }
     
-    return"";
+    return "index";
     }
 
     public void registrirajSe() {

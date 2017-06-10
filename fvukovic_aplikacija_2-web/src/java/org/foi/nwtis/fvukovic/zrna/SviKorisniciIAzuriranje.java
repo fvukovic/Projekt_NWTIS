@@ -14,9 +14,12 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import org.foi.nwtis.fvukovic.sesije.SessionUtils;
 import org.foi.nwtis.fvukovic.slusaci.SlusacAplikacije;
 import org.foi.nwtis.fvukovic.web.podaci.Korisnik;
 import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
@@ -35,6 +38,7 @@ public class SviKorisniciIAzuriranje implements Serializable {
     private String password="";
     private String email=""; 
     public static ServletContext sc;
+    public static String pls = "";
 
     /**
      * Creates a new instance of PregledKorisnika
@@ -43,7 +47,8 @@ public class SviKorisniciIAzuriranje implements Serializable {
     
     
     public SviKorisniciIAzuriranje() {
-        System.out.println("USERNAME nakon logina"+registracijaPrijava.usernameSesija);
+        HttpSession session = SessionUtils.getSession();
+			     System.out.println("SEIJAAAAAAAAAAAAA:"+session.getAttribute("username"));
            
     }
 
@@ -94,11 +99,18 @@ public class SviKorisniciIAzuriranje implements Serializable {
         this.korisnici = korisnici;
     }
     
-    private void azurirajKorisnika(){
-        String json =   MeteoWSKlijent.upodateUserREST();
+    public void azurirajKorisnika(){
+       
+        JsonObjectBuilder job = Json.createObjectBuilder(); 
+         job.add("id", "4");
+        job.add("username", this.username);
+              job.add("password",this.password);
+              job.add("email", this.email);
+        String json =   MeteoWSKlijent.upodateUserREST(job.build());
         System.err.println("MOLIMTE:   "+json);
     }
    public void dohvatiKorisnike(){ 
+        System.out.println("EMAIL: "+ SlusacAplikacije.emailSesija +SviKorisniciIAzuriranje.pls);
     String json =   MeteoWSKlijent.dohvatiSveUsereREST(); 
         System.out.println(json);
         JsonReader jsonReader = Json.createReader(new StringReader(json));

@@ -39,23 +39,38 @@ public class MeteoWSKlijent {
 //        MeteoRESTResourceContainer_JerseyClient mrsc = new MeteoRESTResourceContainer_JerseyClient();
 //        return MeteoRESTResourceContainer_JerseyClient.odgovor;
 //    }
+    
+    
+        public static String updateUredajREST(Object json){
+         MeteoRESTResourceContainer_JerseyClient novi =new MeteoRESTResourceContainer_JerseyClient();
+         
+        return novi.azurirajUredaj(json);
         
-      public static  String upodateUserREST() {
+        }
+        
+      public static  String upodateUserREST(Object json) {
          UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();
-         JsonObjectBuilder job = Json.createObjectBuilder(); 
-         job.add("5", "PROMJENA");
-        job.add("username", "placljivko");
-              job.add("password", "placljivko");
-              job.add("email", "placljivko");
-       String a= novi.azurirajKorisnika(job.build());
+         JsonObjectBuilder job = Json.createObjectBuilder();  
+       String a= novi.azurirajKorisnika(json);
        return a;
     }
+      public static String dohvatiSveUredajeREST(Object json){
+        MeteoRESTResourceContainer_JerseyClient novi =new MeteoRESTResourceContainer_JerseyClient();
+        
+      String jsona=novi.getJson();
+      return jsona;
+      }
       public static String dohvatiSveUsereREST(){
            UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();
           String a = novi.getJson();
           System.out.println("OVO JE JSON :"+a);
           return a;
       }
+      
+        public static String dodajUredajREST(Object json){
+          MeteoRESTResourceContainer_JerseyClient novi =new MeteoRESTResourceContainer_JerseyClient();
+          return novi.dodajUredaj(json);
+        }
       
          public static  String registracijaREST(String username) {
         UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();
@@ -73,96 +88,7 @@ public class MeteoWSKlijent {
     }
       
         
-       /**
-     *Poziv SOAP operacije za dohvat svih meteo podatkaa za odredeni uredaj i u odredenom intervalu 
-     *
-     * @param id
-     * @return 
-     */
-//    public static String getMeteoPodatkeREST(String id) {
-//        MeteoRESTResourceContainer_JerseyClient mrsc = new MeteoRESTResourceContainer_JerseyClient(id);
-//        return MeteoRESTResourceContainer_JerseyClient.odgovor2;
-//    }
-//    
-    /**
-     * Interna klasa za spajanje na REST servis
-     */
-//    static class MeteoRESTResourceContainer_JerseyClient {
-//
-//        private WebTarget webTarget;
-//        private Client client;
-//        public static String odgovor;
-//        public static String odgovor2;
-//        private static final String BASE_URI = "http://localhost:8080/fvukovic_aplikacija_1/webresources/uss/";
-//        
-//        /**
-//         * kontruktor za pozivanje oepracije dodaj uredaje u bazu
-//         * @param naziv
-//         * @param adresa 
-//         */
-//        
-//        public MeteoRESTResourceContainer_JerseyClient(String b) {
-//
-//              client = javax.ws.rs.client.ClientBuilder.newClient();
-//            webTarget = client.target(BASE_URI).path("azuriraj");
-//            // String odgovor = webTarget.request(MediaType.APPLICATION_JSON).get(String.class);
-//            // Response response = webTarget.request().put(Entity.json("{'naziv':'UPISIME','adresa':'Varazdin'"));
-//             
-//              
-//            
-//            JsonObjectBuilder job = Json.createObjectBuilder(); 
-//            job.add("id", "1");
-//            job.add("username", "placljivko");
-//             job.add("password", "placljivko");
-//              job.add("email", "placljivko");
-//            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-//            Response response = invocationBuilder.post(Entity.entity(job.build(), MediaType.APPLICATION_JSON));
-//            String responseString = response.readEntity(String.class);
-//            response.close(); 
-//
-//        }
-//        
-        
-        
-        /**
-         * KOntruktor za poziv operacije dohvat svih meteo podataka prema id uredaja
-         * @param id 
-         */
-        
-        
-        
-        
-//        public MeteoRESTResourceContainer_JerseyClient(int id) {
-//
-//      client = javax.ws.rs.client.ClientBuilder.newClient();
-//            webTarget = client.target(BASE_URI).path("meteoREST/"+id);
-//        String odgovor = webTarget.request(MediaType.APPLICATION_JSON).get(String.class);
-//        MeteoRESTResourceContainer_JerseyClient.odgovor=odgovor;
-//            System.out.println("JSON U SERVISU: " + odgovor);
-//        }
-//           public MeteoRESTResourceContainer_JerseyClient() {
-//
-//      client = javax.ws.rs.client.ClientBuilder.newClient();
-//            webTarget = client.target(BASE_URI).path("");
-//        String odgovor = webTarget.request(MediaType.APPLICATION_JSON).get(String.class);
-//        MeteoRESTResourceContainer_JerseyClient.odgovor=odgovor;
-//            System.out.println("JSON U SERVISU: " + odgovor);
-//        }
-//
-//        public Response postJson(String requestEntity) throws ClientErrorException {
-//            System.err.println("JSON: " + requestEntity);
-//            return webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), Response.class);
-//        }
-//
-//        public String getJson() throws ClientErrorException {
-//            WebTarget resource = webTarget;
-//            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
-//        }
-//
-//        public void close() {
-//            client.close();
-//        }
-//    }
+     
 
     static class MeteoRESTResourceContainer_JerseyClient {
 
@@ -235,5 +161,32 @@ public class MeteoWSKlijent {
             client.close();
         }
     }
+
+    public  static String geocoder(java.lang.String id) {
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service service = new org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service();
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS port = service.getGeoMeteoWSPort();
+        System.out.println("ISPIS VARIJABLE: "+id);
+        return port.geocoder(id);
+    }
+
+    public static String zadnjiPreuzetiMeteo(int id) {
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service service = new org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service();
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS port = service.getGeoMeteoWSPort();
+        return port.zadnjiPreuzetiMeteo(id);
+    }
+
+    public static String zadnjihNMeteo(java.lang.String n, java.lang.String id) {
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service service = new org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service();
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS port = service.getGeoMeteoWSPort();
+        return port.zadnjihNMeteo(n, id);
+    }
+
+    public static String vazeciMeteo(java.lang.String id) {
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service service = new org.foi.nwtis.fvukovic.ws.GeoMeteoWS_Service();
+        org.foi.nwtis.fvukovic.ws.GeoMeteoWS port = service.getGeoMeteoWSPort();
+        return port.vazeciMeteo(id);
+    }
+    
+    
 
 }

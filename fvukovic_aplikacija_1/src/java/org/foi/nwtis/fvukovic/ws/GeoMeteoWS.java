@@ -208,11 +208,11 @@ public class GeoMeteoWS {
             while (rs.next()) {
                 if (rs.getInt("id") == Integer.parseInt(id)) {
                     MeteoPodaci mp = novi.getRealTimeWeather(rs.getString("latitude"), rs.getString("longitude"));
-                    job.add("vlaga", mp.getHumidityValue());
-                    job.add("temp", mp.getTemperatureValue());
-                    job.add("tlak", mp.getPressureValue());
-                    job.add("vjetar", mp.getWindSpeedValue());
-                    job.add("vrijeme", mp.getWeatherValue());
+                    job.add("vlaga", mp.getHumidityValue().toString());
+                    job.add("temp", mp.getTemperatureValue().toString());
+                    job.add("tlak", mp.getPressureValue().toString());
+                    job.add("vjetar", mp.getWindSpeedValue().toString());
+                    job.add("vrijeme", mp.getWeatherValue().toString());
                     jab.add(job);
                      return jab.build().toString();
                 }
