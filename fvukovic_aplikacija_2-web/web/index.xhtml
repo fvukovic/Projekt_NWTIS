@@ -36,26 +36,30 @@
         <h:form>
           <h1>Korisnici</h1>
           
-                 
+                        
+                        <h:outputLabel value="Username: " for="noviId2" />
+                        <h:inputText value="#{registracijaPrijava.usernameReg}" id="noviId2" /><br/> 
+                        <h:outputLabel value="password " for="noviNaziv2" />
+                        <h:inputText value="#{registracijaPrijava.passwordReg}" id="noviNaziv2" /> <br/>
+                        <h:outputLabel value="email" for="noviEmai2" /> 
+                        <h:inputText value="#{registracijaPrijava.emailReg}" id="noviEmai2" /> <br/>
+                        <h:commandButton value="REGISTRIJ" action="#{registracijaPrijava.registrirajSe()}" >
+                            <f:ajax execute="noviId2 noviNaziv2 noviEmai2" render="sviKorisnici" />
+                        </h:commandButton>
+                        <br/><br/>
+          
            
                         <h:outputLabel value="Username: " for="noviId" />
-                        <h:inputText value="#{pregledKorisnika.username}" id="noviId" />
-                        <h:outputText value="" />
+                        <h:inputText value="#{registracijaPrijava.username}" id="noviId" /> <br/>
                         <h:outputLabel value="password " for="noviNaziv" />
-                        <h:inputText value="#{pregledKorisnika.password}" id="noviNaziv" /> 
-                        <h:outputLabel value="email " for="noviEmail" /> 
-                        <h:inputText value="#{pregledKorisnika.email}" id="noviEmail" /> 
-                        <h:commandButton value="REGISTRIJ" action="#{pregledKorisnika.azuriraj()}" >
+                        <h:inputText value="#{registracijaPrijava.password}" id="noviNaziv" /> <br/>
+                        <h:outputLabel value="email" for="noviEmail" /> 
+                        <h:inputText value="#{registracijaPrijava.email}" id="noviEmail" /> <br/>
+                        <h:commandButton value="REGISTRIJ" action="#{registracijaPrijava.prijaviSe()}" >
                             <f:ajax execute="noviId noviNaziv noviAdresa" render="sviKorisnici" />
                         </h:commandButton>
                         
-                          <h:outputLabel value="Username: " for="noviId2" />
-                        <h:inputText value="#{pregledKorisnika.username}" id="noviId2" />
-                        <h:outputText value="" />
-                        <h:outputLabel value="password " for="noviNaziv2" />
-                        <h:inputText value="#{pregledKorisnika.password}" id="noviNaziv2" /> 
-                        <h:outputLabel value="email " for="noviEmail2" /> 
-                        <h:inputText value="#{pregledKorisnika.email}" id="noviEmail2" /> 
+                     
                         <h:commandButton value="Prijava" action="#{pregledKorisnika.azuriraj()}" >
                             <f:ajax execute="noviId noviNaziv noviAdresa" render="sviKorisnici" />
                         </h:commandButton>

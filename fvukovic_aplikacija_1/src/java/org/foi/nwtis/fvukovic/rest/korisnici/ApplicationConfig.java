@@ -29,7 +29,9 @@ public class ApplicationConfig extends Application {
      * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(org.foi.nwtis.fvukovic.rest.korisnici.UsersServerResource.class);
         resources.add(org.foi.nwtis.fvukovic.rest.korisnici.UsersServersResource.class);
+        resources.add(org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResource.class);
         resources.add(org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.class);
     }
 

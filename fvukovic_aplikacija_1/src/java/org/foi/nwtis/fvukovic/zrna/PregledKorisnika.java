@@ -44,6 +44,11 @@ public class PregledKorisnika {
     private int krajKorisnika=0;
 
    
+    public PregledKorisnika() {
+        Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
+        this.brojPrikaza = Integer.parseInt(konf.dajPostavku("broj.prikaza"));
+        preuzmiKorisnike();
+    }
     
     
     
@@ -114,11 +119,6 @@ public class PregledKorisnika {
         this.krajKorisnika = krajKorisnika;
     }
 
-    public PregledKorisnika() {
-        Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
-        this.brojPrikaza = Integer.parseInt(konf.dajPostavku("broj.prikaza"));
-        preuzmiKorisnike();
-    }
     
     public void preuzmiKorisnike()
     {

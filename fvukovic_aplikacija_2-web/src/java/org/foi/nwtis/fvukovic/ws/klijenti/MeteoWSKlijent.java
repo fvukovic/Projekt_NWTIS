@@ -49,6 +49,22 @@ public class MeteoWSKlijent {
        String a= mrsc.dodajUredaj(job.build());
        return a;
     }
+      
+         public static  String registracijaREST(String username) {
+        UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();
+             System.out.println("USERNAME: "+username);
+       String b= novi.getUsersServerResource(username);
+             
+       return b;
+    }
+           public static  String registrirajREST(Object json) {
+        UsersServersResource_JerseyClient novi = new UsersServersResource_JerseyClient();
+         
+       String b= novi.dodajKorisnika(json);
+               System.err.println("OVO VRACA:"+ b);   
+       return b;
+    }
+      
         
        /**
      *Poziv SOAP operacije za dohvat svih meteo podatkaa za odredeni uredaj i u odredenom intervalu 
@@ -151,6 +167,8 @@ public class MeteoWSKlijent {
             client = javax.ws.rs.client.ClientBuilder.newClient();
             webTarget = client.target(BASE_URI).path("meteoREST");
         }
+        
+        
 
         public String getMeteoRESTResource(String id) throws ClientErrorException {
             WebTarget resource = webTarget;
@@ -164,6 +182,41 @@ public class MeteoWSKlijent {
 
         public String azurirajUredaj(Object requestEntity) throws ClientErrorException {
             return webTarget.path("azuiraj").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+        }
+
+        public String getJson() throws ClientErrorException {
+            WebTarget resource = webTarget;
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+        }
+
+        public void close() {
+            client.close();
+        }
+    }
+
+    static class UsersServersResource_JerseyClient {
+
+        private WebTarget webTarget;
+        private Client client;
+        private static final String BASE_URI = "http://localhost:8080/fvukovic_aplikacija_1/webresources";
+
+        public UsersServersResource_JerseyClient() {
+            client = javax.ws.rs.client.ClientBuilder.newClient();
+            webTarget = client.target(BASE_URI).path("uss");
+        }
+
+        public String azurirajKorisnika(Object requestEntity) throws ClientErrorException {
+            return webTarget.path("azuiraj").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+        }
+
+        public String dodajKorisnika(Object requestEntity) throws ClientErrorException {
+            return webTarget.path("dodaj").request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+        }
+
+        public String getUsersServerResource(String korisnickoIme) throws ClientErrorException {
+            WebTarget resource = webTarget;
+            resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{korisnickoIme}));
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
         }
 
         public String getJson() throws ClientErrorException {
