@@ -56,8 +56,7 @@ public class RadnaDretva extends Thread {
 
     @Override
     public void run() {
-        
-       
+         System.out.println("DRETVA");
         
         
         
@@ -84,7 +83,7 @@ public class RadnaDretva extends Thread {
         //radna petlja  
         while (true) {
             
-            System.out.println("DRETVA");
+           
             if(ServerDretva.preuzimaj==false){
                 break;
             }

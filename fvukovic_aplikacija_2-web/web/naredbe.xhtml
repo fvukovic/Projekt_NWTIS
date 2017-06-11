@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+         <h:form id="forma">
+            <h1>Naredbe</h1>
+
+
+            <h:outputLabel value="#STATUS:" for="noviId2" />
+          
+            <h:commandButton value="START" action="#{naredbeServer.start()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:commandButton value="STOP" action="#{naredbeServer.stop()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:commandButton value="PAUSE" action="#{naredbeServer.pause()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:commandButton value="STATUS" action="#{naredbeServer.status()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:outputText value="#{naredbeServer.odgovor}"/>
+            <h:outputText value="#{naredbeServer.statusServer}"/>
+
+            <h:commandButton value="#{m.jezik}" action="promjenaJezika"/>
+
+        </h:form>
+    </h:body>
+</html>
+

@@ -60,7 +60,7 @@ public class SlusacAplikacije implements ServletContextListener {
             SD.start();
 
             RadnaDretva nova1 = new RadnaDretva(context);
-           // nova1.start();
+            nova1.start();
 
             System.err.println("DOSAO SAAAAAAAAAAAAM");
             GeoMeteoWS.sc = context;

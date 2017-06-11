@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:outputLabel value="ID: " /><br/>
+          <h:inputText id="id" value="#{pregledIoTIMeteo.id}"/><br/>
+           <h:outputLabel  value="#{m.uredaji_naziv}" /><br/>
+          <h:inputText id="naziv" value="#{pregledIoTIMeteo.naziv}"/><br/>
+           <h:outputLabel value="Latitude " /><br/>
+          <h:inputText  id="lat" value="#{pregledIoTIMeteo.lat}"/> <br/>
+          <h:outputLabel  value="Longitude}"/> <br/>
+           <h:inputText id="lon" value="#{pregledIoTIMeteo.lon}"/> 
+           
+           
+           
+            <h:commandButton value="#{m.azuriraj}" action="#{pregledIoTIMeteo.azurirajUredaj()}" >
+                            <f:ajax execute="id naziv lat lon" render="formica" />
+                        </h:commandButton>
+            <h:commandButton value="#{m.dodaj}" action="#{pregledIoTIMeteo.dodajUredaj()}" >
+                            <f:ajax execute="id naziv lat lon" render="formica" />
+                        </h:commandButton>
+           
+        
+           <h:dataTable id="sviKorisnici" value="#{ioTuredaji.uredaji}" var="o"
+    			styleClass="order-table"
+    			headerClass="order-table-header"
+    			rowClasses="order-table-odd-row,order-table-even-row"
+    		>
+
+    			<h:column>
+    				<!-- column header -->
+    				<f:facet name="header">Id</f:facet>
+    				<!-- row record -->
+    				#{o.id}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">Latitude</f:facet>
+    				#{o.geoloc.latitude}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header">Longitude</f:facet>
+    				#{o.geoloc.longitude}
+    			</h:column>
+
+    			<h:column>
+    				<f:facet name="header"  >#{m.uredaji_naziv}</f:facet>
+    				#{o.naziv}
+    			</h:column>
+
+    		</h:dataTable></div> 
+    </h:body>
+</html>
+

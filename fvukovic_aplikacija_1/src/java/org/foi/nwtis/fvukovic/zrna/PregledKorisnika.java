@@ -45,6 +45,33 @@ public class PregledKorisnika {
 
    
     public PregledKorisnika() {
+          Socket socket = null; 
+        System.out.println("start funkcija");
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+             String zahtjev = "USER fvukovic; PASSWD 123456; START;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
+
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+        } catch (IOException ex) {
+                 System.out.println(ex);
+        }  
         Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
         System.out.println("KOLKO BROJA: "+Integer.parseInt(konf.dajPostavku("broj.prikaza")));
         this.brojPrikaza = Integer.parseInt(konf.dajPostavku("broj.prikaza"));
