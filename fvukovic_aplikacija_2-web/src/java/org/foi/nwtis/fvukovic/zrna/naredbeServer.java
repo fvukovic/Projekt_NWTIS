@@ -13,6 +13,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.logging.Level;
+import org.foi.nwtis.fvukovic.sesije.SessionUtils;
 
 /**
  *
@@ -49,7 +50,9 @@ public class naredbeServer implements Serializable {
         this.statusServer = statusServer;
     } 
     
-    
+    /**
+     * Naredba start, za startanje radne dretve
+     */
     public void start(){
     
         Socket socket = null; 
@@ -59,7 +62,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-             String zahtjev = "USER fvukovic; PASSWD 123456; START;";
+               String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; START;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -90,7 +93,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-             String zahtjev = "USER fvukovic; PASSWD 123456; PAUSE;";
+             String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; PAUSE;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -121,7 +124,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-             String zahtjev = "USER fvukovic; PASSWD 123456; STOP;";
+               String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; STOP;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -153,7 +156,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-            String zahtjev = "USER fvukovic; PASSWD 123456; IoT_Master START;";
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master START;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -185,7 +188,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-            String zahtjev = "USER fvukovic; PASSWD 123456; IoT_Master WORK;";
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master WORK;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -216,7 +219,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-            String zahtjev = "USER fvukovic; PASSWD 123456; IoT_Master STOP;";
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master STOP;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -247,7 +250,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-            String zahtjev = "USER fvukovic; PASSWD 123456; IoT_Master WAIT;";
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master WAIT;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -278,7 +281,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-            String zahtjev = "USER fvukovic; PASSWD 123456; IoT_Master STATUS;";
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; STATUS;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -310,7 +313,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-             String zahtjev = "USER fvukovic; PASSWD 123456; STATUS;";
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; STATUS;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());

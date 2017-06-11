@@ -10,35 +10,16 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import org.foi.nwtis.fvukovic.dretve.DretvaZahtjeva;
 import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
 import org.foi.nwtis.fvukovic.dretve.ServerDretva;
-import static org.foi.nwtis.fvukovic.dretve.ServerDretva.context;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
 import org.foi.nwtis.fvukovic.konfiguracije.NeispravnaKonfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.NemaKonfiguracije;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
-import org.foi.nwtis.fvukovic.master.Iot_Master;
 import org.foi.nwtis.fvukovic.rest.korisnici.UsersServersResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResource;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
@@ -69,7 +50,9 @@ public class SlusacAplikacije implements ServletContextListener {
         try {
             konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
             context.setAttribute("Baza_Konfig", konf); 
-            
+             Baza.sc=context;
+            Baza.spojiNaBazu();
+            sleep(1000);
             ServerDretva SD = new ServerDretva();
             SD.start();
 
@@ -78,8 +61,7 @@ public class SlusacAplikacije implements ServletContextListener {
 
             System.err.println("DOSAO SAAAAAAAAAAAAM");
             GeoMeteoWS.sc = context;
-            Baza.sc=context;
-            Baza.spojiNaBazu();
+           
             
             MeteoRESTResourceContainer.sc = context;
             MeteoRESTResource.sc = context;
@@ -91,6 +73,8 @@ public class SlusacAplikacije implements ServletContextListener {
 
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
             System.err.println(ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SlusacAplikacije.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

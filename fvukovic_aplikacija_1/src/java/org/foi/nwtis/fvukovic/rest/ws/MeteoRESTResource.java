@@ -24,6 +24,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
+import org.foi.nwtis.fvukovic.dretve.Baza;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
 import org.foi.nwtis.fvukovic.web.podaci.Lokacija;
@@ -38,8 +39,7 @@ import org.foi.nwtis.fvukovic.web.podaci.Uredjaj;
 public class MeteoRESTResource {
 
     private String id;
-    public static ServletContext sc;
-    public Connection c;
+    public static ServletContext sc; 
 
     /**
      * Creates a new instance of MeteoRESTResource
@@ -69,11 +69,10 @@ public class MeteoRESTResource {
          JsonArrayBuilder jab = Json.createArrayBuilder();
         JsonObjectBuilder job = Json.createObjectBuilder();
         ArrayList<Uredjaj> uredjaji = new ArrayList<>();
-        String query = "Select * from meteo where id = " + id ;
-        spojiNaBazu();
+        String query = "Select * from meteo where id = " + id ; 
         MeteoPodaci mp = null;
         try {
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
 
             while (rs.next()) {
@@ -110,25 +109,5 @@ public class MeteoRESTResource {
     /**
      * Metoda za povezivanje na bazu prema konfiguraciji
      */
-    public void spojiNaBazu() {
-        BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
-
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
-            return;
-        }
-        /**
-         * Spajamo se na bazu kako bi upisivali potrebne podatke
-         */
-        try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
-                    bp_konf.getUserUsername(),
-                    bp_konf.getUserPassword());
-        } catch (SQLException ex) {
-            System.err.println(ex);
-
-        }
-    }
+    
 }

@@ -47,7 +47,11 @@ public class ServerDretva extends Thread{
            System.err.println("INterupt");
        }
     }
-
+    
+    
+    /**
+     *Server dretva..ceka sljedeci zahtjev 
+     */
     @Override
     public void run() {
         
@@ -56,48 +60,8 @@ public class ServerDretva extends Thread{
          try {
 
             Short redniBrojDretve = 1;
-                Konfiguracija konf = (Konfiguracija) context.getAttribute("Baza_Konfig");
-                  String server = konf.dajPostavku("mail.server"); 
-        String korisnik = konf.dajPostavku("mail.usernameThread");
-        String lozinka = konf.dajPostavku("mail.passwordThread"); 
-
-                 // Start the session
-                java.util.Properties properties = System.getProperties();
-                properties.put("mail.smtp.host", server);
-                Session session = Session.getInstance(properties, null);
-
-                // Connect to the store
-                Store store;
-            try {
-                store = session.getStore("imap");
-                  store.connect(server, korisnik, lozinka);
-            } catch (NoSuchProviderException ex) {
-                Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (MessagingException ex) {
-                Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
-            }
-              
-            try {
-                MimeMessage message = new MimeMessage(session);
-                Address[] toAddresses = InternetAddress.parse("servis@nwtis.nastava.foi.hr");
-                message.setRecipients(Message.RecipientType.TO, toAddresses);
-               
-                message.setSubject(konf.dajPostavku("mail.subject"));
-                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date now = new Date();
-                String strDate = sdfDate.format(now);
-                message.setText("asdasd"+ "/n" + now);
-                DateFormat dateFormatt = new SimpleDateFormat("yyyy/MM/dd");
-                Date datet = new Date();
-                message.setSentDate(datet);
-                Transport.send(message);
-            } catch (MessagingException ex) {
-                Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
-            }
-                
-                
-                
-            int port =  Integer.parseInt(konf.dajPostavku("server.port"));
+            //    Konfiguracija konf = (Konfiguracija) context.getAttribute("Baza_Konfig"); 
+            int port =  (8000);
 
               serverSocket = new ServerSocket(port);
             

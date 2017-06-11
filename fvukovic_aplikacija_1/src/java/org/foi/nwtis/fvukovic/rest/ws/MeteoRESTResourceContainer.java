@@ -34,6 +34,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.foi.nwtis.fvukovic.dretve.Baza;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import org.foi.nwtis.fvukovic.rest.klijenti.GMKlijent;
 import org.foi.nwtis.fvukovic.web.podaci.Lokacija;
@@ -48,8 +49,7 @@ import static org.foi.nwtis.fvukovic.ws.GeoMeteoWS.sc;
 @Path("/meteoREST")
 public class MeteoRESTResourceContainer {
 
-    public static ServletContext sc;
-    public Connection c;
+    public static ServletContext sc; 
 
     @Context
     private UriInfo context;
@@ -73,11 +73,10 @@ public class MeteoRESTResourceContainer {
          long pocetak = System.currentTimeMillis();
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
-
-            spojiNaBazu();
+ 
 
             String query = "Select * from uredaji";
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
             int brojac = 0;
             while (rs.next()) {
@@ -120,10 +119,10 @@ public class MeteoRESTResourceContainer {
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
 
-            spojiNaBazu();
+           
 
             String query = "Select * from uredaji where id=" + id;
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query); 
             int brojac = 0;
             while (rs.next()) {
@@ -162,10 +161,9 @@ public class MeteoRESTResourceContainer {
         String lon = jo.getString("lon");
           String status = jo.getString("status");
          
-        try {
-             spojiNaBazu();
+        try { 
                String query = "SELECT id, MAX(id) FROM uredaji GROUP BY id desc limit 1";
-          Statement s = c.createStatement();
+          Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query); 
             while (rs.next()) {
                 id=rs.getInt("id");
@@ -174,7 +172,7 @@ public class MeteoRESTResourceContainer {
           query = "Select * from uredaji where naziv='"+naziv+"'";
        
             
-             s = c.createStatement();
+             s = Baza.c.createStatement();
              rs = s.executeQuery(query); 
             while (rs.next()) {
                  long kraj = System.currentTimeMillis();
@@ -186,7 +184,7 @@ public class MeteoRESTResourceContainer {
                 String strDate = sdfDate.format(now);
                 id++;
             query = "insert into uredaji values("+id+",'" + naziv + "','" + lat + "','" + lon + "',"+status+", vrijeme_promjene='"+strDate+"',vrijeme_kreiranja='"+strDate+"')";
-            s = c.createStatement();
+            s = Baza.c.createStatement();
             s.executeUpdate(query);
              long kraj = System.currentTimeMillis();
         zapisiUDnevnik((int) (kraj - pocetak), 1,"meteoServis/dodaj");
@@ -214,9 +212,9 @@ public class MeteoRESTResourceContainer {
         String lat = jo.getString("lat");
         String lon = jo.getString("lon");
         String query = "Select * from korisnici where id=" + id + "";
-        spojiNaBazu();
+       
         try {
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
             while (rs.next()) {
                 SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -239,33 +237,14 @@ public class MeteoRESTResourceContainer {
         //TODO upiši uređaj u bazu 
     }
 
-    public void spojiNaBazu() {
-        BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
-        try {
-            Class.forName(bp_konf.getDriverDatabase());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
-        }
-        
-        /**
-         * Spajamo se na bazu kako bi upisivali potrebne podatke
-         */
-        try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
-                    bp_konf.getUserUsername(),
-                    bp_konf.getUserPassword());
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-    }
+   
         public void zapisiUDnevnik(int trajanje, int status,String url) {
         try {
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date now = new Date();
-            String strDate = sdfDate.format(now);
-            spojiNaBazu();
+            String strDate = sdfDate.format(now); 
             String query="insert into dnevnik values(default,'fvukovic','"+url+"','localhost','"+strDate+"', "+trajanje+", "+status+")";
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             s.executeUpdate(query);
         } catch (SQLException ex) {
             Logger.getLogger(MeteoRESTResourceContainer.class.getName()).log(Level.SEVERE, null, ex);

@@ -41,6 +41,7 @@ public class Baza {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
+                       System.out.println("Povezao sam se na bazu");
     }
     
 }

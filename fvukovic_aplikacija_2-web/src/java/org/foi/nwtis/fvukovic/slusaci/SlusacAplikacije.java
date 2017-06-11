@@ -29,7 +29,25 @@ public class SlusacAplikacije implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-       
+        System.out.println("RADI KOD POKRETANJA");
+        ServletContext context = sce.getServletContext();
+        String datoteka = context.getRealPath("/WEB-INF")
+                + File.separator
+                + context.getInitParameter("konfiguracija");
+
+        BP_Konfiguracija bp_konf = new BP_Konfiguracija(datoteka);
+        context.setAttribute("BP_Konfig", bp_konf); 
+
+        Konfiguracija konf = null;
+        try {
+            konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
+            context.setAttribute("Mail_Konfig", konf);
+            
+           
+
+        } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
+            System.err.println(ex);
+        }
 
     }
 
