@@ -35,8 +35,7 @@ import org.foi.nwtis.fvukovic.web.podaci.Uredjaj;
 public class RadnaDretva extends Thread {
 
     private boolean prekid_obrade = false;
-    private ServletContext sc = null;
-    public Connection c;
+    private ServletContext sc = null; 
     public List<Uredjaj> listaUredjaja = new ArrayList<>();
     public List<Uredjaj> listaUredjajaZaPrognozu = new ArrayList<>();
     public List<MeteoPodaci> prognoze = new ArrayList<>();
@@ -62,23 +61,11 @@ public class RadnaDretva extends Thread {
         
         int brojCiklusa = 1;
         BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
-        try {
-            Class.forName(bp_konf.getDriverDatabase());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
-            return;
-        }
+       
         /**
          * Spajamo se na bazu kako bi upisivali potrebne podatke
          */
-        try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
-                    bp_konf.getUserUsername(),
-                    bp_konf.getUserPassword());
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-       
+     
 
         //radna petlja  
         while (true) {
@@ -92,7 +79,7 @@ public class RadnaDretva extends Thread {
                 yield();
              try {
             String query = "Select * from uredaji";
-            Statement s = c.createStatement();
+            Statement s =Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
             while (rs.next()) {
 
@@ -112,32 +99,7 @@ public class RadnaDretva extends Thread {
                 break;
             }
             
-            
-//          Socket socket = null;
-//
-//            try {
-//                socket = new Socket("localhost", 8000);
-//                 byte[] bytes = new byte[14 * 1024];
-//                String myString = "Ovo je komanda";
-//                InputStream in = new ByteArrayInputStream(myString.getBytes());
-//                OutputStream out = socket.getOutputStream();
-//
-//                int count;
-//                while ((count = in.read(bytes)) > 0) {
-//                    out.write(bytes, 0, count);
-//                }
-//
-//                out.close();
-//                in.close();
-//                socket.close();
-//
-//                System.out.println("Naredba poslana");
-//            } catch (IOException ex) {
-//                Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-
-               
-             
+    
        
  
             Konfiguracija konf = (Konfiguracija) sc.getAttribute("Baza_Konfig");
@@ -199,7 +161,7 @@ public class RadnaDretva extends Thread {
                                     + ",'" + mp.getWeatherIcon() + "','" + vrijemeOpisa + "'," + temp + "," + tempMin + "," + tempMax + "," + vlaga + "," + tlak + "," + vjetar + "," + vjetarSmjer + ",'" + strDate + "')";
                             Statement s;
                             try {
-                                s = c.createStatement();
+                                s = Baza.c.createStatement();
                                 s.executeUpdate(query);
                             } catch (SQLException ex) {
                                 Logger.getLogger(RadnaDretva.class.getName()).log(Level.SEVERE, null, ex);

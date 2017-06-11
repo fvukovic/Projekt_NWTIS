@@ -12,10 +12,6 @@
 
 <xs:element name="helloResponse" type="tns:helloResponse"/>
 
-<xs:element name="spojiNaBazu" type="tns:spojiNaBazu"/>
-
-<xs:element name="spojiNaBazuResponse" type="tns:spojiNaBazuResponse"/>
-
 <xs:element name="vazeciMeteo" type="tns:vazeciMeteo"/>
 
 <xs:element name="vazeciMeteoResponse" type="tns:vazeciMeteoResponse"/>
@@ -44,14 +40,6 @@
 <xs:sequence/>
 </xs:complexType>
 
-<xs:complexType name="spojiNaBazu">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="spojiNaBazuResponse">
-<xs:sequence/>
-</xs:complexType>
-
 <xs:complexType name="hello">
 <xs:sequence>
 <xs:element name="name" type="xs:string" minOccurs="0"/>
@@ -72,6 +60,18 @@
 </xs:complexType>
 
 <xs:complexType name="zadnjihNMeteoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Geocoder">
+<xs:sequence>
+<xs:element name="id" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="GeocoderResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
@@ -120,18 +120,6 @@
 <xs:element name="windDirectionValue" type="xs:float" minOccurs="0"/>
 <xs:element name="windSpeedName" type="xs:string" minOccurs="0"/>
 <xs:element name="windSpeedValue" type="xs:float" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="Geocoder">
-<xs:sequence>
-<xs:element name="id" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="GeocoderResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 

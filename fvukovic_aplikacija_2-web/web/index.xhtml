@@ -34,17 +34,18 @@
     <h:body>
 
         <h:form id="forma">
-            <h1>Home</h1>
-<h:commandButton value="Naredbe" action="naredbe" />
+            <h1>Home</h1> 
 
             <h:outputLabel value="#{m.username}" for="noviId2" />
             <h:inputText value="#{registracijaPrijava.usernameReg}" id="noviId2" /><br/>
             <h:outputLabel value="#{m.password}" for="noviNaziv2" />
             <h:inputText value="#{registracijaPrijava.passwordReg}" id="noviNaziv2" /> <br/>
+             <h:outputLabel value="2 #{m.password}" for="noviNaziv3" />
+            <h:inputText value="#{registracijaPrijava.passwordReg2}" id="noviNaziv3" /> <br/>
             <h:outputLabel value="#{m.email}"  for="noviEmai2" /> 
             <h:inputText value="#{registracijaPrijava.emailReg}"   id="noviEmai2" /> <br/>
             <h:commandButton value="#{m.singup}" action="#{registracijaPrijava.registrirajSe()}" >
-                <f:ajax execute="noviId2 noviNaziv2 noviEmai2" render="noviEmail2 forma"/>
+                <f:ajax execute="noviId2 noviNaziv3 noviNaziv2 noviEmai2" render="noviEmail2 forma"/>
             </h:commandButton><br/>
              <h:outputLabel id="greska" rendered="#{registracijaPrijava.regGreska == 'A'}" value="#{m.pregledPoruka_registracijaGreska}" /> 
             <br/><br/>
@@ -54,15 +55,17 @@
             <h:inputText value="#{registracijaPrijava.username}" id="noviId" /> <br/>
             <h:outputLabel value="#{m.password}" for="noviNaziv" />
             <h:inputText value="#{registracijaPrijava.password}" id="noviNaziv" /> <br/>
-            <h:outputLabel value="email" for="noviEmail" /> 
-            <h:inputText value="#{registracijaPrijava.email}" id="noviEmail" /> <br/>  
 
             <h:commandButton value="#{m.singin}" action="#{registracijaPrijava.prijaviSe()}" >
-                <f:ajax execute="noviId noviNaziv noviAdresa" render="sviKorisnici" />
+                <f:ajax execute="noviId noviNaziv " render="forma" />
             </h:commandButton>
 
             <h:commandButton value="#{m.jezik}" action="promjenaJezika"/>
-
+            
+            
+             <h:outputLabel id="greskaPrijava" rendered="#{registracijaPrijava.priGreska == 'A'}" value="#{m.greskaPrijava}" /> 
+            
+            
         </h:form>
     </h:body>
 </html>

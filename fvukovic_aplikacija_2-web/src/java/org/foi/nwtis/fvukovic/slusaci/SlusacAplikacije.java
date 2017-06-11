@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.foi.nwtis.fvukovic.slusaci;
-
+package org.foi.nwtis.fvukovic.slusaci; 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
@@ -30,25 +29,7 @@ public class SlusacAplikacije implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("RADI KOD POKRETANJA");
-        ServletContext context = sce.getServletContext();
-        String datoteka = context.getRealPath("/WEB-INF")
-                + File.separator
-                + context.getInitParameter("konfiguracija");
-
-        BP_Konfiguracija bp_konf = new BP_Konfiguracija(datoteka);
-        context.setAttribute("BP_Konfig", bp_konf); 
-
-        Konfiguracija konf = null;
-        try {
-            konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
-            context.setAttribute("Baza_Konfig", konf);
-            
-            SviKorisniciIAzuriranje.sc = context; 
-
-        } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
-            System.err.println(ex);
-        }
+       
 
     }
 

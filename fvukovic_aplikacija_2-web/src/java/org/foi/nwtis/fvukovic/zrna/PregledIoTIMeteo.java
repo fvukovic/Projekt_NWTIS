@@ -24,7 +24,6 @@ import org.foi.nwtis.fvukovic.web.podaci.Korisnik;
 import org.foi.nwtis.fvukovic.web.podaci.Lokacija;
 import org.foi.nwtis.fvukovic.web.podaci.MeteoPodaci;
 import org.foi.nwtis.fvukovic.web.podaci.Uredjaj;
-import org.foi.nwtis.fvukovic.ws.GeoMeteoWS;
 import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
 
 /**

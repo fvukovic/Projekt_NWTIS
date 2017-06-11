@@ -5,6 +5,7 @@
  */
 package org.foi.nwtis.fvukovic.slusaci;
 
+import org.foi.nwtis.fvukovic.dretve.Baza; 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
@@ -14,8 +15,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import org.foi.nwtis.fvukovic.dretve.DretvaZahtjeva;
 import org.foi.nwtis.fvukovic.dretve.RadnaDretva;
 import org.foi.nwtis.fvukovic.dretve.ServerDretva;
@@ -55,7 +68,8 @@ public class SlusacAplikacije implements ServletContextListener {
         Konfiguracija konf = null;
         try {
             konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
-            context.setAttribute("Baza_Konfig", konf);
+            context.setAttribute("Baza_Konfig", konf); 
+            
             ServerDretva SD = new ServerDretva();
             SD.start();
 
@@ -64,6 +78,9 @@ public class SlusacAplikacije implements ServletContextListener {
 
             System.err.println("DOSAO SAAAAAAAAAAAAM");
             GeoMeteoWS.sc = context;
+            Baza.sc=context;
+            Baza.spojiNaBazu();
+            
             MeteoRESTResourceContainer.sc = context;
             MeteoRESTResource.sc = context;
             UsersServersResource.sc = context;

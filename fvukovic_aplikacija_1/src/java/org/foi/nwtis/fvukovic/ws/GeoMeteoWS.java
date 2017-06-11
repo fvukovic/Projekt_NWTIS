@@ -38,6 +38,7 @@ import org.foi.nwtis.fvukovic.web.podaci.MeteoPodaci;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import org.foi.nwtis.fvukovic.dretve.Baza;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
 import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
 /**
@@ -46,8 +47,7 @@ import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
  */
 @WebService(serviceName = "GeoMeteoWS")
 public class GeoMeteoWS {
-
-    private Connection c;
+ 
     private ResultSet rs;
     private Statement s;
     public static ServletContext sc;
@@ -81,7 +81,7 @@ public class GeoMeteoWS {
          * Spajamo se na bazu kako bi upisivali potrebne podatke
          */
         try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
+            Baza.c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
                     bp_konf.getUserUsername(),
                     bp_konf.getUserPassword());
         } catch (SQLException ex) {
@@ -92,7 +92,7 @@ public class GeoMeteoWS {
 
         String query = "select * from meteo where id=" + id + " ORDER BY preuzeto DESC limit 1;";
         try {
-            s = c.createStatement();
+            s = Baza.c.createStatement();
             rs = s.executeQuery(query);
             while (rs.next()) {
 
@@ -134,7 +134,7 @@ public class GeoMeteoWS {
          * Spajamo se na bazu kako bi upisivali potrebne podatke
          */
         try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
+            Baza.c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
                     bp_konf.getUserUsername(),
                     bp_konf.getUserPassword());
         } catch (SQLException ex) {
@@ -145,7 +145,7 @@ public class GeoMeteoWS {
 
         String query = "select * from meteo where id=" + id + "  ORDER BY preuzeto DESC limit " + n;
         try {
-            s = c.createStatement();
+            s = Baza.c.createStatement();
             rs = s.executeQuery(query);
             while (rs.next()) {
 
@@ -192,7 +192,7 @@ public class GeoMeteoWS {
          * Spajamo se na bazu kako bi upisivali potrebne podatke
          */
         try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
+            Baza.c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
                     bp_konf.getUserUsername(),
                     bp_konf.getUserPassword());
         } catch (SQLException ex) {
@@ -203,7 +203,7 @@ public class GeoMeteoWS {
 
         String query = "select * from uredaji";
         try {
-            s = c.createStatement();
+            s = Baza.c.createStatement();
             rs = s.executeQuery(query);
             while (rs.next()) {
                 if (rs.getInt("id") == Integer.parseInt(id)) {
@@ -255,7 +255,7 @@ public class GeoMeteoWS {
          * Spajamo se na bazu kako bi upisivali potrebne podatke
          */
         try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
+            Baza.c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
                     bp_konf.getUserUsername(),
                     bp_konf.getUserPassword());
         } catch (SQLException ex) {
@@ -274,7 +274,7 @@ public class GeoMeteoWS {
             String strToDate = sdfDate.format(toDate);
             System.out.println("DATUMI :" + strDate + "  " + strToDate);
             String query = "Select * from meteo where id=" + id + " and preuzeto >'" + strDate + "' and preuzeto <'" + strToDate + "'";
-              s = c.createStatement();
+              s = Baza.c.createStatement();
              rs = s.executeQuery(query);
             while (rs.next()) {
                 System.out.println(rs.getInt("id"));
@@ -317,7 +317,7 @@ public class GeoMeteoWS {
          * Spajamo se na bazu kako bi upisivali potrebne podatke
          */
         try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
+            Baza.c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
                     bp_konf.getUserUsername(),
                     bp_konf.getUserPassword());
         } catch (SQLException ex) {
@@ -328,7 +328,7 @@ public class GeoMeteoWS {
 
         String query = "select * from uredaji";
         try {
-            s = c.createStatement();
+            s = Baza.c.createStatement();
             rs = s.executeQuery(query);
             System.err.println("OVO JE ID: "+id);
             while (rs.next()) {
@@ -366,32 +366,12 @@ public class GeoMeteoWS {
         try {
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date now = new Date();
-            String strDate = sdfDate.format(now);
-            spojiNaBazu();
+            String strDate = sdfDate.format(now); 
             String query="insert into dnevnik values(default,'fvukovic','"+url+"','localhost','"+strDate+"', "+trajanje+", "+status+")";
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             s.executeUpdate(query);
         } catch (SQLException ex) {
             Logger.getLogger(MeteoRESTResourceContainer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-                   public void spojiNaBazu() {
-        BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
-        try {
-            Class.forName(bp_konf.getDriverDatabase());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
-        }
-        
-        /**
-         * Spajamo se na bazu kako bi upisivali potrebne podatke
-         */
-        try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
-                    bp_konf.getUserUsername(),
-                    bp_konf.getUserPassword());
-        } catch (SQLException ex) {
-            System.out.println(ex);
         }
     }
         //TODO write your implementation code here:

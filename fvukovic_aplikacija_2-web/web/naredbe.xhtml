@@ -25,6 +25,23 @@
             <h:commandButton value="STATUS" action="#{naredbeServer.status()}" >
                 <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
             </h:commandButton>
+            
+              <h:commandButton value="startGrupa" action="#{naredbeServer.startMaster()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:commandButton value="stopGrupa" action="#{naredbeServer.stopMaster()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:commandButton value="workGrupa" action="#{naredbeServer.workMaster()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:commandButton value="waitGrupa" action="#{naredbeServer.waitMaster()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            <h:commandButton value="statusGrupa" action="#{naredbeServer.statusMaster()}" >
+                <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
+            </h:commandButton>
+            
             <h:outputText value="#{naredbeServer.odgovor}"/>
             <h:outputText value="#{naredbeServer.statusServer}"/>
 

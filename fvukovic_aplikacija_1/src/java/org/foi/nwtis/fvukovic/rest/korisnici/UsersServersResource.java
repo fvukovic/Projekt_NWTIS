@@ -31,6 +31,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.foi.nwtis.fvukovic.dretve.Baza;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 import org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer;
 import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
@@ -44,8 +45,7 @@ import static org.foi.nwtis.fvukovic.rest.ws.MeteoRESTResourceContainer.sc;
 public class UsersServersResource {
     
       private String id;
-    public static ServletContext sc;
-    public Connection c;
+    public static ServletContext sc; 
 
     @Context
     private UriInfo context;
@@ -66,11 +66,10 @@ public class UsersServersResource {
         long pocetak = System.currentTimeMillis(); 
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
-
-            spojiNaBazu();
+ 
 
             String query = "Select * from korisnici";
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
             int brojac = 0;
             while (rs.next()) {
@@ -109,9 +108,9 @@ public class UsersServersResource {
         String naziv = jo.getString("username");
         String password = jo.getString("password");
         String query = "Select * from korisnici where username='" + naziv + "'";
-        spojiNaBazu();
+      ;
         try {
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
             int id = 1;
             while (rs.next()) {
@@ -121,7 +120,7 @@ public class UsersServersResource {
                 return "0";
             }
             query = "insert into korisnici values(default,'" + naziv + "','" + password + "','" + email + "')";
-            s = c.createStatement();
+            s = Baza.c.createStatement();
             s.executeUpdate(query);
             
             long kraj = System.currentTimeMillis();
@@ -149,9 +148,9 @@ public class UsersServersResource {
         String naziv = jo.getString("username");
         String password = jo.getString("password");
         String query = "Select * from korisnici where id=" + id + "";
-        spojiNaBazu();
+        
         try {
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
             while (rs.next()) {
                 query = "update korisnici set username='" + naziv + "',email='" + email + "',password='" + password + "' where id=" + id;
@@ -183,11 +182,10 @@ public class UsersServersResource {
             long pocetak= System.currentTimeMillis(); 
         JsonArrayBuilder jab = Json.createArrayBuilder();
         try {
-
-            spojiNaBazu();
+ 
 
             String query = "Select * from korisnici where username='"+korisnickoIme+"'";
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             ResultSet rs = s.executeQuery(query);
             System.out.println( "padne na upitu");
             int brojac = 0;
@@ -213,33 +211,15 @@ public class UsersServersResource {
         return jab.build().toString();
     }
     
-      public void spojiNaBazu() {
-        BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
-        try {
-            Class.forName(bp_konf.getDriverDatabase());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
-        }
-        /**
-         * Spajamo se na bazu kako bi upisivali potrebne podatke
-         */
-        try {
-            c = DriverManager.getConnection(bp_konf.getServerDatabase() + bp_konf.getUserDatabase(),
-                    bp_konf.getUserUsername(),
-                    bp_konf.getUserPassword());
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-    }
+     
       
               public void zapisiUDnevnik(int trajanje, int status,String url) {
         try {
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date now = new Date();
-            String strDate = sdfDate.format(now);
-            spojiNaBazu();
+            String strDate = sdfDate.format(now); 
             String query="insert into dnevnik values(default,'fvukovic','"+url+"','localhost','"+strDate+"', "+trajanje+", "+status+")";
-            Statement s = c.createStatement();
+            Statement s = Baza.c.createStatement();
             s.executeUpdate(query);
         } catch (SQLException ex) {
             Logger.getLogger(MeteoRESTResourceContainer.class.getName()).log(Level.SEVERE, null, ex);

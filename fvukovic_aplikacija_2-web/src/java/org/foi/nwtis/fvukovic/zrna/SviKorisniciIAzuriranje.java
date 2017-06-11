@@ -58,7 +58,7 @@ public class SviKorisniciIAzuriranje implements Serializable {
 
     public String getUsername() {
         
-        username =registracijaPrijava.usernameSesija;
+        username =SessionUtils.getUserName();
         return username;
     }
 
@@ -67,7 +67,7 @@ public class SviKorisniciIAzuriranje implements Serializable {
     }
 
     public String getPassword() {
-        password =SlusacAplikacije.passwordSesija;
+        password =SessionUtils.getPassword();
         return password;
     }
 
@@ -102,7 +102,7 @@ public class SviKorisniciIAzuriranje implements Serializable {
     public void azurirajKorisnika(){
        
         JsonObjectBuilder job = Json.createObjectBuilder(); 
-         job.add("id", "4");
+         job.add("id", SessionUtils.getUserId());
         job.add("username", this.username);
               job.add("password",this.password);
               job.add("email", this.email);
@@ -110,6 +110,7 @@ public class SviKorisniciIAzuriranje implements Serializable {
         System.err.println("MOLIMTE:   "+json);
     }
    public void dohvatiKorisnike(){ 
+         System.out.println("Molim te:  "+SessionUtils.getUserName());
         System.out.println("EMAIL: "+ SlusacAplikacije.emailSesija +SviKorisniciIAzuriranje.pls);
     String json =   MeteoWSKlijent.dohvatiSveUsereREST(); 
         System.out.println(json);

@@ -10,8 +10,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext; 
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
@@ -40,18 +52,57 @@ public class ServerDretva extends Thread{
     public void run() {
         
         System.out.println("Dosao sam u server");
-          
-        System.out.println("DAAAAAAJ:"+Iot_Master.registrirajGrupuIoT("fvukovic", "oWbMz"));
+           
          try {
 
             Short redniBrojDretve = 1;
                 Konfiguracija konf = (Konfiguracija) context.getAttribute("Baza_Konfig");
-            int port = Integer.parseInt(konf.dajPostavku("server.port"));
+                  String server = konf.dajPostavku("mail.server"); 
+        String korisnik = konf.dajPostavku("mail.usernameThread");
+        String lozinka = konf.dajPostavku("mail.passwordThread"); 
+
+                 // Start the session
+                java.util.Properties properties = System.getProperties();
+                properties.put("mail.smtp.host", server);
+                Session session = Session.getInstance(properties, null);
+
+                // Connect to the store
+                Store store;
+            try {
+                store = session.getStore("imap");
+                  store.connect(server, korisnik, lozinka);
+            } catch (NoSuchProviderException ex) {
+                Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MessagingException ex) {
+                Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+            }
+              
+            try {
+                MimeMessage message = new MimeMessage(session);
+                Address[] toAddresses = InternetAddress.parse("servis@nwtis.nastava.foi.hr");
+                message.setRecipients(Message.RecipientType.TO, toAddresses);
+               
+                message.setSubject(konf.dajPostavku("mail.subject"));
+                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date now = new Date();
+                String strDate = sdfDate.format(now);
+                message.setText("asdasd"+ "/n" + now);
+                DateFormat dateFormatt = new SimpleDateFormat("yyyy/MM/dd");
+                Date datet = new Date();
+                message.setSentDate(datet);
+                Transport.send(message);
+            } catch (MessagingException ex) {
+                Logger.getLogger(DretvaZahtjeva.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+                
+                
+            int port =  Integer.parseInt(konf.dajPostavku("server.port"));
 
               serverSocket = new ServerSocket(port);
-//            
-//              RadnaDretva nova1 = new RadnaDretva(context);
-//                nova1.start();  
+            
+              RadnaDretva nova1 = new RadnaDretva(context);
+               // nova1.start();  
              
                 System.out.println("Kreirao sam radnu dretvu ");
             while (true) {    

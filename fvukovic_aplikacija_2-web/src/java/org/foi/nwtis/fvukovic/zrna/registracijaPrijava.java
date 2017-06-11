@@ -9,6 +9,9 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -16,12 +19,14 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.Cookie; 
 import org.foi.nwtis.fvukovic.sesije.SessionUtils;
 import org.foi.nwtis.fvukovic.slusaci.SlusacAplikacije;
 import org.foi.nwtis.fvukovic.web.podaci.Korisnik;
 import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
+
 /**
  *
  * @author filip
@@ -30,34 +35,127 @@ import org.foi.nwtis.fvukovic.ws.klijenti.MeteoWSKlijent;
 @SessionScoped
 public class registracijaPrijava implements Serializable {
 
+     
     /**
      * Creates a new instance of registracijaPrijava
      */
+        
+        private String ipAdresa = "";
+    private String trajanje = "";
+    private String status = ""; 
+    private boolean filtrirano = false;
+
+    public String getIpAdresa() {
+        return ipAdresa;
+    }
+
+    public void setIpAdresa(String ipAdresa) {
+        this.ipAdresa = ipAdresa;
+    }
+
+    public String getTrajanje() {
+        return trajanje;
+    }
+
+    public void setTrajanje(String trajanje) {
+        this.trajanje = trajanje;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    /**
+     * Dohvacanje svih stavka iz Dnevnika
+     * @return 
+     */
+    
+
+    public boolean isFiltrirano() {
+        return filtrirano;
+    }
+
+    public void setFiltrirano(boolean filtrirano) {
+        this.filtrirano = filtrirano;
+    }
+
+ 
+        
     private String ispis = "adasd";
     private String username = "";
     private String password = "";
     private String email = "";
     private String usernameReg = "";
     private String passwordReg = "";
+    private String passwordReg2 = "";
     private String emailReg = "";
     private String regGreska = "";
     public static String usernameSesija = "";
-    public static int idSesija ;
-    public static String emailSesija ;
-    public static String passwordSesija ;
+    public static int idSesija;
+    public static String emailSesija;
+    public static String passwordSesija;
+    private String priGreska = "";
+
+    public String getPriGreska() {
+        return priGreska;
+    }
+
+    public void setPriGreska(String priGreska) {
+        this.priGreska = priGreska;
+    }
 
     public String getRegGreska() {
         return regGreska;
+    }
+
+    public String getPasswordReg2() {
+        return passwordReg2;
+    }
+
+    public void setPasswordReg2(String passwordReg2) {
+        this.passwordReg2 = passwordReg2;
+    }
+
+    public static String getUsernameSesija() {
+        return usernameSesija;
+    }
+
+    public static void setUsernameSesija(String usernameSesija) {
+        registracijaPrijava.usernameSesija = usernameSesija;
+    }
+
+    public static int getIdSesija() {
+        return idSesija;
+    }
+
+    public static void setIdSesija(int idSesija) {
+        registracijaPrijava.idSesija = idSesija;
+    }
+
+    public static String getEmailSesija() {
+        return emailSesija;
+    }
+
+    public static void setEmailSesija(String emailSesija) {
+        registracijaPrijava.emailSesija = emailSesija;
+    }
+
+    public static String getPasswordSesija() {
+        return passwordSesija;
+    }
+
+    public static void setPasswordSesija(String passwordSesija) {
+        registracijaPrijava.passwordSesija = passwordSesija;
     }
 
     public void setRegGreska(String regGreska) {
         this.regGreska = regGreska;
     }
 
-    public registracijaPrijava() {
-        
-        System.out.println("JSONaaaaaaaa"+ MeteoWSKlijent.dohvatiSveUsereREST());
-        
+    public registracijaPrijava() { 
     }
 
     public String getUsernameReg() {
@@ -117,18 +215,21 @@ public class registracijaPrijava implements Serializable {
     }
 
     public String prijaviSe() {
-        
-      HttpSession session = SessionUtils.getSession();
-			session.setAttribute("username", "Ja sam filip");
+
+        long pocetak = System.currentTimeMillis();
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+
         if (this.username.isEmpty() || this.password.isEmpty()) {
             System.out.println("NIJE SVE POPUNJENO" + this.username);
             System.out.println("NIJE SVE POPUNJENO" + this.email);
             System.out.println("NIJE SVE POPUNJENO" + this.password);
+            this.priGreska = "A";
+            return "";
         }
         String json = MeteoWSKlijent.registracijaREST(this.username);
         if (json.equals("[]")) {
             System.out.println("Ne postoji username");
-        } 
+        }
         JsonReader jsonReader = Json.createReader(new StringReader(json));
         JsonArray array = jsonReader.readArray();
         jsonReader.close();
@@ -142,17 +243,22 @@ public class registracijaPrijava implements Serializable {
             String email = jo.getString("email");
             System.out.println(username);
             if (pass.equals(this.password)) {
-                System.out.println("Ulogirani ste");  
-              
-              return"korisnici";
-            }else{
-                System.out.println("Kriva lozinka");  
-              
-            return "index";
+                System.out.println("Ulogirani ste");
+                HttpSession session = SessionUtils.getSession();
+                session.setAttribute("username", this.username);
+                session.setAttribute("password", this.password);
+                session.setAttribute("userid", id);
+
+                return "korisnici";
+            } else {
+                System.out.println("Kriva lozinka");
+                this.priGreska = "A";
+                return "";
             }
         }
-    
-    return "index";
+
+        this.priGreska = "A";
+        return "";
     }
 
     public void registrirajSe() {
@@ -160,7 +266,15 @@ public class registracijaPrijava implements Serializable {
             System.out.println("NIJE SVE POPUNJENO" + this.usernameReg);
             System.out.println("NIJE SVE POPUNJENO" + this.emailReg);
             System.out.println("NIJE SVE POPUNJENO" + this.passwordReg);
+            this.regGreska = "A";
+            return;
+        }
+        if (this.passwordReg.equals(this.passwordReg2)) {
 
+        } else {
+            this.regGreska = "A";
+            System.out.println("lozinke se ne podudaraju");
+            return;
         }
         String json = MeteoWSKlijent.registracijaREST(this.usernameReg);
         System.out.println(MeteoWSKlijent.registracijaREST(this.username));
@@ -177,4 +291,5 @@ public class registracijaPrijava implements Serializable {
         }
 
     }
+
 }

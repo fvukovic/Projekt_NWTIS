@@ -10,35 +10,11 @@
 <message name="zadnjihNMeteoResponse">
 <part name="parameters" element="tns:zadnjihNMeteoResponse"/>
 </message>
-<message name="dajSveMeteoPodatkeZaUredjaj">
-<part name="parameters" element="tns:dajSveMeteoPodatkeZaUredjaj"/>
-</message>
-<message name="dajSveMeteoPodatkeZaUredjajResponse">
-<part name="parameters" element="tns:dajSveMeteoPodatkeZaUredjajResponse"/>
-</message>
-<message name="zadnjiPreuzetiMeteo">
-<part name="parameters" element="tns:zadnjiPreuzetiMeteo"/>
-</message>
-<message name="zadnjiPreuzetiMeteoResponse">
-<part name="parameters" element="tns:zadnjiPreuzetiMeteoResponse"/>
-</message>
-<message name="spojiNaBazu">
-<part name="parameters" element="tns:spojiNaBazu"/>
-</message>
-<message name="spojiNaBazuResponse">
-<part name="parameters" element="tns:spojiNaBazuResponse"/>
-</message>
 <message name="hello">
 <part name="parameters" element="tns:hello"/>
 </message>
 <message name="helloResponse">
 <part name="parameters" element="tns:helloResponse"/>
-</message>
-<message name="vazeciMeteo">
-<part name="parameters" element="tns:vazeciMeteo"/>
-</message>
-<message name="vazeciMeteoResponse">
-<part name="parameters" element="tns:vazeciMeteoResponse"/>
 </message>
 <message name="zapisiUDnevnik">
 <part name="parameters" element="tns:zapisiUDnevnik"/>
@@ -52,30 +28,32 @@
 <message name="GeocoderResponse">
 <part name="parameters" element="tns:GeocoderResponse"/>
 </message>
+<message name="vazeciMeteo">
+<part name="parameters" element="tns:vazeciMeteo"/>
+</message>
+<message name="vazeciMeteoResponse">
+<part name="parameters" element="tns:vazeciMeteoResponse"/>
+</message>
+<message name="zadnjiPreuzetiMeteo">
+<part name="parameters" element="tns:zadnjiPreuzetiMeteo"/>
+</message>
+<message name="zadnjiPreuzetiMeteoResponse">
+<part name="parameters" element="tns:zadnjiPreuzetiMeteoResponse"/>
+</message>
+<message name="dajSveMeteoPodatkeZaUredjaj">
+<part name="parameters" element="tns:dajSveMeteoPodatkeZaUredjaj"/>
+</message>
+<message name="dajSveMeteoPodatkeZaUredjajResponse">
+<part name="parameters" element="tns:dajSveMeteoPodatkeZaUredjajResponse"/>
+</message>
 <portType name="GeoMeteoWS">
 <operation name="zadnjihNMeteo">
 <input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/zadnjihNMeteoRequest" message="tns:zadnjihNMeteo"/>
 <output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/zadnjihNMeteoResponse" message="tns:zadnjihNMeteoResponse"/>
 </operation>
-<operation name="dajSveMeteoPodatkeZaUredjaj">
-<input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/dajSveMeteoPodatkeZaUredjajRequest" message="tns:dajSveMeteoPodatkeZaUredjaj"/>
-<output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/dajSveMeteoPodatkeZaUredjajResponse" message="tns:dajSveMeteoPodatkeZaUredjajResponse"/>
-</operation>
-<operation name="zadnjiPreuzetiMeteo">
-<input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/zadnjiPreuzetiMeteoRequest" message="tns:zadnjiPreuzetiMeteo"/>
-<output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/zadnjiPreuzetiMeteoResponse" message="tns:zadnjiPreuzetiMeteoResponse"/>
-</operation>
-<operation name="spojiNaBazu">
-<input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/spojiNaBazuRequest" message="tns:spojiNaBazu"/>
-<output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/spojiNaBazuResponse" message="tns:spojiNaBazuResponse"/>
-</operation>
 <operation name="hello">
 <input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/helloRequest" message="tns:hello"/>
 <output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/helloResponse" message="tns:helloResponse"/>
-</operation>
-<operation name="vazeciMeteo">
-<input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/vazeciMeteoRequest" message="tns:vazeciMeteo"/>
-<output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/vazeciMeteoResponse" message="tns:vazeciMeteoResponse"/>
 </operation>
 <operation name="zapisiUDnevnik">
 <input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/zapisiUDnevnikRequest" message="tns:zapisiUDnevnik"/>
@@ -84,6 +62,18 @@
 <operation name="Geocoder">
 <input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/GeocoderRequest" message="tns:Geocoder"/>
 <output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/GeocoderResponse" message="tns:GeocoderResponse"/>
+</operation>
+<operation name="vazeciMeteo">
+<input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/vazeciMeteoRequest" message="tns:vazeciMeteo"/>
+<output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/vazeciMeteoResponse" message="tns:vazeciMeteoResponse"/>
+</operation>
+<operation name="zadnjiPreuzetiMeteo">
+<input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/zadnjiPreuzetiMeteoRequest" message="tns:zadnjiPreuzetiMeteo"/>
+<output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/zadnjiPreuzetiMeteoResponse" message="tns:zadnjiPreuzetiMeteoResponse"/>
+</operation>
+<operation name="dajSveMeteoPodatkeZaUredjaj">
+<input wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/dajSveMeteoPodatkeZaUredjajRequest" message="tns:dajSveMeteoPodatkeZaUredjaj"/>
+<output wsam:Action="http://ws.fvukovic.nwtis.foi.org/GeoMeteoWS/dajSveMeteoPodatkeZaUredjajResponse" message="tns:dajSveMeteoPodatkeZaUredjajResponse"/>
 </operation>
 </portType>
 <binding name="GeoMeteoWSPortBinding" type="tns:GeoMeteoWS">
@@ -97,43 +87,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="dajSveMeteoPodatkeZaUredjaj">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="zadnjiPreuzetiMeteo">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="spojiNaBazu">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="vazeciMeteo">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -152,6 +106,33 @@
 </output>
 </operation>
 <operation name="Geocoder">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="vazeciMeteo">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="zadnjiPreuzetiMeteo">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="dajSveMeteoPodatkeZaUredjaj">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
