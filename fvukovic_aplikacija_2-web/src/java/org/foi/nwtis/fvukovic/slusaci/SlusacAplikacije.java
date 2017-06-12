@@ -8,11 +8,14 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContext;
 import java.io.File;
+import javax.ejb.EJB;
+import org.foi.nwtis.fvukovic.dretve.ObradaPoruka;
 import org.foi.nwtis.fvukovic.konfiguracije.Konfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.KonfiguracijaApstraktna;
 import org.foi.nwtis.fvukovic.konfiguracije.NeispravnaKonfiguracija;
 import org.foi.nwtis.fvukovic.konfiguracije.NemaKonfiguracije;
 import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija; 
+import org.foi.nwtis.fvukovic.zrna.PregledMailova;
 import org.foi.nwtis.fvukovic.zrna.SviKorisniciIAzuriranje;
 
 /**
@@ -28,7 +31,7 @@ public class SlusacAplikacije implements ServletContextListener {
     public static String passwordSesija ;
 
     @Override
-    public void contextInitialized(ServletContextEvent sce) {
+    public void contextInitialized(ServletContextEvent sce) { 
         System.out.println("RADI KOD POKRETANJA");
         ServletContext context = sce.getServletContext();
         String datoteka = context.getRealPath("/WEB-INF")
@@ -42,7 +45,8 @@ public class SlusacAplikacije implements ServletContextListener {
         try {
             konf = KonfiguracijaApstraktna.preuzmiKonfiguraciju(datoteka);
             context.setAttribute("Mail_Konfig", konf);
-            
+            PregledMailova.sc=context;
+            ObradaPoruka.sc=context;
            
 
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {

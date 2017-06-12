@@ -28,12 +28,23 @@ public class naredbeServer implements Serializable {
      */
     private String odgovor;
     private String statusServer;
+    private String odgovorMaster;
     
     
     public naredbeServer() {
          
     }
 
+    public String getOdgovorMaster() {
+        return odgovorMaster;
+    }
+
+    public void setOdgovorMaster(String odgovorMaster) {
+        this.odgovorMaster = odgovorMaster;
+    }
+
+    
+    
     public String getOdgovor() {
         return odgovor;
     }
@@ -173,7 +184,7 @@ public class naredbeServer implements Serializable {
             }
             s.close();
             System.out.println("Primljeni  odgovor: " + sb);
-            odgovor=sb.toString();
+            odgovorMaster=sb.toString();
         } catch (IOException ex) {
                  System.out.println(ex);
         }  
@@ -205,7 +216,7 @@ public class naredbeServer implements Serializable {
             }
             s.close();
             System.out.println("Primljeni  odgovor: " + sb);
-            odgovor=sb.toString();
+            odgovorMaster=sb.toString();
         } catch (IOException ex) {
                  System.out.println(ex);
         }  
@@ -236,7 +247,7 @@ public class naredbeServer implements Serializable {
             }
             s.close();
             System.out.println("Primljeni  odgovor: " + sb);
-            odgovor=sb.toString();
+            odgovorMaster=sb.toString();
         } catch (IOException ex) {
                  System.out.println(ex);
         }  
@@ -267,12 +278,12 @@ public class naredbeServer implements Serializable {
             }
             s.close();
             System.out.println("Primljeni  odgovor: " + sb);
-            odgovor=sb.toString();
+            odgovorMaster=sb.toString();
         } catch (IOException ex) {
                  System.out.println(ex);
         }  
     }
-     public void statusMaster(){
+       public void clearMaster(){
     
         Socket socket = null; 
         System.out.println("start funkcija");
@@ -281,7 +292,7 @@ public class naredbeServer implements Serializable {
             Socket s = new Socket("localhost", 8000);
             InputStream is = s.getInputStream();
             OutputStream os = s.getOutputStream();
-              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; STATUS;";
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master CLEAR;";
            //  String zahtjev = "IoT 123456 ; WORK;";
             System.out.println(zahtjev);
             os.write(zahtjev.getBytes());
@@ -298,16 +309,145 @@ public class naredbeServer implements Serializable {
             }
             s.close();
             System.out.println("Primljeni  odgovor: " + sb);
-            odgovor=sb.toString();
+            odgovorMaster=sb.toString();
+        } catch (IOException ex) {
+                 System.out.println(ex);
+        }  
+    }
+       
+         public void pauseMaster(){
+    
+        Socket socket = null; 
+        System.out.println("start funkcija");
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master PAUSE;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
+
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+            odgovorMaster=sb.toString();
         } catch (IOException ex) {
                  System.out.println(ex);
         }  
     }
     
+          public void listMaster(){
+    
+        Socket socket = null; 
+        System.out.println("list funkcija");
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master LIST;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
+
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+            odgovorMaster=sb.toString();
+        } catch (IOException ex) {
+                 System.out.println(ex);
+        }  
+    }
+             public void loadMaster(){
+    
+        Socket socket = null; 
+        System.out.println("list funkcija");
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master LOAD;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
+
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+            odgovorMaster=sb.toString();
+        } catch (IOException ex) {
+                 System.out.println(ex);
+        }  
+    }
+         
+         
+     public void statusMaster(){
+    
+        Socket socket = null; 
+        System.out.println("STATUS funkcija");
+             try {
+                 
+            Socket s = new Socket("localhost", 8000);
+            InputStream is = s.getInputStream();
+            OutputStream os = s.getOutputStream();
+              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master STATUS;";
+           //  String zahtjev = "IoT 123456 ; WORK;";
+            System.out.println(zahtjev);
+            os.write(zahtjev.getBytes());
+            os.flush();
+            s.shutdownOutput();
+
+            StringBuffer sb = new StringBuffer();
+            while (true) {
+                int znak = is.read();
+                if (znak == -1) {
+                    break;
+                }
+                sb.append((char) znak);
+            }
+            s.close();
+            System.out.println("Primljeni  odgovor: " + sb);
+            odgovorMaster=sb.toString();
+        } catch (IOException ex) {
+                 System.out.println(ex);
+        }  
+    }
+    
+     
     public void status(){
     
         Socket socket = null; 
-        System.out.println("start funkcija");
+        System.out.println("status funkcija");
              try {
                  
             Socket s = new Socket("localhost", 8000);

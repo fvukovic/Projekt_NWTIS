@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+      <f:view locale="#{lokalizator.odabraniJezik}" > 
     <h:head>
         <title>Facelet Title</title>
         <script>
@@ -35,13 +36,14 @@
          
         <h:form id="forma">
             <h1>#{m.korisnici}</h1>
-                            <h:commandButton value="#{m.uredaji}"  action="pregledIoTIMateo" /> 
-                        <h:commandButton value="index"  action="index" /> 
+            <h:commandButton value="#{m.jezik}"  action="promjenaJezika" /> 
+                            <h:commandButton value="#{m.uredaji}"  action="pregledIoTIMateo" />                       
                          <h:commandButton value="#{m.naredbe}"  action="naredbe" /> 
-                            <br/>
+                              <h:commandButton value="mail" action="pregledMailova"/>
+                              <h:commandButton value="IoT_master" action="ioT_master"/><br/><br/><br/>
+                                <h:commandButton value="#{m.odjava}"  action="index" /> 
                            <h:outputLabel value="#{m.username}" for="noviId" /> <br/>
-                        <h:inputText value="#{sviKorisniciIAzuriranje.username}" id="noviId" /><br/>
-                        <h:outputText value="" /><br/>
+                        <h:inputText value="#{sviKorisniciIAzuriranje.username}" id="noviId" /><br/> 
                         <h:outputLabel value="password " for="noviNaziv" /><br/>
                         <h:inputText value="#{sviKorisniciIAzuriranje.password}" id="noviNaziv" /> <br/>
                         <h:outputLabel value="email " for="noviEmail" /> <br/>
@@ -50,6 +52,9 @@
                             <f:ajax execute="noviId noviNaziv noviEmail" render="forma" />
                         </h:commandButton><br/>
                         
+                        <br/>
+                        <h:outputLabel id="greska" rendered="#{sviKorisniciIAzuriranje.odgovor== 'A'}" value="#{m.pregledPoruka_registracijaGreska}" /> 
+                        <br/><br/>
     		<h:dataTable id="sviKorisnici" value="#{sviKorisniciIAzuriranje.korisnici}" var="o"
     			styleClass="order-table"
     			headerClass="order-table-header"
@@ -83,5 +88,6 @@
             
         </h:form>
     </h:body>
+            </f:view>
 </html>
 

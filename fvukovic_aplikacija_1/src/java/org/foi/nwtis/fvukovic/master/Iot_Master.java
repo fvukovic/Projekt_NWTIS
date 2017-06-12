@@ -52,8 +52,35 @@ public class Iot_Master {
         
         
     }
+    
+    
+    
 
     public static java.util.List<org.foi.nwtis.dkermek.ws.serveri.Uredjaj> dajSveUredjajeGrupe(java.lang.String korisnickoIme, java.lang.String korisnickaLozinka) {
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service service = new org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service();
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster port = service.getIoTMasterPort();
+        return port.dajSveUredjajeGrupe(korisnickoIme, korisnickaLozinka);
+    }
+
+    public static StatusKorisnika dajStatusGrupeIoT_1(java.lang.String korisnickoIme, java.lang.String korisnickaLozinka) {
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service service = new org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service();
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster port = service.getIoTMasterPort();
+        return port.dajStatusGrupeIoT(korisnickoIme, korisnickaLozinka);
+    }
+
+    public static boolean ucitajSveUredjajeGrupe(java.lang.String korisnickoIme, java.lang.String korisnickaLozinka) {
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service service = new org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service();
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster port = service.getIoTMasterPort();
+        return port.ucitajSveUredjajeGrupe(korisnickoIme, korisnickaLozinka);
+    }
+
+    public static Boolean obrisiSveUredjajeGrupe_1(java.lang.String korisnickoIme, java.lang.String korisnickaLozinka) {
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service service = new org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service();
+        org.foi.nwtis.dkermek.ws.serveri.IoTMaster port = service.getIoTMasterPort();
+        return port.obrisiSveUredjajeGrupe(korisnickoIme, korisnickaLozinka);
+    }
+
+    public static java.util.List<org.foi.nwtis.dkermek.ws.serveri.Uredjaj> dajSveUredjajeGrupe_1(java.lang.String korisnickoIme, java.lang.String korisnickaLozinka) {
         org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service service = new org.foi.nwtis.dkermek.ws.serveri.IoTMaster_Service();
         org.foi.nwtis.dkermek.ws.serveri.IoTMaster port = service.getIoTMasterPort();
         return port.dajSveUredjajeGrupe(korisnickoIme, korisnickaLozinka);

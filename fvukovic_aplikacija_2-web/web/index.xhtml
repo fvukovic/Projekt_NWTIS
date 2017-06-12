@@ -3,48 +3,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+      <f:view locale="#{lokalizator.odabraniJezik}" > 
     <h:head>
-        <title>home</title>
-        <script>
+ 
+                   <style>
+                .button-sivi{
+                  background:    #666666;
+background:    -webkit-linear-gradient(#666666, #666666);
+background:    linear-gradient(#666666, #666666);
+border:        3px solid #444444;
+border-radius: 15px;
+padding:       5px 20px;
+color:         #000000;
+display:       inline-block;
+font:          normal 100 11px/1 "Open Sans", sans-serif;
+text-align:    center;
+text-shadow:   none;
+                }
 
-            .order - table{
-            border - collapse:collapse;
-            }
-
-            .order - table - header{
-            text - align:center;
-            background:none repeat scroll 0 0 #E5E5E5;
-            border - bottom:1px solid #BBBBBB;
-            padding:16px;
-            }
-
-            .order - table - odd - row{
-            text - align:center;
-            background:none repeat scroll 0 0 #FFFFFFF;
-            border - top:1px solid #BBBBBB;
-            }
-
-            .order - table - even - row{
-            text - align:center;
-            background:none repeat scroll 0 0 #F9F9F9;
-            border - top:1px solid #BBBBBB;
-            }
-        </script>
+            </style>
     </h:head>
     <h:body>
 
         <h:form id="forma">
-            <h1>Home</h1> 
-
+            <h1>#{m.singin} i #{m.singup}</h1> 
+            <h:commandButton   value="#{m.jezik}" action="promjenaJezika"/><br/><br/><br/>
             <h:outputLabel value="#{m.username}" for="noviId2" />
-            <h:inputText value="#{registracijaPrijava.usernameReg}" id="noviId2" /><br/>
+            <h:inputText  value="#{registracijaPrijava.usernameReg}" id="noviId2" /><br/>
             <h:outputLabel value="#{m.password}" for="noviNaziv2" />
             <h:inputText value="#{registracijaPrijava.passwordReg}" id="noviNaziv2" /> <br/>
              <h:outputLabel value="2 #{m.password}" for="noviNaziv3" />
             <h:inputText value="#{registracijaPrijava.passwordReg2}" id="noviNaziv3" /> <br/>
             <h:outputLabel value="#{m.email}"  for="noviEmai2" /> 
             <h:inputText value="#{registracijaPrijava.emailReg}"   id="noviEmai2" /> <br/>
-            <h:commandButton value="#{m.singup}" action="#{registracijaPrijava.registrirajSe()}" >
+            <h:commandButton class="button-sivi" value="#{m.singup}" action="#{registracijaPrijava.registrirajSe()}" >
                 <f:ajax execute="noviId2 noviNaziv3 noviNaziv2 noviEmai2" render="noviEmail2 forma"/>
             </h:commandButton><br/>
              <h:outputLabel id="greska" rendered="#{registracijaPrijava.regGreska == 'A'}" value="#{m.pregledPoruka_registracijaGreska}" /> 
@@ -56,11 +48,11 @@
             <h:outputLabel value="#{m.password}" for="noviNaziv" />
             <h:inputText value="#{registracijaPrijava.password}" id="noviNaziv" /> <br/>
 
-            <h:commandButton value="#{m.singin}" action="#{registracijaPrijava.prijaviSe()}" >
+            <h:commandButton class="button-sivi" value="#{m.singin}" action="#{registracijaPrijava.prijaviSe()}" >
                 <f:ajax execute="noviId noviNaziv " render="forma" />
             </h:commandButton>
 
-            <h:commandButton value="#{m.jezik}" action="promjenaJezika"/>
+         
             
             
              <h:outputLabel id="greskaPrijava" rendered="#{registracijaPrijava.priGreska == 'A'}" value="#{m.greskaPrijava}" /> 
@@ -68,5 +60,6 @@
             
         </h:form>
     </h:body>
+            </f:view>
 </html>
 

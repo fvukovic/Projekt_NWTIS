@@ -39,6 +39,7 @@ public class SviKorisniciIAzuriranje implements Serializable {
     private String email=""; 
     public static ServletContext sc;
     public static String pls = "";
+    private String odgovor="";
 
     /**
      * Creates a new instance of PregledKorisnika
@@ -51,6 +52,16 @@ public class SviKorisniciIAzuriranje implements Serializable {
 			     System.out.println("SEIJAAAAAAAAAAAAA:"+session.getAttribute("username"));
            
     }
+
+    public String getOdgovor() {
+        return odgovor;
+    }
+
+    public void setOdgovor(String odgovor) {
+        this.odgovor = odgovor;
+    }
+    
+    
 
     public String getIspis() {
         return ispis;
@@ -108,6 +119,13 @@ public class SviKorisniciIAzuriranje implements Serializable {
               job.add("email", this.email);
         String json =   MeteoWSKlijent.upodateUserREST(job.build());
         System.err.println("MOLIMTE:   "+json);
+        if(json.equals("0")){
+            this.odgovor="A";
+            return;
+        }
+        HttpSession sesija = SessionUtils.getSession();
+        sesija.setAttribute("username", this.username);
+        sesija.setAttribute("password", this.password);
     }
    public void dohvatiKorisnike(){ 
          System.out.println("Molim te:  "+SessionUtils.getUserName());
