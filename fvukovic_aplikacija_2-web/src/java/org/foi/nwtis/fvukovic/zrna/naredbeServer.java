@@ -95,6 +95,9 @@ public class naredbeServer implements Serializable {
                  System.out.println(ex);
         }  
     }
+    /**
+     * salje naredbu za pauziranje radne dretve na serveru
+     */
     public void pause(){
     
         Socket socket = null; 
@@ -126,6 +129,9 @@ public class naredbeServer implements Serializable {
                  System.out.println(ex);
         }  
     }
+    /**
+     * Salje naredbu za stopiranje radne dretve, prekida primanje svih komandi
+     */
     public void stop(){
     
         Socket socket = null; 
@@ -157,7 +163,9 @@ public class naredbeServer implements Serializable {
                  System.out.println(ex);
         }  
     }
-    
+    /**
+     * salje zahtjev za registriranje grupe
+     */
     public void startMaster(){
     
         Socket socket = null; 
@@ -189,7 +197,9 @@ public class naredbeServer implements Serializable {
                  System.out.println(ex);
         }  
     }
-    
+    /**
+     * salje zahtjev za aktiviranje grupe
+     */
       public void workMaster(){
     
         Socket socket = null; 
@@ -221,6 +231,9 @@ public class naredbeServer implements Serializable {
                  System.out.println(ex);
         }  
     }
+      /**
+       *Deregistrira grupu 
+       */
       public void stopMaster(){
     
         Socket socket = null; 
@@ -252,6 +265,9 @@ public class naredbeServer implements Serializable {
                  System.out.println(ex);
         }  
     }
+      /**
+       * pauzira grupu 
+       */
       public void waitMaster(){
     
         Socket socket = null; 
@@ -283,38 +299,10 @@ public class naredbeServer implements Serializable {
                  System.out.println(ex);
         }  
     }
-       public void clearMaster(){
-    
-        Socket socket = null; 
-        System.out.println("start funkcija");
-             try {
-                 
-            Socket s = new Socket("localhost", 8000);
-            InputStream is = s.getInputStream();
-            OutputStream os = s.getOutputStream();
-              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master CLEAR;";
-           //  String zahtjev = "IoT 123456 ; WORK;";
-            System.out.println(zahtjev);
-            os.write(zahtjev.getBytes());
-            os.flush();
-            s.shutdownOutput();
-
-            StringBuffer sb = new StringBuffer();
-            while (true) {
-                int znak = is.read();
-                if (znak == -1) {
-                    break;
-                }
-                sb.append((char) znak);
-            }
-            s.close();
-            System.out.println("Primljeni  odgovor: " + sb);
-            odgovorMaster=sb.toString();
-        } catch (IOException ex) {
-                 System.out.println(ex);
-        }  
-    }
-       
+      
+       /**
+        * nije implementirano
+        */
          public void pauseMaster(){
     
         Socket socket = null; 
@@ -347,70 +335,10 @@ public class naredbeServer implements Serializable {
         }  
     }
     
-          public void listMaster(){
-    
-        Socket socket = null; 
-        System.out.println("list funkcija");
-             try {
-                 
-            Socket s = new Socket("localhost", 8000);
-            InputStream is = s.getInputStream();
-            OutputStream os = s.getOutputStream();
-              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master LIST;";
-           //  String zahtjev = "IoT 123456 ; WORK;";
-            System.out.println(zahtjev);
-            os.write(zahtjev.getBytes());
-            os.flush();
-            s.shutdownOutput();
-
-            StringBuffer sb = new StringBuffer();
-            while (true) {
-                int znak = is.read();
-                if (znak == -1) {
-                    break;
-                }
-                sb.append((char) znak);
-            }
-            s.close();
-            System.out.println("Primljeni  odgovor: " + sb);
-            odgovorMaster=sb.toString();
-        } catch (IOException ex) {
-                 System.out.println(ex);
-        }  
-    }
-             public void loadMaster(){
-    
-        Socket socket = null; 
-        System.out.println("list funkcija");
-             try {
-                 
-            Socket s = new Socket("localhost", 8000);
-            InputStream is = s.getInputStream();
-            OutputStream os = s.getOutputStream();
-              String zahtjev = "USER "+SessionUtils.getUserName()+"; PASSWD "+SessionUtils.getPassword()+"; IoT_Master LOAD;";
-           //  String zahtjev = "IoT 123456 ; WORK;";
-            System.out.println(zahtjev);
-            os.write(zahtjev.getBytes());
-            os.flush();
-            s.shutdownOutput();
-
-            StringBuffer sb = new StringBuffer();
-            while (true) {
-                int znak = is.read();
-                if (znak == -1) {
-                    break;
-                }
-                sb.append((char) znak);
-            }
-            s.close();
-            System.out.println("Primljeni  odgovor: " + sb);
-            odgovorMaster=sb.toString();
-        } catch (IOException ex) {
-                 System.out.println(ex);
-        }  
-    }
          
-         
+         /**
+          * vraca status grupe sa servisa
+          */
      public void statusMaster(){
     
         Socket socket = null; 
@@ -443,7 +371,9 @@ public class naredbeServer implements Serializable {
         }  
     }
     
-     
+   /**
+    * braca status radne dretve
+    */  
     public void status(){
     
         Socket socket = null; 

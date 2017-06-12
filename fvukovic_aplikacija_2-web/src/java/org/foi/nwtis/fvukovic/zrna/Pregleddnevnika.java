@@ -22,11 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScoped
 public class Pregleddnevnika implements Serializable {
 
+  
     /**
      * Creates a new instance of Pregleddnevnika
      */
     public Pregleddnevnika() {
     }
      
-    
+    public void dohvati(){
+     
+    }
 }

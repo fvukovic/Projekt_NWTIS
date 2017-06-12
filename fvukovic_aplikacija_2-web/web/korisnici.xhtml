@@ -39,15 +39,15 @@
             <h:commandButton value="#{m.jezik}"  action="promjenaJezika" /> 
                             <h:commandButton value="#{m.uredaji}"  action="pregledIoTIMateo" />                       
                          <h:commandButton value="#{m.naredbe}"  action="naredbe" /> 
-                              <h:commandButton value="mail" action="pregledMailova"/>
-                              <h:commandButton value="IoT_master" action="ioT_master"/><br/><br/><br/>
-                                <h:commandButton value="#{m.odjava}"  action="index" /> 
+                              <h:commandButton value="E-mail" action="pregledMailova"/>
+                              <h:commandButton value="IoT_master" action="ioT_master"/>
+                                <h:commandButton value="#{m.odjava}"  action="index" /> <br/><br/><br/>
                            <h:outputLabel value="#{m.username}" for="noviId" /> <br/>
                         <h:inputText value="#{sviKorisniciIAzuriranje.username}" id="noviId" /><br/> 
                         <h:outputLabel value="password " for="noviNaziv" /><br/>
                         <h:inputText value="#{sviKorisniciIAzuriranje.password}" id="noviNaziv" /> <br/>
                         <h:outputLabel value="email " for="noviEmail" /> <br/>
-                        <h:inputText value="#{sviKorisniciIAzuriranje.email}" id="noviEmail" /> 
+                        <h:inputText value="#{sviKorisniciIAzuriranje.email}" id="noviEmail" /> <br/><br/>
                         <h:commandButton value="#{m.azuriraj}" action="#{sviKorisniciIAzuriranje.azurirajKorisnika()}" >
                             <f:ajax execute="noviId noviNaziv noviEmail" render="forma" />
                         </h:commandButton><br/>

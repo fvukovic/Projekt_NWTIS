@@ -41,7 +41,9 @@ public class iot_master implements Serializable {
 
     
     
-  
+  /**
+   * Salje zahtjev za brisanje svih uredaja na servisu
+   */
        public void clearMaster(){
     
         Socket socket = null; 
@@ -74,7 +76,9 @@ public class iot_master implements Serializable {
         }  
     }
        
-        
+        /**
+         * salje zahtjev za primanje svih uredaja sa servisa
+         */
           public void listMaster(){
     
         Socket socket = null; 
@@ -106,6 +110,9 @@ public class iot_master implements Serializable {
                  System.out.println(ex);
         }  
     }
+          /**
+           * salje zahjev za kreiranje svih uredaja na servisu
+           */
              public void loadMaster(){
     
         Socket socket = null; 

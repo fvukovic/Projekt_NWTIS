@@ -10,8 +10,13 @@
   <h:body>
          
         <h:form id="formica">
-          <h1>Uredaji</h1>
-          <h:commandButton value="index" action="index" />  <h:commandButton value="#{m.jezik}" action="promjenaJezika" /> <h:commandButton value="#{m.korisnici}" action="korisnici" />
+            <h1>#{m.uredaji}</h1>
+             <h:commandButton value="#{m.uredaji}"  action="pregledIoTIMateo" /> 
+                        <h:commandButton value="#{m.odjava}"  action="index" /> 
+                         <h:commandButton value="#{m.naredbe}"  action="naredbe" /> 
+                              <h:commandButton value="E-mail" action="pregledMailova"/>
+                              <h:commandButton value="#{m.korisnici}" action="korisnici"/>
+                               <h:commandButton value="#{m.jezik}" action="promjenaJezika"/> 
           <br/><br/>
           <div style="border:solid 1px;padding:20px;width:400px;display: inline-block;display: table-cell;">
           <h:outputLabel value="ID: " /><br/>
@@ -20,7 +25,7 @@
           <h:inputText id="naziv" value="#{pregledIoTIMeteo.naziv}"/><br/>
            <h:outputLabel value="Latitude " /><br/>
           <h:inputText  id="lat" value="#{pregledIoTIMeteo.lat}"/> <br/>
-          <h:outputLabel  value="Longitude}"/> <br/>
+          <h:outputLabel  value="Longitude"/> <br/>
            <h:inputText id="lon" value="#{pregledIoTIMeteo.lon}"/> 
            
            
@@ -38,7 +43,6 @@
     			headerClass="order-table-header"
     			rowClasses="order-table-odd-row,order-table-even-row"
     		>
-
     			<h:column>
     				<!-- column header -->
     				<f:facet name="header">Id</f:facet>
@@ -50,9 +54,9 @@
     				<f:facet name="header">Latitude</f:facet>
     				#{o.geoloc.latitude}
     			</h:column>
-
+ 
     			<h:column>
-    				<f:facet name="header">Password</f:facet>
+    				<f:facet name="header">Longitude</f:facet>
     				#{o.geoloc.longitude}
     			</h:column>
 
@@ -69,8 +73,9 @@
                             <f:ajax execute="id2" render="formica" />
                         </h:commandButton><br/><br/><br/>
                         <h:outputText style="color:green" value="#{pregledIoTIMeteo.geoAdresa}"  /><br/><br/>
-             
-               <h:inputText id="id3" value="#{pregledIoTIMeteo.idN}"/>
+                        <h:outputLabel value="ID: "/> <br/>
+               <h:inputText id="id3" value="#{pregledIoTIMeteo.idN}"/><br/>
+               <h:outputLabel value="N: " style="margin-left: 100px"/><br/>
                 <h:inputText id="n" value="#{pregledIoTIMeteo.n}"/>
                  <h:commandButton value="#{m.dohvati}" action="#{pregledIoTIMeteo.dohvatiNmeteoPodataka()}" >
                             <f:ajax execute="n id3" render="formica" />
@@ -106,8 +111,9 @@
 
     		</h:dataTable>
                 <br/>
+                <h:outputLabel value="ID: "/><br/>
                 <h:inputText id="id4" value="#{pregledIoTIMeteo.idVazeci}"/> 
-                <h:commandButton value="Geokodiraj" action="#{pregledIoTIMeteo.dohvatiVazece()}" >
+                <h:commandButton value="#{m.dohvati}" action="#{pregledIoTIMeteo.dohvatiVazece()}" >
                             <f:ajax execute="id4" render="formica" />
                         </h:commandButton>
                  <br/> <br/>

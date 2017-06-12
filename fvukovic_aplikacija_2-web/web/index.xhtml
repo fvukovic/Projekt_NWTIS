@@ -3,63 +3,69 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-      <f:view locale="#{lokalizator.odabraniJezik}" > 
-    <h:head>
- 
-                   <style>
+    <f:view locale="#{lokalizator.odabraniJezik}" > 
+        <h:head>
+
+            <style>
                 .button-sivi{
-                  background:    #666666;
-background:    -webkit-linear-gradient(#666666, #666666);
-background:    linear-gradient(#666666, #666666);
-border:        3px solid #444444;
-border-radius: 15px;
-padding:       5px 20px;
-color:         #000000;
-display:       inline-block;
-font:          normal 100 11px/1 "Open Sans", sans-serif;
-text-align:    center;
-text-shadow:   none;
+                    background:    #666666;
+                    background:    -webkit-linear-gradient(#666666, #666666);
+                    background:    linear-gradient(#666666, #666666);
+                    border:        3px solid #444444;
+                    border-radius: 15px;
+                    padding:       5px 20px;
+                    color:         #000000;
+                    display:       inline-block;
+                    font:          normal 100 11px/1 "Open Sans", sans-serif;
+                    text-align:    center;
+                    text-shadow:   none;
                 }
+                h:outputLabel{
+                    width: 100px;
 
+                }
             </style>
-    </h:head>
-    <h:body>
+        </h:head>
+        <h:body>
 
-        <h:form id="forma">
-            <h1>#{m.singin} i #{m.singup}</h1> 
-            <h:commandButton   value="#{m.jezik}" action="promjenaJezika"/><br/><br/><br/>
-            <h:outputLabel value="#{m.username}" for="noviId2" />
-            <h:inputText  value="#{registracijaPrijava.usernameReg}" id="noviId2" /><br/>
-            <h:outputLabel value="#{m.password}" for="noviNaziv2" />
-            <h:inputText value="#{registracijaPrijava.passwordReg}" id="noviNaziv2" /> <br/>
-             <h:outputLabel value="2 #{m.password}" for="noviNaziv3" />
-            <h:inputText value="#{registracijaPrijava.passwordReg2}" id="noviNaziv3" /> <br/>
-            <h:outputLabel value="#{m.email}"  for="noviEmai2" /> 
-            <h:inputText value="#{registracijaPrijava.emailReg}"   id="noviEmai2" /> <br/>
-            <h:commandButton class="button-sivi" value="#{m.singup}" action="#{registracijaPrijava.registrirajSe()}" >
-                <f:ajax execute="noviId2 noviNaziv3 noviNaziv2 noviEmai2" render="noviEmail2 forma"/>
-            </h:commandButton><br/>
-             <h:outputLabel id="greska" rendered="#{registracijaPrijava.regGreska == 'A'}" value="#{m.pregledPoruka_registracijaGreska}" /> 
-            <br/><br/>
+            <h:form id="forma">
+                <h1>#{m.singin}, #{m.singup}</h1> 
+
+ 
+                <h:commandButton   value="#{m.jezik}" action="promjenaJezika"/><br/><br/><br/>
+                <h:outputLabel style=" display: inline-block;  width: 140px;  text-align: center;" value="#{m.username}" for="noviId2" />
+                <h:inputText  value="#{registracijaPrijava.usernameReg}" id="noviId2" /><br/>
+                <h:outputLabel  style=" display: inline-block;  width: 140px;  text-align: center;"  value="#{m.password}" for="noviNaziv2" />
+                <h:inputText value="#{registracijaPrijava.passwordReg}" id="noviNaziv2" /> <br/>
+                <h:outputLabel  style=" display: inline-block;  width: 140px;  text-align: center;"  value="2 #{m.password}" for="noviNaziv3" />
+                <h:inputText value="#{registracijaPrijava.passwordReg2}" id="noviNaziv3" /> <br/>
+                <h:outputLabel  style=" display: inline-block;  width: 140px;  text-align: center;"  value="#{m.email}"  for="noviEmai2" /> 
+                <h:inputText value="#{registracijaPrijava.emailReg}"   id="noviEmai2" /> <br/><br/>
+                <h:commandButton style="margin-left:200px" class="button-sivi" value="#{m.singup}" action="#{registracijaPrijava.registrirajSe()}" >
+                    <f:ajax execute="noviId2 noviNaziv3 noviNaziv2 noviEmai2" render="noviEmail2 forma"/>
+                </h:commandButton><br/><br/>
+                <h:outputLabel id="greska" rendered="#{registracijaPrijava.regGreska == 'A'}" value="#{m.pregledPoruka_registracijaGreska}" /> 
+                <h:outputLabel id="greska2" rendered="#{registracijaPrijava.reg == 'A'}" value="#{m.uspjesnaReg}" /> 
+                <br/><br/>
 
 
-            <h:outputLabel value="#{m.username}" for="noviId" />
-            <h:inputText value="#{registracijaPrijava.username}" id="noviId" /> <br/>
-            <h:outputLabel value="#{m.password}" for="noviNaziv" />
-            <h:inputText value="#{registracijaPrijava.password}" id="noviNaziv" /> <br/>
+                <h:outputLabel  style=" display: inline-block;  width: 140px;  text-align: center;"  value="#{m.username}" for="noviId" />
+                <h:inputText value="#{registracijaPrijava.username}" id="noviId" /> <br/>
+                <h:outputLabel  style=" display: inline-block;  width: 140px;  text-align: center;"  value="#{m.password}" for="noviNaziv" />
+                <h:inputText value="#{registracijaPrijava.password}" id="noviNaziv" /> <br/>
+                <br/>
+                <h:commandButton style="margin-left:200px" class="button-sivi" value="#{m.singin}" action="#{registracijaPrijava.prijaviSe()}" >
+                    <f:ajax execute="noviId noviNaziv " render="forma" />
+                </h:commandButton>
 
-            <h:commandButton class="button-sivi" value="#{m.singin}" action="#{registracijaPrijava.prijaviSe()}" >
-                <f:ajax execute="noviId noviNaziv " render="forma" />
-            </h:commandButton>
 
-         
-            
-            
-             <h:outputLabel id="greskaPrijava" rendered="#{registracijaPrijava.priGreska == 'A'}" value="#{m.greskaPrijava}" /> 
-            
-            
-        </h:form>
-    </h:body>
-            </f:view>
+
+
+                <h:outputLabel id="greskaPrijava" rendered="#{registracijaPrijava.priGreska == 'A'}" value="#{m.greskaPrijava}" /> 
+
+
+            </h:form>
+        </h:body>
+    </f:view>
 </html>
 

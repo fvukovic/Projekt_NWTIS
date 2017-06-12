@@ -50,7 +50,7 @@ public class ServerDretva extends Thread{
     
     
     /**
-     *Server dretva..ceka sljedeci zahtjev 
+     *Server dretva..ceka sljedeci zahtjev preko socketa
      */
     @Override
     public void run() {

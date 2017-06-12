@@ -121,11 +121,7 @@ public class DretvaZahtjeva extends Thread {
             this.zahtjev = sb.toString();
             Pattern p = Pattern.compile(sintaksa_adminPause);
             Matcher m = p.matcher(sb);
-             if (!loginBaza(m.group(1), m.group(2))) {
-                    os.write("ERR 10  ".getBytes());
-                    os.flush();
-                    return;
-                }
+          
             boolean status = m.matches();
             System.out.println("koja opcija: " + status);
             if (status) {
@@ -328,7 +324,10 @@ public class DretvaZahtjeva extends Thread {
     public synchronized void start() {
         super.start(); //To change body of generated methods, choose Tools | Templates.
     }
-
+/**
+ * Pauzira radnu dretvu
+ * @return 
+ */
     private boolean ServerPause() {
 
         try {
@@ -349,7 +348,11 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-
+/**
+ * pokrece radnu dretvu
+ * 
+ * @return 
+ */
     private boolean adminStart() {
         try {
             if (RadnaDretva.dretva == true) {
@@ -368,7 +371,9 @@ public class DretvaZahtjeva extends Thread {
         }
         return true;
     }
-
+/**
+ *  ZAustavlja radnu dretvu i sve daljnje pristigle komande*
+ */
     private boolean adminStop() {
         try {
 
@@ -400,7 +405,10 @@ public class DretvaZahtjeva extends Thread {
         }
         return true;
     }
-
+/**
+ * zapisuje svaki zahtjev u dnevnik
+ * @param state 
+ */
     public void zapisiUDnevnik(boolean state) {
         try {
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -414,7 +422,11 @@ public class DretvaZahtjeva extends Thread {
             System.out.println(ex);
         }
     }
-
+/**
+ * upisuje uredaj
+ * @param naziv
+ * @param adresa 
+ */
     public void uspisiUredaj(String naziv, String adresa) {
 
         GMKlijent novi = new GMKlijent();
@@ -455,7 +467,10 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-
+/**
+ * aktivacija uredaja
+ * @param id 
+ */
     public void aktivacijaUredaja(String id) {
 
         try {
@@ -472,7 +487,7 @@ public class DretvaZahtjeva extends Thread {
                     query = "update uredaji set status=1 where id=" + id;
                     s = Baza.c.createStatement();
                     s.executeUpdate(query);
-                    os.write("OK".getBytes());
+                    os.write("OK 10".getBytes());
                     os.flush();
                 }
             }
@@ -483,7 +498,12 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-
+/**
+ * login trenutnog korisnika prema bazi
+ * @param username
+ * @param pass
+ * @return 
+ */
     public boolean loginBaza(String username, String pass) {
         try {
 
@@ -596,6 +616,11 @@ public class DretvaZahtjeva extends Thread {
      * Pozivanje metode servisa IoT_master
      *
      */
+    
+    
+    /**
+     * pokrece grupu 
+     */
     public void IoT_master_start() {
         boolean status = Iot_Master.registrirajGrupuIoT("fvukovic", "oWbMz");
         System.out.println("START GRUPE: " + status);
@@ -615,7 +640,9 @@ public class DretvaZahtjeva extends Thread {
             }
         }
     }
-    
+    /**
+     * puni grupu sa predefiniranim uredajima
+     */
      public void IoT_master_load() {
         boolean status = Iot_Master.ucitajSveUredjajeGrupe("fvukovic", "oWbMz");
         System.out.println("START GRUPE: " + status);
@@ -628,7 +655,9 @@ public class DretvaZahtjeva extends Thread {
             }
          
     }
-    
+    /**
+     * brise sve uredaje iz grupe
+     */
       public void IoT_master_clear() {
         boolean status = Iot_Master.obrisiSveUredjajeGrupe("fvukovic", "oWbMz");
         System.out.println("START GRUPE: " + status);
@@ -641,7 +670,9 @@ public class DretvaZahtjeva extends Thread {
        
     }
       }
-     
+  /**
+   * vraca status grupe
+   */   
       public void IoT_master_status() {
           
           StatusKorisnika a = Iot_Master.dajStatusGrupeIoT("fvukovic", "oWbMz");
@@ -663,6 +694,9 @@ public class DretvaZahtjeva extends Thread {
         }
       
       }
+      /**
+       * ispisuje sve uredaje
+       */
           public void IoT_master_list() {
               System.out.println("USAO U LIIIIIIIIIST");
           List<Uredjaj> lista = Iot_Master.dajSveUredjajeGrupe("fvukovic", "oWbMz");
@@ -680,7 +714,9 @@ public class DretvaZahtjeva extends Thread {
         } 
       }
       
-      
+    /**
+     * Deregistrira grupu
+     */  
     public void IoT_master_stop() {
         if (Iot_Master.deregistrirajGrupuIoT("fvukovic", "oWbMz")) {
             try {
@@ -698,7 +734,9 @@ public class DretvaZahtjeva extends Thread {
             }
         }
     }
-
+/**
+ * aktivira grupu
+ */
     public void IoT_master_WORK() {
         if (Iot_Master.aktivirajGrupuIoT("fvukovic", "oWbMz")) {
             System.out.println("WOK WORK");
@@ -718,7 +756,9 @@ public class DretvaZahtjeva extends Thread {
         }
 
     }
-
+    /**
+     * pauzira rad grupe
+     */
     public void IoT_master_WAIT() {
         if (Iot_Master.blokirajGrupuIoT("fvukovic", "oWbMz")) {
             try {
@@ -736,7 +776,9 @@ public class DretvaZahtjeva extends Thread {
             }
         }
     }
-
+/**
+ * brise sve uredaje*/
+    
     public void IoT_master_CLEAR() {
         if (Iot_Master.obrisiSveUredjajeGrupe("fvukovic", "oWbMz")) {
             try {
@@ -756,7 +798,5 @@ public class DretvaZahtjeva extends Thread {
 
     }
 
-    public void IoT_master_CLEARa() {
-    }
-
+   
 }

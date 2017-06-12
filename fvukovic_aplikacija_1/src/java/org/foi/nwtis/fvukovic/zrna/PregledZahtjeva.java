@@ -117,7 +117,9 @@ public class PregledZahtjeva {
     }
 
   
-    
+    /**
+     * preuzima sve zahtjeve iz baze
+     */
     public void preuzmiKorisnike()
     {
         try {
@@ -143,6 +145,9 @@ public class PregledZahtjeva {
             Logger.getLogger(PregledKorisnika.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    /** 
+     * pokazuje n prethodnih korisnika
+     */
     public void prethodniKorisnici(){
        
  
@@ -164,7 +169,9 @@ public class PregledZahtjeva {
             System.err.println("Ja sam devojka sa sela");
     }
     
-    
+    /**
+     * Spajanje na bazu
+     */
        public void spojiNaBazu() {
         BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");
         try {

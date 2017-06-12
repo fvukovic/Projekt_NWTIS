@@ -57,7 +57,19 @@ public class registracijaPrijava implements Serializable {
     private String trajanje = "";
     private String status = ""; 
     private boolean filtrirano = false;
+    private String reg;
 
+    public String getReg() {
+        return reg;
+    }
+
+    public void setReg(String reg) {
+        this.reg = reg;
+    }
+
+    
+    
+    
     public String getIpAdresa() {
         return ipAdresa;
     }
@@ -226,7 +238,10 @@ public class registracijaPrijava implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
+/**
+ * prijava korisnika koja se izvodi web servisa
+ * @return 
+ */
     public String prijaviSe() {
 
         long pocetak = System.currentTimeMillis();
@@ -273,7 +288,9 @@ public class registracijaPrijava implements Serializable {
         this.priGreska = "A";
         return "";
     }
-
+/**
+ * registracija korisnika preko web servisa i validacija podataka
+ */
     public void registrirajSe() {
 
         
@@ -301,9 +318,11 @@ public class registracijaPrijava implements Serializable {
             job.add("password", this.passwordReg);
             job.add("email", this.emailReg);
             System.out.println("USPJESNOS: " + MeteoWSKlijent.registrirajREST(job.build()));
-            this.regGreska = "";
+            this.reg="A";
+            this.regGreska = "b";
         } else {
             this.regGreska = "A";
+            this.reg="b";
             System.out.println("Korisnicko ime vec postoji");
         }
 

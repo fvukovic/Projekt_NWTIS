@@ -14,7 +14,7 @@
                         <h:commandButton value="#{m.odjava}"  action="index" /> 
                         <h:commandButton value="#{m.korisnici}"  action="korisnici" /> 
                               <h:commandButton value="mail" action="pregledMailova"/>
-                              <h:commandButton value="IoT_master" action="ioT_master"/><br/>
+                              <h:commandButton value="IoT_master" action="ioT_master"/> 
                               <h:commandButton value="#{m.jezik}" action="promjenaJezika"/>
                               <br/> <br/> <br/> <br/>
             
@@ -32,7 +32,7 @@
             </h:commandButton>
             <br/><br/>
             <div style="margin-left:100px">
-            <h:outputLabel value="Odgovor:" for="noviId2" style="margin-right: 10px" />
+                <h:outputLabel value="#{m.odgovor}" for="noviId2" style="margin-right: 10px" />
           
             <h:outputText value="#{naredbeServer.odgovor}" /><br/>
             <h:outputText value="#{naredbeServer.statusServer}"/>
@@ -54,8 +54,9 @@
                 <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
             </h:commandButton>
         
-             <div style="margin-left:10px">
-            <h:outputLabel value="STATUS:" for="noviId2" />
+             <br/><br/>
+           <div style="margin-left:100px">
+                <h:outputLabel value="#{m.odgovor}" for="noviId2" style="margin-right: 10px" />
           
                 <h:outputText value="#{naredbeServer.odgovorMaster}"/>
             <h:outputText value="#{naredbeServer.statusServer}"/>

@@ -117,7 +117,7 @@ public class GeoMeteoWS {
     }
 
     /**
-     * Web service operation
+     * Web service operation za dohvati zadnjih n meteo podataka
      */
     @WebMethod(operationName = "zadnjihNMeteo")
     public String operation(@WebParam(name = "n") String n, @WebParam(name = "id") String id) {
@@ -170,7 +170,7 @@ public class GeoMeteoWS {
     }
 
     /**
-     * Web service operation
+     * Web service operation za trenutni aktulani meteo podataka sa servisa openweather
      */
     @WebMethod(operationName = "vazeciMeteo")
     public String vazeciMeteo(@WebParam(name = "id") String id) {
@@ -229,8 +229,8 @@ public class GeoMeteoWS {
         return null;
     }
 
-    /**
-     * Web service operation
+    /** 
+     * Web service operation dohvati sve podatke za odredeni uredaj
      */
  @WebMethod(operationName = "dajSveMeteoPodatkeZaUredjaj")
     public List<MeteoPodaci> dajSveMeteoPodatkeZaUredjaj(@WebParam(name = "id") int id, @WebParam(name = "from") long from, @WebParam(name = "to") long to) {
@@ -263,10 +263,7 @@ public class GeoMeteoWS {
             long kraj = System.currentTimeMillis();
         zapisiUDnevnik((int) (kraj - pocetak), 0,"/GetoMeteoWS");
         }
-            
-            
-
-            //TODO dovršiti preuzimanje meteo podataka iz baze podataka
+             
             SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date fromDate = new Date(from);
             String strDate = sdfDate.format(fromDate);
@@ -294,7 +291,7 @@ public class GeoMeteoWS {
     }
 
     /**
-     * Web service operation
+     * Web service operation za dohvat adrese prema lokaciji
      */
     @WebMethod(operationName = "Geocoder")
     public String Geocoder(@WebParam(name = "id") String id) {

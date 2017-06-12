@@ -121,7 +121,9 @@ public class pregledDnevnika {
         this.brojPrikaza = Integer.parseInt(konf.dajPostavku("broj.prikaza"));
         preuzmiKorisnike(); 
     }
-    
+    /**
+     * preuzima sve korisnike iz baze i prikazuje ih 
+     */
     public void preuzmiKorisnike()
     {
         try {
@@ -144,6 +146,9 @@ public class pregledDnevnika {
             Logger.getLogger(PregledKorisnika.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    /**
+     * prikazuje prethodnih n korisnika
+     */
     public void prethodniKorisnici(){
          System.out.println("START NAREDBA");
     //    System.out.println(  DretvaZahtjeva.aktivirajGrupuIoT("fvukovic", "1234123"));
@@ -155,7 +160,9 @@ public class pregledDnevnika {
             preuzmiKorisnike();
             System.err.println("Ja sam devojka sa sela");
     }
-     
+     /**
+      * prikazuje n sljedecih n Korisnika
+      */
     
         public void sljedeciKorisnici(){
             
@@ -170,6 +177,10 @@ public class pregledDnevnika {
         public String korisnici(){
             return "korisnici";
         }
+        
+        /**
+         * spajanje na bazu podataka
+         */
        public void spojiNaBazu() {
            
         BP_Konfiguracija bp_konf = (BP_Konfiguracija) sc.getAttribute("BP_Konfig");

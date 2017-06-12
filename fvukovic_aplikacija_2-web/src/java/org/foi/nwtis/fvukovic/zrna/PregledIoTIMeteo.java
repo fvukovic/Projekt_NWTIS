@@ -174,6 +174,9 @@ public class PregledIoTIMeteo implements Serializable {
     public static void setSc(ServletContext sc) {
         PregledIoTIMeteo.sc = sc;
     }
+    /**
+     * poziva servis za mjenja uredaja po id-u
+     */
     public void azurirajUredaj(){
     JsonObjectBuilder job = Json.createObjectBuilder(); 
         System.out.println("PODACI : "+this.id+"  "+ this.lat+"  "+ this.lon+"   "+ this.naziv);
@@ -186,7 +189,9 @@ public class PregledIoTIMeteo implements Serializable {
     public void geokoder(){
        geoAdresa= MeteoWSKlijent.geocoder(this.idGeo);      
     }
-    
+    /**
+     * dodavanje uredaja preko servisa po ulaznim parametrima
+     */   
         public void dodajUredaj(){
     JsonObjectBuilder job = Json.createObjectBuilder(); 
         System.out.println("PODACI : "+this.id+"  "+ this.lat+"  "+ this.lon+"   "+ this.naziv);
@@ -196,6 +201,9 @@ public class PregledIoTIMeteo implements Serializable {
        job.add("status","0"); 
         System.out.println("JSON DODAJ UREDI: "+MeteoWSKlijent.dodajUredajREST(job.build()));
     }
+        /**
+         * dohvacanje svih uredaja preko servisa
+         */
     public void dohvatiUredaje(){
         uredaji.clear();
         String json =   MeteoWSKlijent.dohvatiSveUredajeREST(sc); 
@@ -216,6 +224,10 @@ public class PregledIoTIMeteo implements Serializable {
             uredaji.add(novi);
         }
    }
+    
+    /**
+     * Dohvacanje N meteo podataka za neki id uredaja
+     */
     public void dohvatiNmeteoPodataka(){
         
       String json =   MeteoWSKlijent.zadnjihNMeteo(n, idN);
@@ -239,7 +251,9 @@ public class PregledIoTIMeteo implements Serializable {
       }
         
     }
-    
+    /**
+     * dohvati trenutne meteo podatke za uredaj
+     */
     public void dohvatiVazece(){
         String json =   MeteoWSKlijent.vazeciMeteo(idVazeci);
          System.out.println(json);

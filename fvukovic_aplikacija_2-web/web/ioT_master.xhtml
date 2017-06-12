@@ -18,24 +18,24 @@
                                <h:commandButton value="#{m.jezik}" action="promjenaJezika"/>
                               
                               <br/><br/><br/>
-                  <h:commandButton value="#{m.cisti}" action="#{naredbeServer.clearMaster()}" >
+                              <h:commandButton value="#{m.cisti}" action="#{iot_master.clearMaster()}" >
                 <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
             </h:commandButton>
             
-                  <h:commandButton value="#{m.puni}" action="#{naredbeServer.loadMaster()}" >
+                  <h:commandButton value="#{m.puni}" action="#{iot_master.loadMaster()}" >
                 <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
             </h:commandButton>
             
             
-            <h:commandButton value="#{m.prikazi}" action="#{naredbeServer.listMaster()}" >
+            <h:commandButton value="#{m.prikazi}" action="#{iot_master.listMaster()}" >
                 <f:ajax execute="noviId noviNaziv noviAdresa" render="forma" />
             </h:commandButton>
             
              <div style="margin-left:20px">
-            <h:outputLabel value="#{m.odgovor}" for="noviId2" />
-          
-                <h:outputText value="#{naredbeServer.odgovorMaster}"/>
-            <h:outputText value="#{naredbeServer.statusServer}"/>
+                 <pre>
+            <h:outputText  value="#{m.odgovor}"   />
+          </pre>
+                <h:outputText value="#{iot_master.odgovorMaster}" escape="false"/> 
             </div>
 
            

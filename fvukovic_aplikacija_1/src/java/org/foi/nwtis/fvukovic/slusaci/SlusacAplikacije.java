@@ -34,7 +34,10 @@ import org.foi.nwtis.fvukovic.zrna.pregledDnevnika;
  * @author filip
  */
 public class SlusacAplikacije implements ServletContextListener {
-
+    /**
+     * inicijalizacija konteksta te spremanje konfiguracijske datoteke u Servlet kontekt za daljnje koristenje
+     * @param sce 
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("RADI KOD POKRETANJA");

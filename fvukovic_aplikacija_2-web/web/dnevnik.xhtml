@@ -8,52 +8,13 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-      <h:form>
-                      <h:outputLabel value="Status: " for="status" />
-                        <h:inputText value="#{pregleddnevnika.status}" id="status" />
-                          <h:outputLabel value="trajanje " for="trajanje" />
-                        <h:inputText value="#{pregleddnevnika.trajanje}" id="trajanje" />
-                          <h:outputLabel value="ipAdresa " for="ipAdresa" /> 
-                          <h:inputText value="#{pregleddnevnika.ipAdresa}" id="ipAdresa" />
-                   <h:commandButton  value="Filtriraj"  action="#{pregleddnevnika.filtriraj()}"  >  
-                       <f:ajax execute="status trajanje ipAdresa" render="table1" />
-                    </h:commandButton>  
-                </h:form>
-                <h:dataTable     id="table1" value="#{pregleddnevnika.dnevnikBaza}" var="item">
-                            <f:facet name="header">
-                                <h:outputText value="Dnevnik" />
-                            </f:facet> 
-                             <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="korisnik" />
-                                </f:facet>
-                                 <h:outputText value="#{item.korisnik}" />
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="ipadresa" />
-                                </f:facet>
-                                <h:outputText value="#{item.ipadresa}" />
-                            </h:column> 
-                             <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="url" />
-                                </f:facet>
-                                 <h:outputText value="#{item.url}" />
-                            </h:column> 
-                             <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="status" />
-                                </f:facet>
-                                 <h:outputText value="#{item.status}" />
-                            </h:column> 
-                              <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Trajanje" />
-                                </f:facet>
-                                  <h:outputText value="#{item.trajanje}" />
-                            </h:column> 
-                        </h:dataTable>
+        <h:form>
+            
+            <h:commandButton  action="#{pregleddnevnika.dohvati()}"></h:commandButton>
+            
+            
+        </h:form>
+                
     </h:body>
            </f:view>
 </html>

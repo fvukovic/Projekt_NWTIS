@@ -58,6 +58,7 @@ public class UsersServersResource {
 
     /**
      * Retrieves representation of an instance of org.foi.nwtis.fvukovic.rest.korisnici.UsersServersResource
+     * Dohvaca sve korisnike iz baze podataka
      * @return an instance of java.lang.String
      */
      @GET
@@ -93,6 +94,7 @@ public class UsersServersResource {
     /**
      * POST method for creating an instance of UsersServerResource
      * @param content representation for the new resource
+     * dodaje novog korisnika prema upisanim podacima
      * @return an HTTP response with content of the created resource
      */
    @POST

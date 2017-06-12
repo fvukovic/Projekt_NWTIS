@@ -17,7 +17,7 @@
 <entry key="mail.port">143</entry>
 <entry key="mail.usernameThread">fvukovic1@nwtis.nastava.foi.hr</entry>
 <entry key="mail.passwordThread">123456</entry>
-<entry key="mail.timeSecThread">5</entry>
+<entry key="mail.timeSecThread">10</entry>
 <entry key="mail.numMessages">7</entry>
 <entry key="mail.subject">NWTiS poruka</entry>
 <entry key="mail.folderNWTiS">NWTiS_Poruke</entry>

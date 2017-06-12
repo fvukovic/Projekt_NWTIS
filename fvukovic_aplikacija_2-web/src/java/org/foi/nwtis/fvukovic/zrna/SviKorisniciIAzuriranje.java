@@ -109,7 +109,9 @@ public class SviKorisniciIAzuriranje implements Serializable {
     public void setKorisnici(List<Korisnik> korisnici) {
         this.korisnici = korisnici;
     }
-    
+    /**
+     * azuriranje korisnika preko servisa po id-u
+     */
     public void azurirajKorisnika(){
        
         JsonObjectBuilder job = Json.createObjectBuilder(); 
@@ -127,6 +129,9 @@ public class SviKorisniciIAzuriranje implements Serializable {
         sesija.setAttribute("username", this.username);
         sesija.setAttribute("password", this.password);
     }
+    /**
+     * dohvacanje svih korisnika sa web servisa
+     */
    public void dohvatiKorisnike(){ 
          System.out.println("Molim te:  "+SessionUtils.getUserName());
         System.out.println("EMAIL: "+ SlusacAplikacije.emailSesija +SviKorisniciIAzuriranje.pls);

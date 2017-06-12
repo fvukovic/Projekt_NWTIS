@@ -37,7 +37,7 @@ import org.foi.nwtis.fvukovic.konfiguracije.bp.BP_Konfiguracija;
 
 /**
  *
- * @author grupa_3
+ * Filip
  *
  * Klasa(dretva) koja obraduje pristigle poruke u sandučić i dijeli ih u razne
  * foldere koji su postavljeni u konfiguraciji. Ako folderi ne postoje, dretva
@@ -69,7 +69,7 @@ public class ObradaPoruka extends Thread {
              * to su serve,port,korisnik,lozinka za odredenog korisnika koji ce
              * koristiti mail sustav.
              */
-            sleep(3000);
+            sleep(4000);
         } catch (InterruptedException ex) {
             Logger.getLogger(ObradaPoruka.class.getName()).log(Level.SEVERE, null, ex);
         }
